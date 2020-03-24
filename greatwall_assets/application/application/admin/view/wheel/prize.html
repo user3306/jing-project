@@ -1,0 +1,210 @@
+{extend name="admin@public/base_content" /}
+{block name="content_header">}
+<style>
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding: 0px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .img1{
+        position: relative;
+    }
+    .layui-form-label{
+        width:100px;
+    }
+    #title2div0{
+        width: 96%;
+        margin: 0 2%;
+        background: #333;
+        color: #ffffff;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        bottom: 0px;
+    }
+    .cover{
+        position: relative;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .abs{
+        width: 100%;
+        height: 177px;
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        background: #DDDDDD;
+        opacity: 0;
+    }
+    .abs:hover{
+        opacity: 0.8;
+    }
+    .add_box{
+        background: #ffffff;
+        width:100% ;
+        border: 1px solid #DDDDDD;
+        height: 140px;
+        position: relative;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_title{
+        width: 190px;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    #add{
+        display: inline-block;
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        margin: 20px 10%;
+        border: 1px dotted #666666;
+    }
+    .bianji_box{
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: #DDDDDD;
+        text-align: center;
+        opacity: 0;
+    }
+    .bianji_box .a1{
+        display: inline-block;
+        margin-top: 30px;
+
+    }
+    .bianji_box:hover{
+        opacity: 0.8;
+    }
+    .www{
+        display: -webkit-flex;
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+{/block}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <section class="panel">
+                <div id="sidebar">
+                    <div class="previewBox" style="width: 400px">
+                        <!-- <p style="margin:10px 14px 0 14px;"><span class="msg-date">2013-08-14</span></p>-->
+                        <div style="margin:auto;">
+
+                            <img src="/static/admin/images/zp.jpg" alt="">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+        </div>
+
+        <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+            <div class="col-xs-8 col-sm-8 col-md-8" id="main">
+                {volist name="info" id="vo" key="k"}
+                <section class="panel panel-padding">
+                <input type="hidden" name="data[{$k}][prize_rank]" value="{$vo.prize_rank}">
+                    <input type="hidden" name="data[{$k}][gameid]" value="{$vo.gameid}">
+                    <div class="www">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">奖项名称{$k}</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="data[{$k}][prize_title]" value="{$vo.prize_title}" required placeholder="请输入" class="layui-input " style="width: 200px">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">中奖概率{$k}</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="data[{$k}][chance]" value="{$vo.chance}" required placeholder="请输入" class="layui-input " style="width: 200px">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">奖品数量{$k}</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="data[{$k}][allnum]" value="{$vo.allnum}" required placeholder="请输入" class="layui-input " style="width: 200px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">外部链接{$k}</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="data[{$k}][link]" value="{$vo.link}" required placeholder="请输入" class="layui-input " style="width: 600px">
+                        </div>
+                    </div>
+                </section>
+                {/volist}
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                    <section class="panel panel-padding">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="sub">立即提交</button>
+                            <a href="JavaScript:history.back(-1)"><button type="reset" class="layui-btn layui-btn-primary">上一步</button></a>
+                        </div>
+                    </section>
+                </div>
+        </form>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script src="/static/admin/js/jquery.min.js"></script>
+<script>
+    $(document).on('change',".prizeImg",function(){
+        var obj=this;
+//        console.log($(obj).attr('data-val')); return false;
+        var action = "{:url('admin/wheel/prizeImg')}";
+        var file=obj.files[0];
+        var prize_rank = $(obj).attr('data-val');
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", action, true); // 上传地址
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var jsonobj=eval('('+xhr.responseText+')');
+                    var str = $.parseJSON(jsonobj); // 返回格式，此处为json，可以为别的格式
+                    //console.log(str);
+                    if (str.status==200){
+                        $('.imgs'+str.prize_rank).attr('value',str.url);
+                    }else{
+                        alert('上传失败');
+                    }
+                }
+            }
+        };
+        var fd = new FormData();
+        fd.append('prize_rank',prize_rank);
+        fd.append('file', file);
+        xhr.send(fd);
+    }) ;
+
+</script>
+<script>
+    layui.use('myform');
+</script>
+{/block}

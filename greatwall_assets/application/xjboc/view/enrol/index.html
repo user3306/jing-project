@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>{$act_info.title}</title>
+    <script src="/static/xjboc/vote/js/jquery.js"></script>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/swiper.min.css">
+    <script src="/static/xjboc/vote/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/style.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/animate.min.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/magic-input.min.css">
+    <style type="text/css" media="screen">
+        .content{
+            background-color:#F8F8F8;
+        }
+        .hh{
+            width:100%;
+            background-color:#fff;
+            padding:0.1rem 0 0.6rem 0;
+        }
+        .huo{
+            margin-top:0;
+        }
+        .head{
+            background-color:#fff;
+        }
+        .vv input{
+            font-size:0.8rem;
+        }
+        .fang{
+            font-size:0.8rem;
+        }
+        .bao,.bao span{
+            font-size:0.85rem;
+            margin-top:0.25rem;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="head">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {volist name="banner" id="vo"}
+                <div class="swiper-slide">
+                    <img src="{$vo.image}" class="card_banner">
+                </div>
+                {/volist}
+            </div>
+        </div>
+    </div>
+    <div class="hh">
+        <div class="huo">
+            {$act_info.title}
+        </div>
+        <div class="huo_date">
+            报名截止时间：{$act_info.end_time|date="Y-m-d H:i:s"}
+        </div>
+    </div>
+
+    <div class="shuo">
+        <div class="dong">
+            活动说明：
+        </div>
+        <div class="shuo_01">
+            <textarea >{$act_info.description}</textarea>
+        </div>
+    </div>
+    <div class="lie">
+        <div class="nav vv">
+            <div class="fang" style="background-color:#F8F8F8;">
+                请填写正确的信息，以便联系您！
+            </div>
+            <label>
+                <input id="user" type="text" placeholder="请输入姓名" />
+            </label>
+            <label>
+                <input id="phone" type="tel" maxlength="11" placeholder="请输入手机号码">
+            </label>
+            <a id="sub" class="li">立即报名</a>
+            <div class="bao">
+                已有<span>{$count}</span>人参与
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog" id="myModal">
+    <div class="weui_dialog_confirm" id="dialog1">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog" id="qur" style="padding: 0 0 0 0;">
+            <div class="weui_dialog_hd" style="background-color: #d13944;font-size: 0.875rem;color: #fff;">温馨提示</div>
+            <div class="weui_dialog_bd " id="err">
+                <div class="weui-title"></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">确定</a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{$js_packeg['appId']}", // 必填，公众号的唯一标识
+        timestamp: "{$js_packeg['timestamp']}", // 必填，生成签名的时间戳
+        nonceStr: "{$js_packeg['nonceStr']}", // 必填，生成签名的随机串
+        signature: "{$js_packeg['signature']}",// 必填，签名
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'hideMenuItems'
+        ] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function() {
+        wx.onMenuShareAppMessage({
+            title: "{$act_info['p_title']}", // 分享标题
+            desc: "{$act_info['description']}", // 分享描述
+            link: 'http://wxxcb.hunnu.edu.cn/web/index/reurl?act_id={$act_id}&model=enrol',
+            imgUrl: "http://xjboc.wx.snrunning.cn{$act_info['logo']}", // 分享图标
+            success: function () {
+            }
+        });
+
+
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:share:timeline',
+                'menuItem:share:qq',
+                'menuItem:favorite',
+                'menuItem:share:weiboApp',
+                'menuItem:favorite',
+                'menuItem:share:facebook',
+                'menuItem:share:QZone',
+                'menuItem:copyUrl',
+                'menuItem:readMode',
+                'menuItem:openWithQQBrowser',
+                'menuItem:share:brand',
+                'menuItem:share:email',
+                'menuItem:openWithSafari'
+            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+        });
+
+
+    });
+
+
+    var swiper = new Swiper('.swiper-container', {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        }
+    });
+    var click=true;
+    $('#sub').click(
+        function(){
+            var mobile = $("#phone").val();
+            var myreg=/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])[0-9]{8}$/;
+            var user=$('#user').val();
+            if(user==''){
+                $(".dialog").show();
+                $('.weui-title').text("请输入姓名");
+                return false;
+            }
+            if(mobile==''){
+                $(".dialog").show();
+                $('.weui-title').text("请输入手机号码");
+                return false;
+            }else if(!myreg.test(mobile)){
+                $(".dialog").show();
+                $('.weui-title').text("请输入正确的手机号");
+                return false;
+            }
+            if(!click)return false;
+            click=false;
+            $.ajax({
+                url:"{:url('enrol/register')}",
+                type:"post",
+                data:{
+                    openid:"{$openid}",
+                    act_id:"{$act_id}",
+                    token:"{$token}",
+                    white:"{$act_info['white']}",
+                    name:user,
+                    mobile:mobile
+                },
+                dataType:"json",
+                success:function (data) {
+                    $(".dialog").show();
+                    $('.weui-title').text(data.msg);
+                    click=true
+                }
+
+            });
+            return true;
+        });
+    $(".weui-dialog__btn_default").click(function() {
+        $(".dialog").hide();
+    });
+    $('.shuo_01 textarea').click(function(){
+        $('.shuo_01 span').hide();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+{extend name="admin@public/base_content" /}
+{block name="content_header">}
+<style>
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .img1{
+        position: relative;
+    }
+    #title2div0{
+        width: 96%;
+        margin: 0 2%;
+        background: #333;
+        color: #ffffff;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        bottom: 0px;
+    }
+    .cover{
+        position: relative;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .abs{
+        width: 100%;
+        height: 177px;
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        background: #DDDDDD;
+        opacity: 0;
+    }
+    .abs:hover{
+        opacity: 0.8;
+    }
+    .add_box{
+        background: #ffffff;
+        width:100% ;
+        border: 1px solid #DDDDDD;
+        height: 140px;
+        position: relative;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_title{
+        width: 190px;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    #add{
+        display: inline-block;
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        margin: 20px 10%;
+        border: 1px dotted #666666;
+    }
+    .bianji_box{
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: #DDDDDD;
+        text-align: center;
+        opacity: 0;
+    }
+    .bianji_box .a1{
+        display: inline-block;
+        margin-top: 30px;
+
+    }
+    .bianji_box:hover{
+        opacity: 0.8;
+    }
+</style>
+{/block}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <section class="panel">
+                <div id="sidebar">
+                    <div class="previewBox">
+                        <!-- <p style="margin:10px 14px 0 14px;"><span class="msg-date">2013-08-14</span></p>-->
+                    {empty name="info"}
+                        <div class="cover editing" id='sdiv0'>
+                            <div class="img1">
+                                <h4 class="msg-t" id="title2div0">
+                                    {$info.title|default='标题'}<span class="i-title"></span>
+                                </h4>
+                                <img src="{$info.image|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                            </div>
+
+                            <ul class="abs tc sub-msg-opr">
+                                <a class="th" href="javascript:void(0)" onclick="editDiv('div0')">
+                                    <div style="width: 96%; margin: 40px 2% 0; height: 120px; font-size: 16px;text-align: center;">
+                                        编辑</div>
+                                </a>
+                            </ul>
+                        </div>
+                    {else}
+                        {foreach name="info.child" item="vo"}
+                        {eq name="key" value="0"}
+                        <div class="cover editing" id='sdiv0'>
+                            <div class="img1">
+                                <h4 class="msg-t" id="title2div0">
+                                    {$vo.title|default='标题'}<span class="i-title"></span>
+                                </h4>
+                                <img src="{$vo.image|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                            </div>
+
+                            <ul class="abs tc sub-msg-opr">
+                                <a class="th" href="javascript:void(0)" onclick="editDiv('div0')">
+                                    <div style="width: 96%; margin: 40px 2% 0; height: 120px; font-size: 16px;text-align: center;">
+                                        编辑</div>
+                                </a>
+                            </ul>
+                        </div>
+                        {else}
+                        <div class="add_box" id="sdiv{$key}">
+                            <span class="add_title" id="title2div{$key+1}">{$vo.title|default='标题'}</span>
+                            <img src="{$vo.image|default='__ADMIN__/wximg/1.png'}" alt="" width="80px" height="80px">
+                            <div class="bianji_box">
+                                <a class="a1" href="javascript:void(0)" style="color: #333333" onclick="editDiv('div{$key}');return false;"> 编辑</a>
+                                <a class="a1" href="javascript:void(0)" style="color: #333333" onclick="removeDiv('div{$key}');return false;">删除</a>
+                            </div>
+                        </div>
+                        {/eq}
+                        {/foreach}
+                    {/empty}
+
+
+                    </div>
+
+                </div>
+
+                <div class="sub-add">
+                    <a class="block tc sub-add-btn" href="javascript:void(0);" id="add">
+                        <span class="vm dib sub-add-icon"></span>增加一条
+                    </a>
+                </div>
+            </section>
+        </div>
+
+
+
+        <div class="col-xs-8 col-sm-8 col-md-8" id="main">
+            {empty name="info"}
+            <form class="layui-form edit_item" action="" id="div0">
+                <section class="panel panel-padding">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" value="{$info.title|default=''}"  id="titlediv0" onchange="setTitle('div0')"  required jq-verify="required" jq-error="请输入标题" placeholder="请输入第1个标题" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者 </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" value="{$info.author|default=''}" required jq-verify="required" jq-error="请输入作者" placeholder="请输入作者" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">封面图</label>
+                        <div class="layui-input-block">
+                            <div class="layui-box layui-upload-button">
+                                <input name="image" class="wxuploadimg" type="file">
+                                <input name="image" value="{$info.image|default=''}" type="hidden">
+                                <input name="if_upload" value="" type="hidden">
+                                <input name="thumb_media_id" value="" type="hidden">
+                                <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                            </div>
+                        </div>
+                        <!--<div class="layui-input-block">
+                            <div class="imgbox"><img src="" alt="..." class="img-thumbnail"></div>
+                        </div>-->
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">正文</label>
+                        <div class="layui-input-block">
+                            <textarea name="content" class="king_content" placeholder="请输入正文内容" cols="100" rows="20">{$info.content|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:90px;">原文链接 </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="content_source_url" value="{$info.content_source_url|default=''}" required jq-verify="required" jq-error="请输入原文链接" placeholder="请输入原文链接" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">摘要</label>
+                        <div class="layui-input-block">
+                            <textarea name="digest" placeholder="请输入摘要" class="layui-textarea">{$info.digest|default=''}</textarea>
+                        </div>
+                    </div>
+
+                </section>
+                <input type="hidden" name="material_id" value="{$info.material_id}">
+            </form>
+            {else}
+            {foreach name="info.child" item="vo"}
+            <form class="layui-form edit_item" action="" id="div{$key}"
+                  {gt name="key" value="0"}
+                  {php}$top_num=190;{/php}
+                  style="display: none;margin-top: {$top_num}px;
+                    {php}$top_num+=140;{/php}
+                  {/gt}
+                  ">
+                <section class="panel panel-padding">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" value="{$vo.title|default=''}"  id="titlediv{$key}" onchange="setTitle('div{$key}')"  required jq-verify="required" jq-error="请输入标题" placeholder="请输入第1个标题" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">作者 </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="author" value="{$vo.author|default=''}" required jq-verify="required" jq-error="请输入作者" placeholder="请输入作者" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">封面图</label>
+                        <div class="layui-input-block">
+                            <div class="layui-box layui-upload-button">
+                                <input name="image" class="wxuploadimg" type="file">
+                                <input name="image" value="{$vo.image|default=''}" type="hidden">
+                                <input name="if_upload" value="" type="hidden">
+                                <input name="thumb_media_id" value="{$vo.thumb_media_id|default=''}" type="hidden">
+                                <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                            </div>
+                            <p id="img-error" class="error"></p>
+                        </div>
+                        <!--<div class="layui-input-block">
+                            <div class="imgbox"><img src="" alt="..." class="img-thumbnail"></div>
+                        </div>-->
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">正文</label>
+                        <div class="layui-input-block">
+                            <textarea name="content" class="king_content" placeholder="请输入正文内容" cols="100" rows="20">{$vo.content|html_out|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:90px;">原文链接 </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="content_source_url" value="{$vo.content_source_url|default=''}" required jq-verify="required" jq-error="请输入原文链接" placeholder="请输入原文链接" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">摘要</label>
+                        <div class="layui-input-block">
+                            <textarea name="digest" placeholder="请输入摘要" class="layui-textarea">{$vo.digest|default=''}</textarea>
+                        </div>
+                    </div>
+
+                </section>
+            </form>
+            {/foreach}
+            {/empty}
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+            <section class="panel panel-padding">
+                <div class="layui-input-block">
+                    <button class="layui-btn" id="submit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            //minWidth:300,
+            width : "100%", //编辑器的宽度为70%
+            height : "300px", //编辑器的高度为100px
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            afterBlur: function () { this.sync(); },
+        });
+    });
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    //var arr = [ 'div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7' ];
+    var arr = [ 'div7', 'div6', 'div5', 'div4', 'div3', 'div2', 'div1' ];
+    var arr2 = new Array();
+
+    var top_num = '190';
+    var showDiv = "div0";
+    {notempty name="info.child"}
+        {foreach name="info.child" item="vo"}
+            {gt name="key" value="0"}
+                    msgDiv = arr.pop();
+                    arr2.push(msgDiv);
+                    //showDiv = msgDiv;
+                    top_num=top_num*1+140*1;
+            {/gt}
+        {/foreach}
+    {/notempty}
+
+    layui.use('wxtuwen',function () {
+        var $= layui.jquery,form = layui.form();
+        $("#add").click(function() {
+            var msgDiv;
+            var location_num=9-arr.length;//位置个数
+            //var msgDiv2;
+            if (arr.length == 7) {
+                $("#" + showDiv).hide();
+                $("#s" + showDiv).removeClass('editing');
+                msgDiv = arr.pop();
+                arr2.push(msgDiv);
+                showDiv = msgDiv;
+            } else if (arr.length == 0) {
+                alert('最多添加8个图文信息');
+                return;
+            } else {
+                {notempty name="info.child"}
+                    $("#div0").hide();
+                    $("#sdiv0").removeClass('editing');
+                {/notempty}
+                msgDiv = arr.pop();
+                //msgDiv2=arr2.pop();
+                $("#" + showDiv).hide();
+                $("#s" + showDiv).removeClass('editing');
+                //arr2.push(msgDiv2);
+                arr2.push(msgDiv);
+                showDiv = msgDiv;
+            }
+            $(".previewBox")
+                    .append(
+                            "<div class='add_box editing' id='s"+msgDiv+"'>"
+                            + "<span class='add_title' id='title2"+msgDiv+"'>标题"+location_num+"</span>"
+                            + "<img src='__ADMIN__/wximg/1.png' width='80px' height='80px' alt=''>"
+                            + "<div class='bianji_box'>"
+                            + "<a class='a1' href='javascript:void(0)' style='color: #333333' onclick='editDiv(\""
+                            +msgDiv
+                            +"\");return false;'> 编辑</a> "
+                            + "<a class='a1' href='javascript:void(0)' style='color: #333333'"
+                            + " onclick='removeDiv(\""
+                            + msgDiv
+                            + "\");return false;'>删除</a>"
+                            + "</div>"
+                            + "</div>");
+            $("#main")
+                    .append(
+                            "<form class='layui-form edit_item' action='' id='"+msgDiv+"' style='margin-top: "+top_num+"px'>"
+                            + "<section class='panel panel-padding'>"
+                            + "<div class='layui-form-item'>"
+                            + "<label class='layui-form-label'>标题</label>"
+                            + "<div class='layui-input-block'>"
+                            + "<input type='text' name='title' value=''  id='title"+msgDiv+"' onchange='setTitle(\""+msgDiv+"\")'  required jq-verify='required' jq-error='请输入标题' placeholder='请输入第"+location_num+"个标题' class='layui-input '>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='layui-form-item'>"
+                            + "<label class='layui-form-label'>作者 </label>"
+                            + "<div class='layui-input-block'>"
+                            + "<input type='text' name='author' value='' required jq-verify='required' jq-error='请输入作者' placeholder='请输入作者' class='layui-input '>"
+                            + "</div>"
+                            + "</div>"
+
+                            + "<div class='layui-form-item'>"
+                            + "<label class='layui-form-label'>封面图</label>"
+                            + "<div class='layui-input-block'>"
+                            + "<div class='layui-box layui-upload-button'>"
+                            + "<input class='wxuploadimg' type='file'>"
+                            + "<input name='image' type='hidden'>"
+                            + "<input name='if_upload' value='' type='hidden'>"
+                            + "<input name='thumb_media_id' value='' type='hidden'>"
+                            + "<span class='layui-upload-icon'><i class='layui-icon'></i>上传图片</span></div>"
+                            + "</div>"
+                            + "</div>"
+
+                            + "<div class='layui-form-item'>"
+                            + "<label class='layui-form-label'>正文</label>"
+                            + "<div class='layui-input-block'>"
+                            + "<textarea name='content' class='king_content' id='content' cols='100' rows='20'></textarea>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='layui-form-item'>"
+                            + "<label class='layui-form-label' style='width:90px;'>原文链接 </label>"
+                            + "<div class='layui-input-block'>"
+                            + "<input type='text' name='content_source_url' value='' required jq-verify='required' jq-error='请输入原文链接' placeholder='请输入原文链接' class='layui-input '>"
+                            + "</div>"
+                            + "</div>"
+                            + "<div class='layui-form-item '>"
+                            + "<label class='layui-form-label'>摘要</label>"
+                            + "<div class='layui-input-block'>"
+                            + "<textarea name='digest' placeholder='请输入摘要' class='layui-textarea'></textarea>"
+                            + "</div>"
+                            + "</div>"
+
+                            + "</section>"
+                            + "</form>");
+
+            KindEditor.ready(function(K) {
+                window.editor = K.create('.king_content', {
+                    allowFileManager : true,
+                    langType : 'zh-CN',
+                    autoHeightMode : true,
+                    afterBlur: function () { this.sync(); },
+                });
+            });
+
+            top_num=top_num*1+140*1;
+        });
+
+
+        //上传图片
+        $(document).on('change',".wxuploadimg",function(){
+            var obj=this;
+            var action = "{:url('rncms/admin_upload/wxUpload')}";
+            var file=obj.files[0];
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", action, true); // 上传地址
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var jsonobj=eval('('+xhr.responseText+')');
+                        var str = $.parseJSON(jsonobj); // 返回格式，此处为json，可以为别的格式
+                        //console.log(str);
+                        if (str.status==200){
+                            $('.editing img').attr('src',str.url);
+                            $(obj).next().attr('value',str.url)
+                            $(obj).next().next().attr('value',1)
+                        }else{
+                            alert('上传失败');
+                        }
+                    }
+                }
+            }
+            var fd = new FormData();
+            fd.append('file', file);
+            xhr.send(fd);
+        }) ;
+        $('#submit').click(function(){
+            var postUrl = '{:url("")}';
+            var dataJson = [];
+            var material_id="{$info.material_id|default=''}";
+            $('.edit_item').each(function(index, element) {
+                dataJson.push($(this).serializeArray());
+            });
+            $(this).addClass('disabled');
+            //console.log(JSON.stringify(dataJson));
+            //提交数组字符串 php解析后进行保存
+            $.post(postUrl,{'dataStr':JSON.stringify(dataJson),'material_id': material_id},function(data){
+                $('#submit').removeClass('disabled');
+                if(data.status==200){
+                    layer.open({
+                        type: 1
+                        ,title: false //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '300px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['返回列表', '继续操作']
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: '<div style="padding: 20px;text-align: center; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;font-size: 16px">'+data.msg+'</div>'
+                        ,success: function(layero){
+                            //yk_iframe.window.location.href='http://www.baidu.com';
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.css('text-align', 'center');
+                            /*btn.on('click', '.layui-layer-btn0', function() {
+                             window.location.href=data.url;
+                             });
+                             btn.on('click', '.layui-layer-btn1', function() {
+                             window.location.href=window.location.href;
+                             });*/
+                            btn.find('.layui-layer-btn0').attr({
+                                href: data.url
+                            });
+                            btn.find('.layui-layer-btn1').attr({
+                                href: ''
+                            });
+                        }
+                    });
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:2000});
+                }
+            })
+            return false;
+        });
+    });
+    function removeDiv(obj) {
+        var $= layui.jquery;
+        $("#s" + obj).remove();
+        $("#" + obj).remove();
+        $("#rich" + obj).remove();
+        arr.push(obj);
+        arr2.splice($.inArray(obj, arr2), 1);
+        if (arr2.length == 0) {
+            showDiv = "div0";
+            $("#" + showDiv).show();
+        } else {
+            if (obj == showDiv) {
+                showDiv = arr2.pop();
+                arr2.push(showDiv);
+                $("#" + showDiv).show();
+            } else {
+                $("#" + showDiv).show();
+                showDiv = arr2.pop();
+                arr2.push(showDiv);
+            }
+        }
+        $("#s" + showDiv).addClass('editing');
+        top_num=top_num-140;
+    }
+    //修改标题
+    function setTitle(obj) {
+        var $= layui.jquery;
+        $("#title2"+obj).text($("#title" + obj).val());
+    }
+    //新增修改
+    function editDiv(obj) {
+        //alert(obj);
+        //alert(showDiv);
+        var $= layui.jquery;
+        if (showDiv != obj) {
+            $("#" + showDiv).hide();
+            $("#s" + showDiv).removeClass('editing');
+            $("#s" + obj).addClass('editing');
+
+            $("#" + obj).show();
+            showDiv = obj;
+        }
+    }
+</script>
+{/block}

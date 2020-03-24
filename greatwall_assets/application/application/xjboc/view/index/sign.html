@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>每日签到领积分</title>
+    <link rel="stylesheet" href="/static/xjboc/signin/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/signin/css/style.css?v=123">
+    <style type="text/css" media="screen">
+        .cc{
+            background: url('/static/xjboc/signin/img/btn_04.png') no-repeat top left;
+            background-size:100% 100%;
+            color:#595B66;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <img class="rule" src="/static/xjboc/signin/img/rule.png" alt="">
+    <div class="bii">
+        <div class="title_one">
+            <img src="/static/xjboc/signin/img/ling.png" alt="">
+        </div>
+        <div class="ren">
+            <div class="ren_text">
+                已有<span>{$count_num}</span>人参加活动
+            </div>
+            <img class="renwu" src="{$info.headimgurl}" alt="">
+            <div class="jifen">
+                当前积分：<span>{$info.integral}</span>
+            </div>
+            <div class="qian clear">
+                <div class="left">
+                    <div class="qian_text">
+                        累计签到
+                    </div>
+                    <div class="qian_text">
+                        {$info.total_time}天
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="qian_text">
+                        连续签到
+                    </div>
+                    <div class="qian_text">
+                        {$info.running_time}天
+                    </div>
+                </div>
+            </div>
+            {if $check==1}
+            <a class="aa cc" href="javascript:;">已签到</a>
+            {else}
+            <a class="aa" id="sign">今日签到</a>
+            {/if}
+            <a class="bb" href="{:url('index/ranking',array('openid'=>$info['openid'],'token'=>$token))}">青云榜</a>
+        </div>
+    </div>
+</div>
+<!-- 积分规则 -->
+<div class="model">
+    <div class="model_tan">
+        <img id="close" src="/static/xjboc/signin/img/close.png" alt="">
+        <img class="ji" src="/static/xjboc/signin/img/ji.png" alt="">
+        <div class="model_list">
+            <div class="list_text">
+                1、每位用户每日可签到1次，签到获得积分：10分；<br>
+                连续签到7日，可额外获得积分：30分；<br>
+                连续签到30日，可额外获得积分：50分；<br>
+                连续签到180日，可额外获得积分：200分；<br>
+                连续签到365日，可额外获得积分：666分;<br>
+                2、在推文下留言评论，每篇可获得积分：10分（单篇重复留言不累加）；<br>
+                3、中行员工每月最多可投稿2篇，每篇可获得积分：50分；<br>
+                4、上述第2点与第3点需管理员审核通过后方可增加相应积分；<br>
+                5、本活动最终解释权和变更权归中国银行湖南湘江新区分行所有。<br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog" id="myModal">
+    <div class="weui_dialog_confirm" id="dialog1">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog" id="qur" style="padding: 0 0 0 0;">
+            <div class="weui_dialog_hd" style="background-color: #43B6AF;font-size: 0.875rem;color: #fff;">温馨提示</div>
+            <div class="weui_dialog_bd " id="err">
+                <div class="weui-title"></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">确定</a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/xjboc/signin/js/jquery.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{$js_packeg['appId']}", // 必填，公众号的唯一标识
+        timestamp: "{$js_packeg['timestamp']}", // 必填，生成签名的时间戳
+        nonceStr: "{$js_packeg['nonceStr']}", // 必填，生成签名的随机串
+        signature: "{$js_packeg['signature']}",// 必填，签名
+        jsApiList: [
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getLocalImgData',
+            'hideMenuItems'
+        ] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function(){
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:share:timeline',
+                'menuItem:share:qq',
+                'menuItem:favorite',
+                'menuItem:share:weiboApp',
+                'menuItem:favorite',
+                'menuItem:share:facebook',
+                'menuItem:share:QZone',
+                'menuItem:copyUrl',
+                'menuItem:readMode',
+                'menuItem:openWithQQBrowser',
+                'menuItem:share:brand',
+                'menuItem:share:email',
+                'menuItem:openWithSafari',
+                'menuItem:share:appMessage'
+            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+        });
+    });
+
+
+    !(function(doc, win) {
+        var docEle = doc.documentElement,
+            fn = function() {
+                var width = docEle.clientWidth;
+                var height = docEle.clientHeight;
+                if (640 / 1000 > width / height) {
+                    (docEle.style.fontSize = 16 * (width / 320) + "px");
+                } else {
+                    (docEle.style.fontSize=16 * (height / 500) + "px");
+                }
+            };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+
+    !(function(doc, win) {
+        var docEle = doc.documentElement;
+        fn = function() {
+            var width = docEle.clientWidth;
+            var height = docEle.clientHeight;
+            if (640 / 1000 > width / height) {
+                dd = 14 * (width / 320) + "px";
+                $(".list_text").css("font-size",dd);
+            } else {
+                dd =14 * (height / 500) + "px";
+                $(".list_text").css("font-size",dd);
+            }
+        };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+
+    var click=true;
+    $('#sign').click(function () {
+        var openid="{$info['openid']}";
+        if(!click)return false;
+        click=false;
+        $.ajax({
+            url:"{:url('index/signIn')}",
+            type:"post",
+            data:{
+                'openid':openid,
+                'token':'{$token}'
+            },
+            dataType:"json",
+            success:function(data){
+                $('.dialog').show();
+                $('.weui-title').text(data.msg);
+                click=true
+            }
+        });
+        return true;
+
+    });
+
+
+
+    $('.rule').click(function(){
+        $('.model').show();
+    });
+    $('#close').click(function(){
+        $('.model').hide();
+    });
+
+    $('.weui-dialog__btn').click(function(){
+        $('.dialog').hide();
+        window.location.reload();
+    });
+    $('.rule').click(function(){
+        $('.model').show();
+    });
+    $('#close').click(function(){
+        $('.model').hide();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div style="float: left;margin-left: 20px;">手机号：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="mobile" style="width:100px;height:25px;" value="{$pageMaps.mobile|default=''}">
+                </div>
+
+                <div style="float: left;margin-left: 20px;">
+                    <a href="javascript:void(0);" onclick="datesearch()"  class="layui-btn layui-btn-small" style="float:right">
+                        查询
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>手机</th>
+            <th>业务/商品</th>
+            <th>价格</th>
+            <th>串码</th>
+            <th>类型</th>  
+            <th>店面</th>          
+            <th>日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$member.memberName}</td>
+            <td>{$member.memberCode} </td>
+            <td>{$vo.Title}</td>
+            <td>{$vo.Amount}</td>
+            <td>{$vo.ProductSerial}</td>
+            <td>{$vo.ProductClass}</td>
+            <td>{$vo.Store}</td>
+            <td>{$vo.postdate}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+
+    function datesearch()
+    {
+        window.location='?mobile='+document.getElementById('mobile').value;
+    }
+</script>
+{/block}

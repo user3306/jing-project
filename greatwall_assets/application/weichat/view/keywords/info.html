@@ -1,0 +1,596 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+
+<style>
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .img1{
+        position: relative;
+    }
+    #title2div0{
+        width: 96%;
+        margin: 0 2%;
+        background: #333;
+        color: #ffffff;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        bottom: 0px;
+    }
+    .cover{
+        position: relative;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .abs{
+        width: 100%;
+        height: 177px;
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        background: #DDDDDD;
+        opacity: 0;
+    }
+    .abs:hover{
+        opacity: 0.8;
+    }
+    .add_box{
+        background: #ffffff;
+        width:100% ;
+        border: 1px solid #DDDDDD;
+        height: 140px;
+        position: relative;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_title{
+        width: 190px;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    #add{
+        display: inline-block;
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        margin: 20px 10%;
+        border: 1px dotted #666666;
+    }
+    .bianji_box{
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: #DDDDDD;
+        text-align: center;
+        opacity: 0;
+    }
+    .bianji_box .a1{
+        display: inline-block;
+        margin-top: 30px;
+
+    }
+    .bianji_box:hover{
+        opacity: 0.8;
+    }
+</style>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                            <li lay-id="2">自定义图文</li>
+                        </ul>
+                        <input type="hidden" name="id" value="{$info.id|default=''}">
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标题</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="title" value="{$info.title|default=''}" jq-verify="required" jq-error="请输入标题" placeholder="请输入标题" class="layui-input ">
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">触发类型</label>
+                                    <div class="layui-input-inline">
+                                        <select class="tpl-form-input" jq-verify="required" jq-error="请选择触发类型" lay-filter="msg_type" name="msg_type">
+                                            <option>请选择</option>
+                                            <option value="text" {if condition="$info.msg_type=='text'"} selected {/if}>关键字回复</option>
+                                            <option value="menu_click" {if condition="$info.msg_type=='menu_click'"} selected {/if}>菜单事件回复</option>
+                                            <option value="qrscene" {if condition="$info.msg_type=='qrscene'"} selected {/if}>扫码事件回复</option>
+                                            <option value="subscribe" {if condition="$info.msg_type=='subscribe'"} selected {/if}>订阅事件回复</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">关键字</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="keywords_name" value="{$info.keywords_name|default=''}" jq-verify="" jq-error="请输入关键字" placeholder="请输入关键字" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item"  >
+                                    <label class="layui-form-label">回复类型</label>
+                                    <div class="layui-input-inline">
+                                        <input type="radio" name="type" {eq name="info.type" value="text"}checked{/eq} title="文本消息" value="text" checked/>
+                                        <input type="radio" name="type" {eq name="info.type" value="news"}checked{/eq} title="图文消息" value="news"/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item ">
+                                    <label class="layui-form-label">内容</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="content" placeholder="调用图文素材则填写MediaId 或者 关键字回复文本 自定义图文则为空" class="layui-textarea">{$info.content|default=''}</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">menu_key</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="menu_key" value="{$info.menu_key|default=''}"placeholder="菜单推送则填写的click类型菜单对应的key" class="layui-input ">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item" pane>
+                                    <label class="layui-form-label">状态</label>
+                                    <div class="layui-input-inline">
+                                        <input type="radio" name="status" {eq name="info.status" value="1"}checked{/eq} title="显示" value="1" checked />
+                                        <input type="radio" name="status" {eq name="info.status" value="0"}checked{/eq} title="关闭" value="0" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-tab-item">
+
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4">
+                                        <section class="panel">
+                                            <div id="sidebar">
+                                                <div class="previewBox">
+                                                    {empty name="news"}
+                                                    <div class="cover editing" id='sdiv0'>
+                                                        <div class="img1">
+                                                            <h4 class="msg-t" id="title2div0">
+                                                                {$news.title|default='标题'}<span class="i-title"></span>
+                                                            </h4>
+                                                            <img src="{$news.cover_url|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                                                        </div>
+
+                                                        <ul class="abs tc sub-msg-opr">
+                                                            <a class="th" href="javascript:void(0)" onclick="editDiv('div0')">
+                                                                <div style="width: 96%; margin: 40px 2% 0; height: 120px; font-size: 16px;text-align: center;">
+                                                                    编辑</div>
+                                                            </a>
+                                                        </ul>
+                                                    </div>
+                                                    {else}
+                                                    {volist name="news" id="vo" key="key"}
+                                                    {if($key-1==0)}
+                                                    <div class="cover editing" id='sdiv0'>
+                                                        <div class="img1">
+                                                            <h4 class="msg-t" id="title2div0">
+                                                                {$vo.title|default='标题'}<span class="i-title"></span>
+                                                            </h4>
+                                                            <img src="{$vo.cover_url|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                                                        </div>
+
+                                                        <ul class="abs tc sub-msg-opr">
+                                                            <a class="th" href="javascript:void(0)" onclick="editDiv('div0')">
+                                                                <div style="width: 96%; margin: 40px 2% 0; height: 120px; font-size: 16px;text-align: center;">
+                                                                    编辑</div>
+                                                            </a>
+                                                        </ul>
+                                                    </div>
+                                                    {elseif($key>0)}
+
+                                                    <div class="add_box" id="sdiv{$key-1}">
+                                                        <span class="add_title" id="title2div{$key}">{$vo.title|default='标题'}</span>
+                                                        <img src="{$vo.cover_url|default='__ADMIN__/wximg/1.png'}" alt="" width="80px" height="80px">
+                                                        <div class="bianji_box">
+                                                            <a class="a1" href="javascript:void(0)" style="color: #333333" onclick="editDiv('div{$key-1}');return false;"> 编辑</a>
+                                                            <a class="a1" href="javascript:void(0)" style="color: #333333" onclick="removeDiv('div{$key-1}');return false;">删除</a>
+                                                        </div>
+                                                    </div>
+                                                    {/if}
+                                                    {/volist}
+                                                    {/empty}
+
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="sub-add">
+                                                <a class="block tc sub-add-btn" href="javascript:void(0);" id="add">
+                                                    <span class="vm dib sub-add-icon"></span>增加一条
+                                                </a>
+                                            </div>
+                                        </section>
+                                    </div>
+
+
+
+                                    <div class="col-xs-8 col-sm-8 col-md-8" id="main">
+                                        {empty name="news"}
+                                            <section class="panel panel-padding" id="div0">
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">标题</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[0][title]" value="{$info.title|default=''}"  id="titlediv0" onchange="setTitle('div0')" placeholder="请输入第1个标题" class="layui-input ">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">作者 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[0][author]" value="{$info.author|default=''}" placeholder="请输入作者" class="layui-input ">
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">封面图</label>
+                                                    <div class="layui-input-block">
+                                                        <div class="layui-box layui-upload-button">
+                                                            <input name="image" class="wxuploadimg" type="file">
+                                                            <input name="news_info[0][cover_url]" value="{$news.cover_url|default=''}" type="hidden">
+                                                            <input name="if_upload" value="" type="hidden">
+                                                            <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label" style="width:90px;">内容链接 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[0][content_url]" value="{$news.content_source_url|default=''}" placeholder="请输入内容链接" class="layui-input ">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label" style="width:90px;">原文链接 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[0][source_url]" value="{$news.content_source_url|default=''}" placeholder="请输入原文链接" class="layui-input ">
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-form-item ">
+                                                    <label class="layui-form-label">摘要</label>
+                                                    <div class="layui-input-block">
+                                                        <textarea name="news_info[0][digest]" placeholder="请输入摘要" class="layui-textarea">{$news.digest|default=''}</textarea>
+                                                    </div>
+                                                </div>
+
+                                            </section>
+                                        {else}
+                                        {volist name="news" id="vo" key="key"}
+                                            <section class="panel panel-padding" id="div{$key-1}" {if $key >1} style="display: none" {/if}>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">标题</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[{$key-1}][title]" value="{$vo.title|default=''}"  id="titlediv{$key}" onchange="setTitle('div{$key}')" placeholder="请输入第1个标题" class="layui-input ">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">作者 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[{$key-1}][author]" value="{$vo.author|default=''}" placeholder="请输入作者" class="layui-input ">
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">封面图</label>
+                                                    <div class="layui-input-block">
+                                                        <div class="layui-box layui-upload-button">
+                                                            <input name="image" class="wxuploadimg" type="file">
+                                                            <input name="news_info[{$key-1}][cover_url]" value="{$vo.cover_url|default=''}" type="hidden">
+                                                            <input name="if_upload" value="" type="hidden">
+                                                            <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                                                        </div>
+                                                        <p id="img-error" class="error"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label" style="width:90px;">内容链接 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[{$key-1}][content_url]" value="{$vo.content_url|default=''}" placeholder="请输入内容链接" class="layui-input ">
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label" style="width:90px;">原文链接 </label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="news_info[{$key-1}][source_url]" value="{$vo.source_url|default=''}" placeholder="请输入原文链接" class="layui-input ">
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-form-item ">
+                                                    <label class="layui-form-label">摘要</label>
+                                                    <div class="layui-input-block">
+                                                        <textarea name="news_info[{$key-1}][digest]" placeholder="请输入摘要" class="layui-textarea">{$vo.digest|default=''}</textarea>
+                                                    </div>
+                                                </div>
+
+                                            </section>
+                                        {/volist}
+                                        {/empty}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            filterMode: false,
+            afterBlur: function () { this.sync(); },
+        });
+    });
+
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    layui.use(['myform', 'upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+            document.getElementById("tpl").value=data.value;
+        });
+
+
+
+        var upload = layui.upload;
+        //执行实例
+
+        upload({
+            elem: '#smallpic'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data);
+                $("#smallurl").val(data.url);
+                $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic").show();
+            }
+        });
+
+        $("#delsmallpic").click(function(){
+            $("#smallurl").val('');
+            $("#divpic").html('');
+            $("#btnpic").hide();
+        });
+
+    });
+
+</script>
+<!--<script src="/static/recruit/js/jquery-1.11.3.js"></script>-->
+<script>
+    //var arr = [ 'div1', 'div2', 'div3', 'div4', 'div5', 'div6', 'div7' ];
+    var arr = [ 'div7', 'div6', 'div5', 'div4', 'div3', 'div2', 'div1' ];
+    var arr2 = new Array();
+    var showDiv = "div0";
+    {notempty name="news"}
+    {foreach name="news" item="vo"}
+    {gt name="key" value="0"}
+    msgDiv = arr.pop();
+    arr2.push(msgDiv);
+    //showDiv = msgDiv;
+    {/gt}
+        {/foreach}
+            {/notempty}
+                layui.use('wxtuwen',function () {
+                    var $= layui.jquery;
+                    $("#add").click(function() {
+                        var msgDiv;
+                        var location_num=9-arr.length;//位置个数
+                        var num = location_num-1;
+                        //var msgDiv2;
+                        if (arr.length == 7) {
+                            $("#" + showDiv).hide();
+                            $("#s" + showDiv).removeClass('editing');
+                            msgDiv = arr.pop();
+                            arr2.push(msgDiv);
+                            showDiv = msgDiv;
+                        } else if (arr.length == 0) {
+                            alert('最多添加8个图文信息');
+                            return;
+                        } else {
+                            {notempty name="news"}
+                            $("#div0").hide();
+                            $("#sdiv0").removeClass('editing');
+                            {/notempty}
+                                msgDiv = arr.pop();
+                                $("#" + showDiv).hide();
+                                $("#s" + showDiv).removeClass('editing');
+                                arr2.push(msgDiv);
+                                showDiv = msgDiv;
+                            }
+
+                            $(".previewBox")
+                                .append(
+                                    "<div class='add_box editing' id='s"+msgDiv+"'>"
+                                    + "<span class='add_title' id='title2"+msgDiv+"'>标题"+location_num+"</span>"
+                                    + "<img src='__ADMIN__/wximg/1.png' width='80px' height='80px' alt=''>"
+                                    + "<div class='bianji_box'>"
+                                    + "<a class='a1' href='javascript:void(0)' style='color: #333333' onclick='editDiv(\""
+                                    +msgDiv
+                                    +"\");return false;'> 编辑</a> "
+                                    + "<a class='a1' href='javascript:void(0)' style='color: #333333'"
+                                    + " onclick='removeDiv(\""
+                                    + msgDiv
+                                    + "\");return false;'>删除</a>"
+                                    + "</div>"
+                                    + "</div>");
+                            $("#main")
+                                .append(
+                                    "<section class='panel panel-padding' id='"+msgDiv+"'>"
+                                    + "<div class='layui-form-item'>"
+                                    + "<label class='layui-form-label'>标题</label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<input type='text' name='news_info["+num+"][title]' value=''  id='title"+msgDiv+"' onchange='setTitle(\""+msgDiv+"\")' placeholder='请输入第"+location_num+"个标题' class='layui-input '>"
+                                    + "</div>"
+                                    + "</div>"
+                                    + "<div class='layui-form-item'>"
+                                    + "<label class='layui-form-label'>作者 </label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<input type='text' name='news_info["+num+"][author]' value='' placeholder='请输入作者' class='layui-input '>"
+                                    + "</div>"
+                                    + "</div>"
+
+                                    + "<div class='layui-form-item'>"
+                                    + "<label class='layui-form-label'>封面图</label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<div class='layui-box layui-upload-button'>"
+                                    + "<input class='wxuploadimg' type='file'>"
+                                    + "<input name='news_info["+num+"][cover_url]' type='hidden'>"
+                                    + "<input name='if_upload' value='' type='hidden'>"
+                                    + "<span class='layui-upload-icon'><i class='layui-icon'></i>上传图片</span></div>"
+                                    + "</div>"
+                                    + "</div>"
+                                    + "<div class='layui-form-item'>"
+                                    + "<label class='layui-form-label' style='width:90px;'>内容链接 </label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<input type='text' name='news_info["+num+"][content_url]' value='' placeholder='请输入原文链接' class='layui-input '>"
+                                    + "</div>"
+                                    + "</div>"
+                                    + "<div class='layui-form-item'>"
+                                    + "<label class='layui-form-label' style='width:90px;'>原文链接 </label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<input type='text' name='news_info["+num+"][source_url]' value='' placeholder='请输入原文链接' class='layui-input '>"
+                                    + "</div>"
+                                    + "</div>"
+                                    + "<div class='layui-form-item '>"
+                                    + "<label class='layui-form-label'>摘要</label>"
+                                    + "<div class='layui-input-block'>"
+                                    + "<textarea name='news_info["+num+"][digest]' placeholder='请输入摘要' class='layui-textarea'></textarea>"
+                                    + "</div>"
+                                    + "</div>"
+
+                                    + "</section>");
+
+                            KindEditor.ready(function(K) {
+                                window.editor = K.create('.king_content', {
+                                    allowFileManager : true,
+                                    langType : 'zh-CN',
+                                    autoHeightMode : true,
+                                    afterBlur: function () { this.sync(); },
+                                });
+                            });
+
+                        });
+
+
+                    //上传图片
+                    $(document).on('change',".wxuploadimg",function(){
+                        var obj=this;
+                        var action = "{:url('rncms/admin_upload/wxUpload')}";
+                        var file=obj.files[0];
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("post", action, true); // 上传地址
+                        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState == 4) {
+                                if (xhr.status == 200) {
+                                    var jsonobj=eval('('+xhr.responseText+')');
+                                    var str = $.parseJSON(jsonobj); // 返回格式，此处为json，可以为别的格式
+                                    //console.log(str);
+                                    if (str.status==200){
+                                        $('.editing img').attr('src',str.url);
+                                        $(obj).next().attr('value',str.url)
+                                        $(obj).next().next().attr('value',1)
+                                    }else{
+                                        alert('上传失败');
+                                    }
+                                }
+                            }
+                        }
+                        var fd = new FormData();
+                        fd.append('file', file);
+                        xhr.send(fd);
+                    }) ;
+                });
+                function removeDiv(obj) {
+                    var $= layui.jquery;
+                    $("#s" + obj).remove();
+                    $("#" + obj).remove();
+                    $("#form"+obj).remove();
+                    $("#rich" + obj).remove();
+                    arr.push(obj);
+                    arr2.splice($.inArray(obj, arr2), 1);
+                    if (arr2.length == 0) {
+                        showDiv = "div0";
+                        $("#" + showDiv).show();
+                    } else {
+                        if (obj == showDiv) {
+                            showDiv = arr2.pop();
+                            arr2.push(showDiv);
+                            $("#" + showDiv).show();
+                        } else {
+                            $("#" + showDiv).show();
+                            showDiv = arr2.pop();
+                            arr2.push(showDiv);
+                        }
+                    }
+                    $("#s" + showDiv).addClass('editing');
+                }
+                //修改标题
+                function setTitle(obj) {
+                    var $= layui.jquery;
+                    $("#title2"+obj).text($("#title" + obj).val());
+                }
+                //新增修改
+                function editDiv(obj) {
+//                    alert(obj);
+//                    alert(showDiv);
+                    var $= layui.jquery;
+                    if (showDiv != obj) {
+                        $("#" + showDiv).hide();
+                        $("#s" + showDiv).removeClass('editing');
+                        $("#s" + obj).addClass('editing');
+
+                        $("#" + obj).show();
+                        showDiv = obj;
+                    }
+                }
+</script>
+{/block}

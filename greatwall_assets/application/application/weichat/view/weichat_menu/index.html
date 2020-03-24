@@ -1,0 +1,45 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="260">菜单名称</th>
+            <th width="80">菜单类型</th>
+            <th>触发内容</th>
+            <th width="80">顺序</th>
+            <th width="180">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.cname}</td>
+            <td>{$vo.type}</td>
+            <td style="word-break:break-all; ">{$vo.key}</td>
+            <td><input type="text" class="layui-input ajax-blur" name="field_value" value="{$vo.sort}" data-params='{"url":"{:url("api/api/upField")}","confirm":"true","data":"table=weichat_menu&id_name=menu_id&id_value={$vo.menu_id}&field=sort","loading":"false","complete":"up"}'> </td>
+            <td>
+                <a href="{:url('info',array('menu_id'=>$vo.menu_id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.menu_id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.menu_id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

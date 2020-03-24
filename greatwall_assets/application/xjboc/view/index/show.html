@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>{$info.title}</title>
+    <link rel="stylesheet" href="/static/xjboc/show/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/show/css/style.css?v=1233">
+</head>
+<body>
+<div class="content">
+    <div class="head">
+        <img src="/static/xjboc/show/img/logo.png" alt="" />
+    </div>
+    <div class="big">
+        <div class="wei">
+            {$info.title}
+        </div>
+        <div class="wei_data">
+            {$info.time|date="Y-m-d"}
+        </div>
+        <!--<div class="wei_text">-->
+            <!--NO.1【新文】板块正确打开方式：本板块兼具榜样推优评选与分行活动报送功能，有了它再也不担心错过一手消息了！-->
+        <!--</div>-->
+        <!--<img class="tu" src="/static/xjboc/show/img/1.png" alt="">-->
+        <!--<div class="wei_text">-->
+            <!--NO.1【新文】板块正确打开方式：本板块兼具榜样推优评选与分行活动报送功能，有了它再也不担心错过一手消息了！-->
+        <!--</div>-->
+        {$info.content|raw}
+
+    </div>
+    <div class="foot">
+        Copyright 2018 中国银行湖南湘江新区分行
+    </div>
+</div>
+<script src="/static/xjboc/show/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+    !(function(doc, win) {
+        var docEle = doc.documentElement,
+            fn = function() {
+                var width = docEle.clientWidth;
+                var height = docEle.clientHeight;
+                if (640 / 1000 > width / height) {
+                    (docEle.style.fontSize = 16 * (width / 320) + "px");
+                } else {
+                    (docEle.style.fontSize=16 * (height / 500) + "px");
+                }
+            };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+</script>
+</body>
+</html>

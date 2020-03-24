@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>企业微信管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <!-- load css -->
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/bootstrap.min.css?v=v3.3.7" media="all">
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/font/iconfont.css?v=1.0.0" media="all">
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/layui.css?v=1.0.9" media="all">
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/main.css?v1.3.4" media="all">
+
+</head>
+
+<body>
+<div class="container-fluid larry-wrapper">
+   
+
+    <div class="row">
+
+
+
+        <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    收藏数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="countdetail"></div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    评论数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="discusscount"></div>
+                </div>
+            </section>
+
+        </div>
+
+         <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    地域数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="areacount"></div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    押品数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="productcount"></div>
+                </div>
+            </section>
+
+        </div>
+
+         <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    规模数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="scopecount"></div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+
+            <section class="panel">
+                <div class="panel-heading">
+                    行业数据统计
+                    <a href="javascript:;" class="pull-right panel-toggle"><i class="iconfont">&#xe604;</i></a>
+                </div>
+                <div class="panel-body">
+                    <div class="echarts" id="tradecount"></div>
+                </div>
+            </section>
+
+        </div>
+        
+    </div>
+
+</div>
+
+<div class="testcatch" style="display: none;">
+    <p>这是一个捕获弹窗</p>
+</div>
+</body>
+<script type="text/javascript" src="__ADMIN__/js/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '__ADMIN__/js/',
+        version: "1.3.4r2"
+    }).extend({
+        elem: 'jqmodules/elem',
+        tabmenu: 'jqmodules/tabmenu',
+        jqmenu: 'jqmodules/jqmenu',
+        ajax: 'jqmodules/ajax',
+        dtable: 'jqmodules/dtable',
+        jqdate: 'jqmodules/jqdate',
+        modal: 'jqmodules/modal',
+        tags: 'jqmodules/tags',
+        jqform: 'jqmodules/jqform',
+        echarts: 'lib/echarts',
+        webuploader: 'lib/webuploader'
+    })
+</script>
+<script>
+    
+    layui.use(['main', 'echart']);
+    layui.define('echarts', function(exports) {
+    var echarts = layui.echarts,
+        $ = layui.jquery,
+        option = {
+            title: {
+                text: '收藏数据统计',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['{$collectname.0.name}', '{$collectname.1.name}']
+            },
+            series: [{
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {name:'{$collectname.0.name}',value:'{$collectname.0.value}'},
+                    {name:'{$collectname.1.name}',value:'{$collectname.1.value}'},
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        };
+    var myecharts = echarts.init(document.getElementById('countdetail'));
+    myecharts.setOption(option);
+    exports('echart', {});
+
+     option = {
+            title: {
+                text: '评论数据统计',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['{$discussname.0.name}', '{$discussname.1.name}']
+            },
+            series: [{
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {name:'{$discussname.0.name}',value:'{$discussname.0.value}'},
+                    {name:'{$discussname.1.name}',value:'{$discussname.1.value}'},
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        };
+    var myecharts = echarts.init(document.getElementById('discusscount'));
+    myecharts.setOption(option);
+    exports('echart', {});
+
+   //地域比例
+    option = {
+        title: {
+            text: '地域比例'
+        },
+        tooltip: {},
+        legend: {
+            data:['筛选次数']
+        },
+        axisLabel: {
+            show: true,
+            interval: 0,
+        },
+        grid:{top:"",right:"",bottom:""},
+        xAxis: {
+            axisLabel:{rotate:45},
+            data: ['{$areastr|raw}']
+        },
+        yAxis: {
+            //splitNumber:10
+        },
+        series: [{
+            name: '筛选次数',
+            type: 'bar',
+            data: [{$str|raw}],
+            width:'5px',
+            barWidth : '30px',
+        }]
+    };
+    var myecharts = echarts.init(document.getElementById('areacount'));
+    myecharts.setOption(option);
+    exports('echart', {});
+    console.log({$productstr|raw});
+    //押品比例
+    var options = {
+        title: {
+            text: '押品比例'
+        },
+        tooltip: {},
+        legend: {
+            data:['筛选次数'],
+        },
+        axisLabel: {
+            show: true,
+            interval: 0,
+        },
+        grid:{top:"",right:"",bottom:""},
+        xAxis: {
+            axisLabel:{rotate:45},
+            data: [{$productstr|raw}]
+        },
+        yAxis: {},
+        series: [{
+            name: '筛选次数',
+            type: 'bar',
+            data: [{$pstr|raw}],
+            width:'5px',
+            barWidth : '30px',
+        }]
+    };
+    var myecharts = echarts.init(document.getElementById('productcount'));
+    myecharts.setOption(options);
+
+
+    //规模比例
+    var options = {
+        title: {
+            text: '规模比例'
+        },
+        tooltip: {},
+        legend: {
+            data:['筛选次数'],
+        },
+        axisLabel: {
+            show: true,
+            interval: 0,
+        },
+        grid:{top:"",right:"",bottom:""},
+        xAxis: {
+            axisLabel:{rotate:45},
+            data: [{$scopestr|raw}]
+        },
+        yAxis: {},
+        series: [{
+            name: '筛选次数',
+            type: 'bar',
+            data: [{$sstr|raw}],
+            width:'5px',
+            barWidth : '30px',
+        }]
+    };
+    var myecharts = echarts.init(document.getElementById('scopecount'));
+    myecharts.setOption(options);
+
+    //行业比例
+    var options = {
+        title: {
+            text: '行业比例'
+        },
+        tooltip: {},
+        legend: {
+            data:['筛选次数'],
+        },
+        axisLabel: {
+            show: true,
+            interval: 0,
+        },
+        grid:{top:"",right:"",bottom:""},
+        xAxis: {
+            axisLabel:{rotate:45},
+            data: [{$tradestr|raw}]
+        },
+        yAxis: {},
+        series: [{
+            name: '筛选次数',
+            type: 'bar',
+            data: [{$tstr|raw}],
+            width:'5px',
+            barWidth : '30px',
+        }]
+    };
+    var myecharts = echarts.init(document.getElementById('tradecount'));
+    myecharts.setOption(options);
+   
+});
+</script>
+
+</html>

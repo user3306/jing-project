@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>维修预约</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta name="applicable-device"content="mobile"> <!--页面同时适合在移动设备上进行浏览-->
+	<meta http-equiv="Cache-Control" content="no-transform" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta http-equiv="Cache-Control" content="no-siteapp" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	
+	<!-- 苹果专用 -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	
+	<!--  jQuery WeUI 样式 -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+	<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=13">
+
+</head>
+<body>
+
+
+<!--S banner-->
+<div class="ban"><img src="/static/home/images/banner.jpg?ver=20180406" class="imgmsg"/></div>
+<!--E banner-->
+<div class="container">
+
+	<div class="weui-cells__title">预约信息</div>
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info-circle"></i>手机品牌</label>
+		</div>
+		<div class="weui-cell__bd">
+			<select class="weui-select" name="ptype" id="ptype">
+				<option value="">请选择</option>
+				{volist name="ptype" id="vo"}
+				<option value="{$vo.id}">{$vo.ptype}</option>
+				{/volist}
+			</select>
+		</div>
+	</div>
+
+
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info-circle"></i>手机型号</label>
+		</div>
+		<div class="weui-cell__bd">
+			<select class="weui-select" name="pmodel" id="pmodel">
+				<option value="">请选择</option>
+
+			</select>
+		</div>
+	</div>
+<!--S 品牌 型号-->
+
+<!--E 品牌 型号-->
+	<div class="weui-cells__title">服务项目</div>
+	<!--S 故障类型-->
+	<div class="guzhang" style="min-height: 380px;">
+		<ul id="errlist">
+			<li data-id="0" data-val="0"><a href="#">屏幕碎裂</a></li>
+			<li data-id="0" data-val="0"><a href="#">电池更换</a></li>
+			<li data-id="0" data-val="0"><a href="#">听筒故障</a></li>
+			<div class="clear"></div>
+		</ul>
+	</div>
+<!--E 故障类型-->
+
+<!--S 预约一底部-->
+<div class="yuyue01footer">
+	<div class="weui-footer weui-footer_fixed-bottom yuyue-bottom">
+		<div class="weui-flex">
+		  <div class="yysj"></div>
+		  <!--S 价格 预估-->
+		  <div class="weui-flex__item">
+			 <div class="weui-media-box__bd yypricediv">
+              <h4 class="weui-media-box__title yyprice" id="total">¥0</h4>
+              <p class="weui-media-box__desc">价格为预估，实际以检测为准</p>
+            </div>
+		  </div>
+		  <!--E 价格 预估-->
+		  <!--S 立即预约-->
+		  <div class="yypricediv">
+			<div class="placeholder yydiv"><a href="javascript:;" class="weui-btn weui-btn_primary yuyuebut" id="btn_yuyue">立即预约</a></div>
+		  </div>
+		  <!--E 立即预约-->
+		  </div>
+		</div>
+	</div>
+</div>
+<!--E 预约一底部-->
+
+
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-2.1.4.js"></script>
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-weui.js"></script>
+
+
+ <script>
+		var total = 0;
+	$(function(){
+
+        $("#ptype").change(function (){
+            if($("#ptype").val()!="")
+            {
+                $.ajax({
+                    url:'{:url("getpmodel")}',
+                    type:'POST', //GET
+                    data:{"ptypeid":$("#ptype").val()},
+                    dataType:'html',    //返回的数据格式：json/xml/html/script/jsonp/text
+                    success:function(data){
+                        $("#pmodel").html(data) ;
+                    }
+                });
+            }
+        });
+
+        $("#pmodel").change(function (){
+            if($("#pmodel").val()!="")
+            {
+                $.ajax({
+                    url:'{:url("getfault")}',
+                    type:'POST', //GET
+                    data:{"ptypeid":$("#ptype").val(),"pmodelid":$("#pmodel").val()},
+                    dataType:'html',    //返回的数据格式：json/xml/html/script/jsonp/text
+                    success:function(data){
+                        $("#errlist").html(data) ;
+                    }
+                });
+                total = 0;
+                $("#total").html('¥ '+total);
+            }
+        });
+	  
+	  $('#errlist').on('click',"li",function(){      //绑定事件  
+            //alert("事件绑定成功！");   
+			$(this).toggleClass('gz02');
+			if($(this).hasClass('gz02'))
+			{
+				//alert('Y');
+				total = total + parseInt($(this).attr("data-val"));
+				$("#total").html('¥ '+total);
+			}else{
+				total = total - parseInt($(this).attr("data-val"));
+				$("#total").html('¥ '+total);
+			}
+        }); 
+		
+		$("#btn_yuyue").click(function(){
+            if($("#ptype").val() == ''){
+                $.toptip('请选择手机品牌', 2000, 'warning');
+                return (false);
+            }
+            if($("#pmodel").val() == ''){
+                $.toptip('请选择手机型号', 2000, 'warning');
+                return (false);
+            }
+            if(total == ''){
+                $.toptip('请选择故障类型', 2000, 'warning');
+                return (false);
+            }
+
+		    var errids="";
+			 /* each()方法处理HTML元素 */ 
+			 $('#errlist li').each(function() {
+                 if($(this).hasClass('gz02')) {
+                     errids += $(this).attr("data-id") + ",";
+                 }
+			 });
+
+			 window.location="{:url("confirm")}?ptype="+$("#ptype").find("option:selected").text()+"&ptypeid="+$("#ptype").val()+"&pmodelid="+$("#pmodel").val()+"&pmodel="+$("#pmodel").find("option:selected").text()+"&pfaultids="+errids+"&price="+total+"";
+
+		});
+
+	
+	})
+ 
+     
+    </script>
+</body>
+</html>

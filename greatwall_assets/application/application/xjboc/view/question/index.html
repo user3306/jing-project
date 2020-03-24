@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>{$info.title}</title>
+    <script src="/static/xjboc/vote/js/jquery.js"></script>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/swiper.min.css">
+    <script src="/static/xjboc/vote/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/style.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/animate.min.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/magic-input.min.css">
+</head>
+<body>
+<div class="content">
+    <div class="head">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {volist name="banner_list" id="vo"}
+                <div class="swiper-slide">
+                    <img src="{$vo.image}" alt="{$vo.title}" class="card_banner">
+                </div>
+                {/volist}
+            </div>
+        </div>
+    </div>
+    <!-- 答题部分 -->
+    <form id="form" onsubmit="return false">
+    <div class="ti">
+        <div class="mu">
+            <textarea disabled="disabled"></textarea>
+            <span id="note">{$info.description}</span>
+        </div>
+        {volist name="question_one" id="res"}
+        <div class="lie ii">
+            <div class="nav">
+                <p>{$res.question}</p>
+                <label>
+                    <input type="checkbox" name="data[{$res.id}]" value="A" class="cc mgc mgc-success">A.{$res.option_a}</label>
+                <label>
+                    <input type="checkbox" name="data[{$res.id}]" value="B" class="cc mgc mgc-success">B.{$res.option_b}</label>
+                <label>
+                    <input type="checkbox" name="data[{$res.id}]" value="C" class="cc mgc mgc-success">C.{$res.option_c}</label>
+                <label>
+                    <input type="checkbox" name="data[{$res.id}]" value="D" class="cc mgc mgc-success">D.{$res.option_d}</label>
+            </div>
+        </div>
+        {/volist}
+        {volist name="question_more" id="res"}
+        <div class="lie">
+            <div class="nav">
+                <p>{$res.question}</p>
+                <label>
+                    <input type="checkbox" name="more[{$res.id}][]" value="A" class="dd mgc mgc-success">A.{$res.option_a}</label>
+                <label>
+                    <input type="checkbox" name="more[{$res.id}][]" value="B" class="dd mgc mgc-success">B.{$res.option_b}</label>
+                <label>
+                    <input type="checkbox" name="more[{$res.id}][]" value="C" class="dd mgc mgc-success">C.{$res.option_c}</label>
+                <label>
+                    <input type="checkbox" name="more[{$res.id}][]" value="D" class="dd mgc mgc-success">D.{$res.option_d}</label>
+            </div>
+        </div>
+        {/volist}
+        {volist name="question_text" id="res"}
+        <div class="lie">
+            <div class="nav">
+                <p>{$res.question}</p>
+                <textarea name="data[{$res.id}]" ></textarea>
+            </div>
+        </div>
+        {/volist}
+
+
+    </div>
+    <div class="lie">
+        <div class="nav vv">
+            <div class="fang" style="background-color:#F8F8F8;">
+                个人信息
+            </div>
+            <label>
+                <input id="user" type="text" name="username" placeholder="请输入姓名" autocomplete="off"/>
+            </label>
+            <label>
+                <input type="hidden" name="openid" value="{$openid}">
+                <input type="hidden" name="act_id" value="{$act_id}">
+                <input type="hidden" name="token" value="{$token}">
+
+
+                <input id="phone" type="tel" name="mobile" maxlength="11" placeholder="请输入手机号码" autocomplete="off">
+            </label>
+            <a href="javascript:;" class="li lii" id="sub">立即提交</a>
+        </div>
+    </div>
+
+</form>
+
+
+</div>
+<div class="dialog" id="myModal">
+    <div class="weui_dialog_confirm" id="dialog1">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog" id="qur" style="padding: 0 0 0 0;">
+            <div class="weui_dialog_hd" style="background-color: #d13944;font-size: 0.875rem;color: #fff;">温馨提示</div>
+            <div class="weui_dialog_bd " id="err">
+                <div class="weui-title"></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">确定</a>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/xjboc/wx.js"></script>
+<script>
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{$js_packeg['appId']}", // 必填，公众号的唯一标识
+        timestamp: "{$js_packeg['timestamp']}", // 必填，生成签名的时间戳
+        nonceStr: "{$js_packeg['nonceStr']}", // 必填，生成签名的随机串
+        signature: "{$js_packeg['signature']}",// 必填，签名
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
+        ] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function() {
+        wx.onMenuShareAppMessage({
+            title: '{$info.p_title}', // 分享标题
+            desc: '{$info.p_description}', // 分享描述
+            link: 'http://wxxcb.hunnu.edu.cn/web/index/reurl?act_id={$act_id}&model=question',
+            imgUrl: 'http://xjboc.wx.snrunning.cn{$info.logo}', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: '{$info.p_title}', // 分享标题
+            link: 'http://unicom.wx.snrunning.cn/recruit/forecastwheel/reurl', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://xjboc.wx.snrunning.cn{$info.logo}', // 分享图标
+            success:function () {
+            }
+        })
+    });
+
+</script>
+<script>
+    // var interval = setInterval(function() {
+    //     document.body.scrollTop = document.body.scrollHeight
+    // }, 100)
+    var swiper = new Swiper('.swiper-container', {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        }
+    });
+    $('#sub').click(
+        function(){
+            var mobile = $("#phone").val();
+            var myreg=/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])[0-9]{8}$/;
+            var user=$('#user').val();
+            if(user==''){
+                $(".dialog").show();
+                $('.weui-title').text("请输入姓名");
+                return false;
+            }
+            if(mobile==''){
+                $(".dialog").show();
+                $('.weui-title').text("请输入手机号码");
+                return false;
+            }else if(!myreg.test(mobile)){
+                $(".dialog").show();
+                $('.weui-title').text("请输入正确的手机号");
+                return false;
+            }
+
+            $.ajax({
+                url:"{:url('question/index')}",
+                type:"post",
+                data:$("#form").serialize(),
+                dataType:"json",
+                success:function (data) {
+                    $(".dialog").show();
+                    $('.weui-title').text(data.msg);
+
+                }
+
+            });
+
+            return true;
+        })
+    $(".weui-dialog__btn_default").click(function() {
+        $(".dialog").hide();
+    });
+    $('.mu textarea').click(function(){
+        $('.mu span').hide();
+    });
+    $('.ii').find('input[type=checkbox]').bind('click', function(){
+        $('.ii').find('input[type=checkbox]').not(this).attr("checked", false);
+    });
+    $(document).on('focusout', function () {
+        //软键盘收起的事件处理
+        var heigs = document.body.scrollHeight;
+        // alert(heigs);
+        document.body.scrollTop = heigs;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>人气排名</title>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/style.css">
+    <script src="/static/xjboc/vote/js/jquery.js"></script>
+    <script src="/static/xjboc/vote/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="content content_a">
+    <div class="qing">
+        <img src="/static/xjboc/vote/img/ren.png" alt="">
+    </div>
+    <div id="myTabContent" class="tab-content">
+        <div class="wai_xin">
+            <table class="gridtable anther anther_xin tab_list" v-cloak>
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>参与人</th>
+                        <th>票数</th>
+                    </tr>
+                </thead>
+
+                <tbody v-infinite-scroll="loadMore"
+                       infinite-scroll-disabled="loading"
+                       infinite-scroll-distance="10"
+                       infinite-scroll-immediate-check="false">
+                <tr v-for="(item,index) in userInfo">
+                    <td v-text="item.rownum"></td>
+                    <td v-text="item.username"></td>
+                    <td v-text="item.votes"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div v-show='loading' style="color: #fff;margin-top:0.5rem;text-align:center;font-size:12px;" id="load_box" >加载中...</div>
+    </div>
+</div>
+<ul class="foot">
+    <li><a href="{:url('index',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_01.png" alt="">
+        <span>首页</span>
+    </a></li>
+    <li><a href="{:url('rank',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_02.png" alt="">
+        <span>排名</span>
+    </a></li>
+    <li><a href="{:url('rule',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_03.png" alt="">
+        <span>活动说明</span>
+    </a></li>
+</ul>
+<script src="/static/xjboc/vue.min.js"></script>
+<script type="text/javascript" src="/static/xjboc/mint-ui.min.js" ></script>
+<script>
+    $(".tab_list").eq(0).show();
+
+    /*获取数据*/
+    var vm = new Vue({
+        el: '.tab_list',
+        data : {
+            userInfo : [],
+            loading : false ,
+            page : 1
+        },
+        methods: {
+            loadMore() {
+                getInfo();
+            }
+        }
+    });
+    vm.loadMore();
+    function getInfo ()
+    {
+        vm.loading = true;
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            url:"{:url('rank')}",
+            data:{
+                page:vm.page,
+                act_id:"{$act_id}",
+                openid:"{$openid}",
+                token:"{$token}"
+            },
+            success:function(data)
+            {
+                if (data.code == 200)
+                {
+                    var result = data.data;
+
+                    for (var i=0; i < result.length; i++ ) {
+                        vm.userInfo.push( result[i] );
+                    }
+                    vm.page++;
+                    vm.loading = false;
+                    $('#load_box').html('加载完成');
+                }
+                else if(data.code == 100)
+                {
+                    $('#load_box').html('数据为空');
+                }else{
+                    alert('参数错误！');
+                }
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

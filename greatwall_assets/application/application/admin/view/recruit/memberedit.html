@@ -1,0 +1,123 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">员工姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{$info.name|default=''}" placeholder="请输入员工姓名" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">头图</label>
+                        <div class="layui-input-inline">
+                            <input type="file" name="smallpic" id="smallpic" class="layui-upload-file">
+                            <input type="hidden" name="img" id="smallurl" value="{$info.img|default=''}" jq-error="请上传头图" error-id="img-error">
+                            <p id="img-error" class="error"></p>
+                        </div>
+                        <div class="layui-input-inline" id="divpic">
+                        </div>
+                        <div class="layui-input-inline" id="btnpic" style="display: none;">
+                            <button type="button" class="layui-btn layui-btn-primary" id="delsmallpic">删除头图</button>
+                        </div>
+                        {notempty name="info.img"}
+                        <div class="layui-input-block">
+                            <div class="imgbox"><img src="{$info.img|default=''}" width="80px" height="120px" alt="..." class="img-thumbnail"></div>
+                        </div>
+                        {/notempty}
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号码</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="mobile" value="{$info.mobile|default=''}" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属部门</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="department" value="{$info.department|default=''}"  class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="group" value="{$info.group|default=''}" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="add" value="{$info.add|default=''}" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="position" value="{$info.position|default=''}" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">码上购链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="link" value="{$info.link|default=''}"  placeholder="请输入码上购链接" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['myform','upload'],function () {
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+            document.getElementById("tpl").value=data.value;
+        });
+
+        var upload = layui.upload;
+        //执行实例
+
+        upload({
+            elem: '#smallpic'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data);
+                $("#smallurl").val(data.url);
+                $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic").show();
+            }
+        });
+
+        $("#delsmallpic").click(function(){
+            $("#smallurl").val('');
+            $("#divpic").html('');
+            $("#btnpic").hide();
+        });
+
+
+
+
+    });
+
+
+
+</script>
+{/block}

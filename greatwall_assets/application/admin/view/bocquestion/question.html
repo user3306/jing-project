@@ -1,0 +1,269 @@
+{extend name="admin@public/base_content" /}
+
+{block name="body">}
+
+<body>
+
+{include file="admin@public/common" /}
+
+<script src="/static/admin/js/laydate/laydate.js"></script>
+
+<div class="container-fluid larry-wrapper">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+            <section class="panel panel-padding">
+
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="question_box" id="question_box">
+
+                        {volist name="list" id="vo" key="k"}
+
+                        <div class="question" id="question{$k}">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">题型</label>
+                                <input type="hidden" value="{$vo.id}" name="data[{$k}][id]">
+                                <div class="layui-input-inline">
+                                    <select class="tpl-form-input" jq-verify="required" lay-filter="question_type" jq-error="请选择"  id="question_type{$k}"  name="data[{$k}][type]">
+                                        <option value="1_{$k}" {if condition="$vo.type == 1"} selected {/if}>单选</option>
+                                        <option value="2_{$k}" {if condition="$vo.type == 2"} selected {/if}>多选</option>
+                                        <option value="3_{$k}" {if condition="$vo.type == 3"} selected {/if}>文字</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="choice{$k}" style="display: block">
+
+                                <div class="layui-form-item">
+
+                                    <div class="layui-form-item">
+
+                                        <label class="layui-form-label">{$k}：题目</label>
+
+                                        <div class="layui-input-block">
+
+                                            <input type="text" name="data[{$k}][question]" value="{$vo.question|default=''}" required placeholder="请输入题目" class="layui-input ">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">选项：A</label>
+
+                                    <div class="layui-input-block">
+
+                                        <input type="text" name="data[{$k}][option_a]" value="{$vo.option_a|default=''}" required placeholder="请输入选项A" class="layui-input">
+
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">选项：B</label>
+
+                                    <div class="layui-input-block">
+
+                                        <input type="text" name="data[{$k}][option_b]" value="{$vo.option_b|default=''}" required placeholder="请输入选项B" class="layui-input">
+
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">选项：C</label>
+
+                                    <div class="layui-input-block">
+
+                                        <input type="text" name="data[{$k}][option_c]" value="{$vo.option_c|default=''}" required placeholder="请输入选项C" class="layui-input">
+
+                                    </div>
+
+                                </div>
+                                <div class="layui-form-item">
+
+                                    <label class="layui-form-label">选项：D</label>
+
+                                    <div class="layui-input-block">
+
+                                        <input type="text" name="data[{$k}][option_d]" value="{$vo.option_d|default=''}" required placeholder="请输入选项D" class="layui-input">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            {if $vo.type == 3}
+                            <div class="text{$k}" style="display: none">
+
+                                <div class="layui-form-item">
+
+                                    <div class="layui-form-item">
+
+                                        <label class="layui-form-label">{$k}：文字题</label>
+
+                                        <div class="layui-input-block">
+
+                                            <input type="text" name="data[{$k}][question]" value="{$vo.question|default=''}" required placeholder="请输入题目" class="layui-input ">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            {/if}
+
+                        </div>
+                        {/volist}
+
+                    </div>
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="act_id" value="{$act_id}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="sub">立即提交</button>
+
+                        <button class="layui-btn" id="add_choice"><i class="layui-icon">&#xe608;</i> 添加题目</button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+{/block}
+
+{block name="script"}
+
+<script src="/static/admin/js/jquery.min.js"></script>
+
+<script>
+    layui.use(['default','myform', 'jquery'], function(){
+        var form = layui.form();
+        $ = layui.jquery;
+
+        var max_num = "<?php echo count($list) ?>";
+
+        for (var i=1; i<=max_num; i++)
+        {
+            var question_type = $("#question_type"+i).val();
+            var arr = question_type.split("_");
+            if(arr[0]=='1'){
+                $('.choice'+i).show();
+                $('.text'+i).hide();
+            }else if(arr[0]=='2'){
+                $('.choice'+i).show();
+                $('.text'+i).hide();
+            }else if(arr[0]=='3'){
+                $('.choice'+i).hide();
+                $('.text'+i).show();
+            }
+        }
+        form.on('select(question_type)', function (data) {
+            arr = data.value.split("_");
+            if (arr[0] == 1) {
+                $('.choice' + arr[1]).show();
+                $('.text' + arr[1]).hide();
+            } else if (arr[0] == 2) {
+                $('.choice' + arr[1]).show();
+                $('.text' + arr[1]).hide();
+            } else {
+                $('.choice' + arr[1]).hide();
+                $('.text' + arr[1]).show();
+            }
+        });
+
+        $('#add_choice').click(function () {
+            var box_num = 0;
+            $(".question").each(function(){
+                box_num +=1;
+            });
+            var next_num = box_num+1;
+            $(".question_box").append(
+            "<div class='question' id='question"+next_num+"'>"
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>题型</label>"
+                +"<div class='layui-input-inline'>"
+                +"<select class='tpl-form-input' jq-verify='required' lay-filter='question_type' jq-error='请选择' id='question_type"+next_num+"' name='data["+next_num+"][type]'>"
+                +"<option value='1_"+next_num+"' selected>单选</option>"
+                +"<option value='2_"+next_num+"'>多选</option>"
+                +"<option value='3_"+next_num+"'>文字</option>"
+            +"</select>"
+            +"</div>"
+                +"</div>"
+            +"<div class='choice"+next_num+"' style='display: block'>"
+                +"<div class='layui-form-item'>"
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>"+next_num+"：题目</label>"
+            +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][question]' value='' required placeholder='请输入题目' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+                +"</div>"
+
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>选项：A</label>"
+            +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][option_a]' value='' required placeholder='请输入选项A' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>选项：B</label>"
+                +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][option_b]' value='' required placeholder='请输入选项B' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>选项：C</label>"
+                +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][option_c]' value='' required placeholder='请输入选项C' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>选项：D</label>"
+                +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][option_d]' value='' required placeholder='请输入选项D' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+                +"</div>"
+
+                +"<div class='text"+next_num+"' style='display: none'>"
+                +"<div class='layui-form-item'>"
+                +"<div class='layui-form-item'>"
+                +"<label class='layui-form-label'>"+next_num+"：文字题</label>"
+            +"<div class='layui-input-block'>"
+                +"<input type='text' name='data["+next_num+"][question]' value='' required placeholder='请输入题目' class='layui-input'>"
+                +"</div>"
+                +"</div>"
+                +"</div>"
+                +"</div>"
+                +"</div>"
+            );
+            form.render();
+        })
+
+    });
+
+
+
+
+</script>
+{/block}

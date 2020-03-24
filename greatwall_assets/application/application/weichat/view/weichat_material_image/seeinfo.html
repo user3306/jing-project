@@ -1,0 +1,31 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                    <div class="layui-form-item">
+
+                        <div class="layui-input-block">
+                            <div class="imgbox"><img src="{$info.image|default=''}" alt="..." class="img-thumbnail"></div>
+                        </div>
+                        <label class="layui-form-label">MediaID</label>
+
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id="pro" value="{$info.media_id}" disabled="disabled" >
+                        </div>
+                    </div>
+
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('wxupload');
+</script>
+{/block}

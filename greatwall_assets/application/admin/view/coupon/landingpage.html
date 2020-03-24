@@ -1,0 +1,123 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">页面title</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="page_title" value="{$info.page_title|default=''}" placeholder="请输入页面title" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">banner</label>
+                        <div class="layui-input-inline">
+                            <input type="file" name="smallpic" id="smallpic" class="layui-upload-file">
+                            <input type="hidden" name="banner" id="smallurl" value="{$info.banner|default=''}" jq-error="请上传banner" error-id="img-error">
+                            <p id="img-error" class="error"></p>
+                        </div>
+                        <div class="layui-input-inline" id="divpic">
+                        </div>
+                        <div class="layui-input-inline" id="btnpic" style="display: none;">
+                            <button type="button" class="layui-btn layui-btn-primary" id="delsmallpic">删除banner</button>
+                        </div>
+                        {notempty name="info.banner"}
+                        <div class="layui-input-block">
+                            <div class="imgbox"><img src="{$info.banner|default=''}" width="80px" height="120px" alt="..." class="img-thumbnail"></div>
+                        </div>
+                        {/notempty}
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否分享</label>
+                        <div class="layui-input-block">
+                            <input type="radio" value="true"  name="can_share" title="是" checked>
+                            <input type="radio" value="false"  name="can_share" title="否">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">卡券列表</label>
+                        <div class="layui-input-block">
+                            {volist name="coupon" id="r" key="k"}
+                                    <input type="checkbox" value="{$r.card_id}" name="card_list[{$k}]" title="{$r.title}">
+                           {/volist}
+
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">投放场景</label>
+                        <div class="layui-input-block">
+                            <!--<input type="radio" value="SCENE_NEAR_BY"  name="scene" title="附近" checked>-->
+                            <!--<input type="radio" value="SCENE_MENU"  name="scene" title="自定义菜单">-->
+                            <!--<input type="radio" value="SCENE_QRCODE"  name="scene" title="二维码">-->
+                            <!--<input type="radio" value="SCENE_ARTICLE"  name="scene" title="公众号文章">-->
+                            <input type="radio" value="SCENE_H5"  name="scene" title="H5页面" checked>
+                            <!--<input type="radio" value="SCENE_IVR"  name="scene" title="自动回复">-->
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">货架链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url" value="{$info.url|default=''}" disabled="disabled" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['myform','upload'],function () {
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+            document.getElementById("tpl").value=data.value;
+        });
+
+        var upload = layui.upload;
+        //执行实例
+
+        upload({
+            elem: '#smallpic'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data);
+                $("#smallurl").val(data.url);
+                $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic").show();
+            }
+        });
+
+        $("#delsmallpic").click(function(){
+            $("#smallurl").val('');
+            $("#divpic").html('');
+            $("#btnpic").hide();
+        });
+
+
+
+
+    });
+
+
+
+</script>
+{/block}

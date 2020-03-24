@@ -1,0 +1,120 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">维修门店</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择" lay-filter="verify" name="shopid">
+                                <option value="0">请选择</option>
+                                {foreach name="shopList" item="vo"}
+                                <option value="{$vo.id}" {if condition="$vo.id eq $info.shopid"}selected{/if}>{$vo.shop}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">维修工程师</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择" lay-filter="verify" name="rpersonid">
+                                <option value="">请选择</option>
+                                {foreach name="rpersonList" item="vo"}
+                                <option value="{$vo.id}" {if condition="$vo.id eq $info.rpersonid"}selected{/if}>{$vo.uname}</option>
+                                {/foreach}
+                            </select>
+                            <input type="hidden" name="uname" value="{$info.uname|default=''}" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户姓名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="uname" value="{$info.uname|default=''}"  placeholder="请输入客户姓名" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系方式</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mobile" value="{$info.mobile|default=''}"  placeholder="请输入联系方式" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机型号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="pmodel" value="{$info.pmodel|default=''}" jq-verify="required" jq-error=" 请输入手机型号" placeholder="请输入手机型号" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机串码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="imei" value="{$info.imei|default=''}" jq-verify="required" jq-error=" 请输入手机串码" placeholder="请输入手机串码" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">故障现象</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="pfault" value="{$info.pfault|default=''}" jq-verify="required" jq-error=" 请输入故障现象" placeholder="请输入故障现象" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">维修项目</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="repairinfo" value="{$info.repairinfo|default=''}" jq-verify="required" jq-error=" 请输入维修项目" placeholder="请输入维修项目" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">ERP销售单号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="erpcode" value="{$info.erpcode|default=''}" jq-verify="required" jq-error=" 请输入ERP销售单号" placeholder="请输入ERP销售单号" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备件串码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="imei2" value="{$info.imei2|default=''}"  placeholder="请输入备件串码" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="remark" value="{$info.remark|default=''}"  placeholder="请输入备注" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="btn">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['jquery', 'myform'], function(){
+        /*
+        var $ = layui.$ ;
+
+        $("#btn").click(function(){
+            var pids = '';
+            $("input:checkbox[name='pfaultid']:checked").each(function() { // 遍历name=standard的多选框
+                pids += ',' + $(this).val();
+            });
+            $("#pfault").val(pids);
+        });
+        */
+    });
+</script>
+
+{/block}

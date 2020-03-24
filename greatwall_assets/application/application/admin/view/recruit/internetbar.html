@@ -1,0 +1,70 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="keyword" value="" placeholder="员工姓名">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th style="text-align: center">ID</th>
+            <th style="text-align: center">姓名</th>
+            <th style="text-align: center">身份证</th>
+            <th style="text-align: center;width: 10%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td align="center"><span>{$vo.realname}</span></td>
+            <td align="center"><span>{$vo.card_id}</span></td>
+            <td align="center">
+                <a href="{:url('recruit/putcard',array('id'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>发券
+                </a>
+                <!--<a class="layui-btn layui-btn-mini layui-btn-danger ajax"-->
+                   <!--data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'-->
+                   <!--data-params='{"url": "{:url("recruit/del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>-->
+                    <!--<i class="iconfont">&#xe626;</i>删除-->
+                <!--</a>-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

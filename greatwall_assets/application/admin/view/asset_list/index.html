@@ -1,0 +1,112 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="username" value="{$pageMaps.username|default=''}" placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="mobile" value="{$pageMaps.mobile|default=''}" placeholder="请输入手机号">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>资产名称</th>
+           <!--  <th>资产分类</th> -->
+            <th>行业</th>
+            <th>地区</th>
+            <th>本金</th>
+            <th>利息</th>
+            <th>担保方式</th>
+            <th>保证人</th>
+            <th>抵押品类型</th>
+            <th>抵押品</th>
+            <th>抵押品数量</th>
+            <th>存放地区</th>
+            <th>责任项目经理姓名</th>
+            <th>责任项目经理手机号</th>
+            <th>客户收藏数</th>
+            <th>留言数</th>
+            <th>是否审核</th>
+            <th>是否为精品推荐</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td>{$vo.asset_name}</td>
+       <!--      <td>{$vo.asset_class}</td> -->
+            <td>{$vo.asset_trade}</td>
+            <td>{$vo.asset_dishi}-{$vo.asset_quxian}</td>
+            <td>{$vo.asset_basemoney}</td>
+            <td>{$vo.asset_getmoney}</td>
+            <td>{$vo.asset_danbaomethod}</td>
+            <td>{$vo.asset_danbaoperson}</td>
+            <td>{$vo.asset_bigclass}</td>
+            <td>{$vo.asset_childclass}</td>
+            <td>{$vo.asset_diyanumber}</td>
+            <td>{$vo.asset_leavediquxian}</td>
+            <td>{$vo.asset_manager}</td>
+            <td>{$vo.asset_managerline}</td>
+            <td>{$vo.collection_number}</td>
+            <td>{$vo.discussNum}</td>
+            <td>{if condition="$vo.status neq 0"}已审核{else/}未审核{/if}</td>
+            <td>{if condition="$vo.competitive neq 0"}精品{else/}非精品{/if}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a><br/>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}' style="margin-top: 5px">
+                    <i class="iconfont">&#xe626;</i>删除
+                </a><br/>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("verify")}","confirm":"true","data":"id={$vo.id}","complete":"verify"}' style="margin-top: 5px">
+                    <i class="iconfont">&#xe626;</i>审核
+                </a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

@@ -1,0 +1,290 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="__ADMIN__/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}" method="post">
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商标名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="brand_name" value="{$info.brand_name|default=''}"  placeholder="请输入商标名称" value="新自由尊享会员" class="layui-input" jq-verify="required" jq-error="商标名称" style="color:red;" maxlength="12">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">优惠券标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" value="{$info.title|default=''}"  placeholder="请输入优惠券标题" class="layui-input" jq-verify="required" jq-error="优惠券标题" style="color:red;" maxlength="9">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">优惠券类型</label>
+
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择" lay-filter="card_type" id="card_type"  name="card_type">
+                                <option >请选择</option>
+                                <option value="GENERAL_COUPON" {if condition="$info.card_type=='GENERAL_COUPON'"} selected {/if}>优惠券</option>
+                                <option value="GROUPON" {if condition="$info.card_type=='GROUPON'"} selected {/if}>团购券</option>
+                                <option value="CASH" {if condition="$info.card_type=='CASH'"} selected {/if}>代金券</option>
+                                <option value="DISCOUNT" {if condition="$info.card_type=='DISCOUNT'"} selected {/if}>折扣券</option>
+                                <option value="GIFT" {if condition="$info.card_type=='GIFT'"} selected {/if}>兑换券</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">颜色</label>
+                        <div class="layui-input-block">
+                            <input type="radio" value="Color010"  name="color" title="Color010" checked>
+                            <span style="background-color:#63b359;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color020"  name="color" title="Color020">
+                            <span style="background-color:#2c9f67;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color030"  name="color" title="Color030">
+                            <span style="background-color:#509fc9;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color040"  name="color" title="Color040">
+                            <span style="background-color:#5885cf;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color050"  name="color" title="Color050">
+                            <span style="background-color:#9062c0;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color060"  name="color" title="Color060" >
+                            <span style="background-color:#d09a45;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color070"  name="color" title="Color070" >
+                            <span style="background-color:#e4b138;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color080"  name="color" title="Color080">
+                            <span style="background-color:#ee903c;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color090"  name="color" title="Color090">
+                            <span style="background-color:#dd6549;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="radio" value="Color100"  name="color" title="Color100">
+                            <span style="background-color:#cc463d;border:1px;margin-left:-15px;margin-right:15px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </div>
+                        <input type="hidden" name="card_name" id="card_name" value="{$info.card_name|default=''}">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">券面码型</label>
+
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择" lay-filter="card_type"  name="code_type">
+                                <option >请选择</option>
+                                <option value="CODE_TYPE_TEXT" {if condition="$info.code_type=='CODE_TYPE_TEXT'"} selected {/if}>输code码</option>
+                                <option value="CODE_TYPE_BARCODE" {if condition="$info.code_type=='CODE_TYPE_BARCODE'"} selected {/if}>一维码 </option>
+                                <option value="CODE_TYPE_QRCODE" {if condition="$info.code_type=='CODE_TYPE_QRCODE'"} selected {/if}>二维码</option>
+                                <option value="CODE_TYPE_ONLY_QRCODE" {if condition="$info.code_type=='CODE_TYPE_ONLY_QRCODE'"} selected {/if}>二维码无code</option>
+                                <option value="CODE_TYPE_ONLY_BARCODE" {if condition="$info.code_type=='CODE_TYPE_ONLY_BARCODE'"} selected {/if}>一维码无code</option>
+                                <option value="CODE_TYPE_NONE" {if condition="$info.code_type=='CODE_TYPE_NONE'"} selected {/if}>不显示code和条形码</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">使用提醒</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="notice" value="{$info.notice|default=''}"  placeholder="最多16个汉字" class="layui-input" jq-verify="required" jq-error="使用提醒" maxlength="16">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">使用说明</label>
+                        <div class="layui-input-block">
+                            <textarea name="description" placeholder="请输入使用说明" class="layui-textarea">{$info.description|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">有效期信息</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择" lay-filter="date_type"  name="date_type">
+                                <option value="DATE_TYPE_FIX_TIME_RANGE" {if condition="'DATE_TYPE_FIX_TIME_RANGE' eq $info.date_type"}selected{/if}>固定有效期</option>
+                                <option value="DATE_TYPE_FIX_TERM" {if condition="'DATE_TYPE_FIX_TERM' eq $info.date_type"}selected{/if}>固定时长</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="time_range" {if condition="'DATE_TYPE_FIX_TERM' eq $info.date_type"}style="display:none;"{/if}>
+                        <label class="layui-form-label">开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="begin_timestamp" id="begin_timestamp" value="{$info.begin_timestamp|default=''|date='Y-m-d'}"  class="layui-input"  style="width:150px;color:red;">
+                        </div>                        
+                    </div>
+                     <div class="layui-form-item" id="time_term" {if condition="'DATE_TYPE_FIX_TIME_RANGE' eq $info.date_type"}style="display: none;"{/if}>
+                        <label class="layui-form-label">生效时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="fixed_begin_term" id="fixed_begin_term" value="{$info.fixed_begin_term|default='0'}"  class="layui-input" style="width:150px;color:red;">
+                        </div>
+                        <label class="layui-form-label">有效天数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="fixed_term" id="fixed_term" value="{$info.fixed_term|default='15'}"  class="layui-input " style="width:150px;color:red;">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">有效期至</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="end_timestamp" id="end_timestamp" value="{$info.end_timestamp|default=''|date="Y-m-d"}"  placeholder="{:date('Y')}-12-31" class="layui-input"  style="width:150px;color:red;">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">库存数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="quantity" id="quantity" value="{$info.quantity|default='100'}"  class="layui-input" jq-verify="required" jq-error="数量" style="width:150px;color:red;">
+                        </div>
+                        <label class="layui-form-label">每人限制</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="get_limit" id="get_limit" value="{$info.get_limit|default='50'}"  class="layui-input " style="width:150px;color:red;">
+                        </div>
+                        <label class="layui-form-label">核销限制</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="use_limit" id="use_limit" value="{$info.use_limit|default='50'}"  class="layui-input " style="width:150px;color:red;">
+                        </div>
+                    </div>
+                    <!--优惠券-->
+                    <div class="layui-form-item" id="default_detail" style="display: none">
+                        <label class="layui-form-label">优惠详情</label>
+                        <div class="layui-input-block">
+                             <textarea name="default_detail" placeholder="请输入特权" class="layui-textarea" style="color:red;">{$info.default_detail|default=''}</textarea>
+                        </div>
+                    </div>
+
+                    <!--团购券-->
+                    <div class="layui-form-item" id="deal_detail" style="display: none">
+                        <label class="layui-form-label">团购详情</label>
+                        <div class="layui-input-block">
+                            <textarea name="deal_detail" placeholder="请输入特权" class="layui-textarea" style="color:red;">{$info.deal_detail|default=''}</textarea>
+                        </div>
+                    </div>
+
+                    <!--兑换券-->
+                    <div class="layui-form-item" id="gift" style="display: none">
+                        <label class="layui-form-label">兑换内容</label>
+                        <div class="layui-input-block">
+                            <textarea name="gift" placeholder="请输入兑换物品名称" class="layui-textarea" style="color:red;">{$info.gift|default=''}</textarea>
+                        </div>
+                    </div>
+
+
+                    <!--代金券-->
+                    <div class="layui-form-item" id="CASH" style="display: none">
+                    <label class="layui-form-label">起始金额</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="least_cost" value="{$info.least_cost|default=''}" placeholder="单位为分" class="layui-input" style="width:200px;color:red;">
+                    </div>
+                    <label class="layui-form-label">减免金额</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="reduce_cost" value="{$info.reduce_cost|default=''}" placeholder="单位为分" class="layui-input " style="width:200px;color:red;">
+                    </div>
+                    </div>
+                    <!--折扣券类型-->
+                    <div class="layui-form-item" id="DISCOUNT" style="display: none">
+                        <label class="layui-form-label">打折额度</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="discount" value="{$info.discount|default=''}" class="layui-input" placeholder="打折额度（百分比）填30就是七折。" style="width:500px;color:red;">
+                        </div>
+
+                    </div>
+
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <input type="hidden" name="card_id" type="hidden" value="{$info.card_id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    laydate.render({
+        elem: '#begin_timestamp'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#end_timestamp'
+        //指定元素
+    });
+    layui.use(['default','myform', 'jquery'], function(){
+        var form = layui.form();
+        $ = layui.jquery;
+        var card_type = $('#card_type').val();
+        if(card_type=='GENERAL_COUPON'){
+            $('#default_detail').show();
+        }else if(card_type=='GIFT'){
+            $('#gift').show();
+        }else if(card_type=='DISCOUNT'){
+            $('#DISCOUNT').show();
+        }else if(card_type=='CASH'){
+            $('#CASH').show();
+        }else if(card_type=='GROUPON'){
+            $('#deal_detail').show();
+        }
+
+        form.on('select(date_type)', function(data){
+            //console.log(data); data.value
+            if(data.value=="DATE_TYPE_FIX_TERM")
+            {
+                $("#time_term").show();
+                $("#time_range").hide();
+            }else{
+                $("#time_term").hide();
+                $("#time_range").show();
+            }
+        });
+
+        form.on('select(card_type)', function(data){
+            switch (data.value){
+                case 'GENERAL_COUPON':
+                    $('#default_detail').show();
+                    $('#CASH').hide();
+                    $('#DISCOUNT').hide();
+                    $('#deal_detail').hide();
+                    $('#gift').hide();
+                    break;
+                case 'GIFT':
+                    $('#default_detail').hide();
+                    $('#CASH').hide();
+                    $('#DISCOUNT').hide();
+                    $('#deal_detail').hide();
+                    $('#gift').show();
+                    break;
+                case 'DISCOUNT':
+                    $('#default_detail').hide();
+                    $('#CASH').hide();
+                    $('#DISCOUNT').show();
+                    $('#deal_detail').hide();
+                    $('#gift').hide();
+                    break;
+                case 'CASH':
+                    $('#default_detail').hide();
+                    $('#CASH').show();
+                    $('#DISCOUNT').hide();
+                    $('#deal_detail').hide();
+                    $('#gift').hide();
+                    break;
+                case 'GROUPON':
+                    $('#default_detail').hide();
+                    $('#CASH').hide();
+                    $('#DISCOUNT').hide();
+                    $('#deal_detail').show();
+                    $('#gift').hide();
+                    break;
+
+            }
+
+        });
+
+    });
+
+
+</script>
+
+{/block}

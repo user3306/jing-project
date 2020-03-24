@@ -1,0 +1,90 @@
+{extend name="admin@public/base_content" /}
+
+{block name="body">}
+<body>
+<script src="__ADMIN__/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div style="float: left;">
+                起始日期：
+                </div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="sdate" style="width:100px;height:25px; " value="{$sdate}">
+                </div>
+                <div style="float: left;">
+                    结束日期：
+                </div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="edate" style="width:100px;height:25px; " value="{$edate}">
+                </div>
+
+                <div style="float: left;margin-left: 20px;">
+                    <a href="javascript:void(0);" onclick="datasearch()"  class="layui-btn layui-btn-small" style="float:right">
+                     查询
+                    </a>
+                </div>
+                <div style="float: left;margin-left: 20px;">
+                    <a href="javascript:void(0);" onclick="dataout()"  class="layui-btn layui-btn-small" style="float:right">
+                        导出
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>日期</th>
+            <th>店面</th>
+            <th>串码</th>
+            <th>手机号</th>
+            <th>姓名</th>
+            <th>销售员</th>
+            <th>是否关注</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.postdate|default='无'}</td>
+            <td>{$vo.store}  </td>
+            <td>{$vo.productserial}  </td>
+            <td>{$vo.memberCode}  </td>
+            <td>{$vo.memberName}  </td>
+            <td>{$vo.Operator}  </td>
+            <td>{$vo.flag}  </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+    laydate.render({
+        elem: '#sdate'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#edate'
+        //指定元素
+    });
+
+    function datasearch()
+    {
+        window.location='?sdate='+document.getElementById('sdate').value+'&edate='+document.getElementById('edate').value;
+    }
+    function dataout()
+    {
+        window.location='/admin/user_report/dataout.html?sdate='+document.getElementById('sdate').value+'&edate='+document.getElementById('edate').value;
+    }
+</script>
+{/block}

@@ -1,0 +1,38 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="col-xs-12 col-sm-12 col-md-12">
+    {foreach name='list' item='vo'}
+    <div class="col-xs-2 col-sm-2 col-md-2" style="background-color: #fff;">
+        <img src="{$vo.image}" style="margin-top: 10px;" width="170px" height="130px" />
+        <div style="text-align: center;margin: 10px;">
+            <a href="{:url('seeinfo',array('material_id'=>$vo['material_id']))}" class="layui-btn layui-btn-mini modal-catch">
+            <i class="iconfont"></i>编辑
+            </a>
+            <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+               data-list='{"key":"id={$vo.material_id}","msg":true,"render":"true","action":"videodel"}'
+               data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.material_id}","complete":"wxdel"}'>
+                <i class="iconfont">&#xe626;</i>删除
+            </a>
+            {empty name="vo.media_id"}
+            <i style=" color: #FF1500;">未同步</i>
+            {else}
+            <i style=" color: #1E9FFF;">已同步</i>
+            {/empty}
+        </div>
+    </div>
+    {/foreach}
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

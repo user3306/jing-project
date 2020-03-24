@@ -1,0 +1,163 @@
+{extend name="admin@public/base_content" /}
+
+{block name="content_header">}
+
+{block name="body">}
+
+<body>
+
+{include file="admin@public/common" /}
+<script src="/static/admin/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form-item" style="margin-bottom:0px;">
+                        <label class="layui-form-label" style="width: auto">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="starttime" id="starttime" value=""  class="layui-input" jq-verify="required"  style="width:150px;">
+                        </div>
+                        <label class="layui-form-label" style="width: auto">结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="endtime" id="endtime" value=""  class="layui-input " style="width:150px;">
+                        </div>
+                        <label class="layui-form-label" style="width: auto">选手姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="username" id="username" value=""  class="layui-input " style="width:150px;">
+                            <input type="hidden" name="act_id" value="{$act_id}">
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                        <div class="layui-inline">
+                            <a href="{:url('exportuserlist',array('act_id'=>$act_id))}" class="layui-btn">导出</a>
+                        </div>
+
+                        <div class="layui-inline">
+                            <a href="{:url('adduser',array('act_id'=>$act_id))}" class="layui-btn">添加选手</a>
+                        </div>
+                    </div>
+                </form>
+
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+            <tr>
+                <th style="text-align: center">页面访问数量</th>
+                <th style="text-align: center">页面访问人数</th>
+                <th style="text-align: center">投票总数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center">{$count['all']}</td>
+                <td style="text-align: center">{$count['visit']}</td>
+                <td style="text-align: center">{$count['register']}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="layui-table lay-even">
+
+        <thead>
+
+        <tr>
+
+            <th width="5%" style="text-align: center">ID</th>
+
+            <th width="10%" style="text-align: center">编号</th>
+
+            <th width="10%" style="text-align: center">头像</th>
+
+            <th width="20%" style="text-align: center">姓名</th>
+
+            <th width="25%" style="text-align: center">获得票数</th>
+
+            <th width="20%" style="text-align: center">操作</th>
+
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        {foreach name="list" item="vo"}
+
+        <tr>
+
+            <td align="center"><span>{$vo.id}</span></td>
+
+            <td style="text-align: center">{$vo.num}</td>
+
+            <td style="text-align: center"><img src="{$vo.image}" width="30px" height="30px" alt=""></td>
+
+            <td style="text-align: center">{$vo.username}</td>
+
+            <td style="text-align: center">{$vo.votes|default='0'}</td>
+
+            <td style="text-align: center">
+
+                <a href="{:url('adduser',array('act_id'=>$act_id,'userid'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+
+                    <i class="iconfont">&#xe653;</i>编辑
+
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+
+                   data-params='{"url": "{:url("bocvote/deluser")}","confirm":"true","data":"id={$vo.id}&act_id={$act_id}","complete":"del"}'>
+
+                    <i class="iconfont">&#xe626;</i>删除
+
+                </a>
+            </td>
+
+        </tr>
+
+        {/foreach}
+
+        </tbody>
+
+    </table>
+
+</div>
+<div class="text-right" style="text-align: center">
+
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+
+        {$list|raw}
+
+    </div>
+
+</div>
+
+</body>
+
+{/block}
+
+{block name="script"}
+
+<script>
+
+    layui.use(['default','jquery']);
+    laydate.render({
+        elem: '#starttime'
+        ,type:'date'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#endtime'
+        ,type:'date'
+        //指定元素
+    });
+
+</script>
+
+{/block}

@@ -1,0 +1,136 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="__ADMIN__/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="activename" value="{$info.activename|default=''}"  placeholder="请输入活动名称" class="layui-input" jq-verify="required" jq-error="请输入活动名称">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="sdate" id="sdate" value="{$info.sdate|default=''}"  class="layui-input" jq-verify="required" jq-error="请输入起始时间" style="width:150px;">
+                        </div>
+                        <label class="layui-form-label">截至时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="edate" id="edate" value="{$info.edate|default=''}"  class="layui-input " style="width:150px;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">产品编码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="productcode" value="{$info.productcode|default=''}"  placeholder="请输入产品编码" class="layui-input ">
+                        </div>
+                        <label class="layui-form-label">产品金额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="productmoney" value="{$info.productmoney|default=''}"  placeholder="请输入产品金额" class="layui-input ">
+                        </div>
+                        <label class="layui-form-label">产品名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="productname" value="{$info.productname|default=''}"  placeholder="请输入产品名称" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新关注</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="isnew" {eq name="info.isnew" value="1"}checked{/eq} title="是" value="1" checked />
+                            <input type="radio" name="isnew" {eq name="info.isnew" value="2"}checked{/eq} title="否" value="2" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">销售金额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="points" id="points" value="{$info.points|default=''}"  class="layui-input " style="width:150px;">
+                        </div>
+                        <label class="layui-form-label"> 积分</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="num" id="num" value="{$info.num|default=''}"  class="layui-input " style="width:150px;">
+                        </div>
+                    </div>
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="tsdate" id="tsdate" value="{$info.tsdate|default=''}"  class="layui-input " style="width:150px;">
+                        </div>
+                        <label class="layui-form-label">截至时间</label>
+                        <div class="layui-input-inline">
+                             <input type="text" name="tedate" id="tedate" value="{$info.tedate|default=''}"  class="layui-input " style="width:150px;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">有效期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="expires" value="{$info.expires|default=''}"  class="layui-input ">
+                        </div>
+                        <div class="layui-input-inline" style='width: 300px;'>
+                            <input type="radio" name="etype" title="年" value="年" {eq name="info.etype" value="年"}checked{/eq} />
+                            <input type="radio" name="etype"  title="月" value="月" {eq name="info.etype" value="月"}checked{/eq} />
+                            <input type="radio" name="etype"  title="日" value="日" {eq name="info.etype" value="日"}checked{/eq} />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">使用规则</label>
+                        <div class="layui-input-block">
+                            <textarea name="descinfo" placeholder="请输入使用规则" class="layui-textarea">{$info.descinfo|default=''}</textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="btn">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['jquery', 'myform'], function(){
+        /*
+        var $ = layui.$ ;
+
+        $("#btn").click(function(){
+            var pids = '';
+            $("input:checkbox[name='pfaultid']:checked").each(function() { // 遍历name=standard的多选框
+                pids += ',' + $(this).val();
+            });
+            $("#pfault").val(pids);
+        });
+        */
+    });
+    laydate.render({
+        elem: '#sdate'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#edate'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#tsdate'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#tedate'
+        //指定元素
+    });
+</script>
+
+{/block}

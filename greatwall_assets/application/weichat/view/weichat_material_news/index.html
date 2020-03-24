@@ -1,0 +1,127 @@
+{extend name="admin@public/base_content" /}
+{block name="content_header">}
+<style>
+    .sidebar {
+        float: left;
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .img1{
+        position: relative;
+    }
+    .title2div0{
+        width: 96%;
+        margin: 0 2%;
+        background: #333;
+        color: #ffffff;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        bottom: 0px;
+    }
+    .cover{
+        position: relative;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    .add_box{
+        background: #ffffff;
+        width:100% ;
+        border: 1px solid #DDDDDD;
+        height: 100px;
+        position: relative;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_title{
+        width: 190px;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    .bianse:hover{
+        background: #DDDDDD;
+    }
+</style>
+{/block}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        {foreach name="list" item="vo"}
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <section class="panel">
+                <div class="sidebar">
+                    <div class="previewBox">
+                         <p style="margin:10px 14px 0 14px;">
+                             <span class="msg-date">更新于 {$vo.add_time|date='Y-m-d H:i'}</span>
+                             {empty name="vo.media_id"}
+                             <i style=" color: #FF1500;float: right;">未同步</i>
+                             {else}
+                             <i style=" color: #1E9FFF;float: right;">已同步</i>
+                             {/empty}
+                         </p>
+                        {foreach name="vo.child" item="v" key='k'}
+                            {eq name="k" value="0"}
+                            <div class="cover editing">
+                                <div class="img1">
+                                    <h4 class="msg-t title2div0">
+                                        {$v.title}<span class="i-title"></span>
+                                    </h4>
+                                    <img src="{$v.image}"  width="320px" height="180px" style="width: 96%; margin: 0 2%;" onclick="window.location='sendgrpmsg/material_id/{$vo.material_id}.html';"/>
+                                </div>
+                            </div>
+                            {else}
+                            <div class="add_box">
+                                <span class="add_title">{$v.title}</span>
+                                <img src="{$v.image}" alt="" width='80px' height='80px'>
+                            </div>
+                            {/eq}
+                        {/foreach}
+                       <div style="width: 100%;height: 40px;line-height: 40px;background: #F1F1F1">
+                           <span style="display: inline-block;width: 49%;text-align: center;background: #F1F1F1;margin: 0;padding: 0">
+                               <a href="{:url('info',array('material_id'=>$vo['material_id']))}" class="bianse" style="display:inline-block; width: 100%;margin: 0;padding: 0">编辑</a>
+                           </span>
+                           <span style="display: inline-block;width: 49%;text-align: center;background: #F1F1F1;margin: 0;padding: 0 ">
+                               <a href="javascript:void(0);" class="bianse ajax" style="display:inline-block; width: 100%;margin: 0;padding: 0"
+                                  data-list='{"key":"id={$vo.material_id}","msg":true,"render":"true","action":"del"}'
+                                  data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.material_id}","complete":"videodel"}'>
+                                    删除
+                                </a>
+                           </span>
+                       </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        {/foreach}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default')
+</script>
+{/block}

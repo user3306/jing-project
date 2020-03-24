@@ -1,0 +1,64 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="/static/admin/js/laydate/laydate.js"></script>
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                  
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>资产名称</th>
+            <th>资产收藏数</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td>{$vo.asset_name}</td>
+            <td>{$vo.num}</td>
+            <td>
+                <a href="{:url('info',array('asset_name'=>$vo.asset_name))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>查看详情
+                </a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+
+<script src="/static/admin/js/jquery.min.js"></script>
+
+<script>
+    layui.use(['myform','default','pageform','upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+    });
+
+</script>
+{/block}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>完善信息</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css">
+
+<body>
+
+<div class="clear10"></div>
+<div class="weui-cells__title"><h3>完善注册信息</h3></div>
+
+<!--E 网页开始-->
+<div class="container">
+  <!--E 注册开始-->
+
+  <div class="weui-cells__title"><h4>请完善您的个人信息，以便为您提供有针对性的服务</h4></div>
+  
+    <div class="weui-cell weui-cells_form">
+		<div class="weui-cell__bd">
+		  <input class="weui-input" type="text" id="realname" placeholder="请输入姓名">
+		</div>
+		<div class="weui-cell_select">
+				<div class="weui-cell__bd">
+				  <select class="weui-select" name="select2">
+					<option value="1">先生</option>
+					<option value="2">女士</option>
+				  </select>
+				</div>
+		</div>
+    </div>
+  
+  <div class="weui-cells__title"><h4>手机品牌</h4></div>
+  
+  <div class="weui-cells weui-cells_form">
+  
+	<!--E  品牌开始-->
+	  <div class="weui-cell weui-cell_select weui-cell_select-after">
+		  <div class="weui-cell__hd">
+			  <label for="" class="weui-label">手机品牌</label>
+		  </div>
+		  <div class="weui-cell__bd">
+			  <select class="weui-select" name="ptype" id="ptype">
+				  {foreach name="ptype" item="vo"}
+				  <option value="{$vo.id}">{$vo.ptype}</option>
+				  {/foreach}
+			  </select>
+		  </div>
+	  </div>
+
+    </div>
+
+  <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="javascript:saveok();" id="btn">确定</a>
+	<!--E 注册结束-->
+
+
+</div>
+<!--E 网页结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script>
+function saveok(){
+
+    if($("#realname").val()=="")
+	{
+        $.toptip('请填写姓名', 2000, 'warning');
+        return false;
+	}
+
+    var ptype = $("#ptype").val();
+
+
+	//console.log(ptype);
+
+    //数据入库
+    $.ajax({
+        url:'{:url()}',
+        type:'POST', //GET
+        data:{"realname":$("#realname").val(),"phonetype":ptype,"openid":"{$openid}"},
+        dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+        success:function(data){
+            //console.log(data);
+            if(data.status==200) {
+                $.toast(data.msg);
+                setTimeout(function () {
+                    window.location.href = data.url;
+                }, 2000);
+            }else{
+                $.toast(data.msg, "forbidden");
+            }
+
+        },
+        complete:function(){
+            console.log('结束');
+        }
+    });
+
+}
+</script>
+
+</body>
+</html>

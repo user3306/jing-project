@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>青云榜</title>
+    <link rel="stylesheet" href="/static/xjboc/signin/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/xjboc/signin/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/signin/css/style.css">
+    <script src="/static/xjboc/signin/js/jquery.js"></script>
+    <script src="/static/xjboc/signin/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+        .wai{
+            background-color: #FFFFF7;
+        }
+        .rr{
+            width:100%;
+            display: -webkit-flex;
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            margin-top:-1.5rem;
+        }
+        .rr img{
+            width:33%;
+            margin-top:0.4rem;
+        }
+        .pai_text{
+            position: relative;
+
+        }
+        .pai_text{
+            margin-left:-4rem;
+            margin-top:0.2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="content content_a">
+    <div class="qing">
+        <img src="/static/xjboc/signin/img/1.png" alt="" />
+    </div>
+    <div class="pai_text">
+        <div class="name">
+            您当前排名：第<span>{$rank}</span>位
+        </div>
+        <div class="jin">
+            仅显示前100名
+        </div>
+    </div>
+    <div id="myTabContent" class="tab-content">
+        <div class="wai wai_xin">
+            <div class="wai_wai">
+                <table class="gridtable anther anther_xin">
+                    <tr>
+                        <th>排名</th>
+                        <th>昵&nbsp;称</th>
+                        <th>积分</th>
+                    </tr>
+                    {volist name="list" id="vo"}
+                    <tr>
+                        <td>{$vo.rownum}</td>
+                        <td><?php echo base64_decode($vo['nickname']) ?></td>
+                        <td>{$vo.integral}</td>
+                    </tr>
+                    {/volist}
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{$js_packeg['appId']}", // 必填，公众号的唯一标识
+        timestamp: "{$js_packeg['timestamp']}", // 必填，生成签名的时间戳
+        nonceStr: "{$js_packeg['nonceStr']}", // 必填，生成签名的随机串
+        signature: "{$js_packeg['signature']}",// 必填，签名
+        jsApiList: [
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getLocalImgData',
+            'hideMenuItems'
+        ] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function(){
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:share:timeline',
+                'menuItem:share:qq',
+                'menuItem:favorite',
+                'menuItem:share:weiboApp',
+                'menuItem:favorite',
+                'menuItem:share:facebook',
+                'menuItem:share:QZone',
+                'menuItem:copyUrl',
+                'menuItem:readMode',
+                'menuItem:openWithQQBrowser',
+                'menuItem:share:brand',
+                'menuItem:share:email',
+                'menuItem:openWithSafari',
+                'menuItem:share:appMessage'
+            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+        });
+    });
+
+
+    !(function(doc, win) {
+        var docEle = doc.documentElement,
+            fn = function() {
+                var width = docEle.clientWidth;
+                var height = docEle.clientHeight;
+                if (640 / 1000 > width / height) {
+                    (docEle.style.fontSize = 16 * (width / 320) + "px");
+                } else {
+                    (docEle.style.fontSize=16 * (height / 500) + "px");
+                }
+            };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+</script>
+</body>
+</html>

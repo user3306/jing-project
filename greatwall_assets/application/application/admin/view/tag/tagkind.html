@@ -1,0 +1,111 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分组信息</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="tag" value="{$info.tag|default=''}" readonly="readonly" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">分组方法</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" value="phonetype" name="tag_kind" title="手机品牌" lay-filter="tag_kind" checked="checked">
+                            <input type="radio" value="buymoney" name="tag_kind" title="消费能力" lay-filter="tag_kind">
+                            <input type="radio" value="regdate" name="tag_kind" title="注册时间" lay-filter="tag_kind">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="phonetype">
+                        <label class="layui-form-label">手机品牌</label>
+                        <div class="layui-input-inline">
+                            <select class="weui-select" name="ptype" id="ptype">
+                              {foreach name="ptype" item="vo"}
+                              <option value="{$vo.id}">{$vo.ptype}</option>
+                              {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="buymoney" style="display: none;">
+                        <label class="layui-form-label">消费能力</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="buymin" id="buymin" value="0"  class="layui-input" style="width:150px;">
+                        </div>
+                        <label class="layui-form-label">区间上限</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="buymax" id="buymax" value="1000"  class="layui-input " style="width:150px;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="regdate" style="display: none;">
+                        <label class="layui-form-label">注册时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="regmin" id="regmin" value="0"  class="layui-input" style="width:150px;">
+                        </div>
+                        <label class="layui-form-label">区间上限</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="regmax" id="regmax" value="1"  class="layui-input " style="width:150px;">
+                        </div>
+                    </div>
+                   
+                    <div class="layui-input-block">
+                        <input type="hidden" name="tagid" type="hidden" value="{$info.tagid}">
+                        <button type="button" class="layui-btn" id="tagbtn" onclick="tagstart()" >分组准备</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <input type="hidden" name="tagkind" id="tagkind" type="hidden" value="phonetype">
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+     layui.use(['default', 'myform','jquery'], function(){
+        var form = layui.form();
+        $ = layui.jquery;
+        form.on('radio(tag_kind)', function (data) {
+            //console.log(data);
+            if(data.value=='phonetype')
+            {
+                $("#phonetype").show();
+                $("#buymoney").hide();
+                $("#regdate").hide();
+
+            }else if(data.value=='buymoney'){
+                $("#phonetype").hide();
+                $("#buymoney").show();
+                $("#regdate").hide();
+            }else if(data.value=='regdate'){
+                $("#phonetype").hide();
+                $("#buymoney").hide();
+                $("#regdate").show();
+            }
+            $("#tagkind").val(data.value);
+            //$("#card_name").val(data.elem.title);
+            //alert($("#card_name").val());
+        });
+
+        
+
+    });
+
+     function tagstart(){
+        //alert($("#tagkind").val());
+        if($("#tagkind").val()=="phonetype"){
+            window.location="/admin/tag/tagstart.html?tagid={$info.tagid}&tagkind=phonetype&ptype="+$("#ptype").val();
+        }else if($("#tagkind").val()=="buymoney"){
+            window.location="/admin/tag/tagstart.html?tagid={$info.tagid}&tagkind=buymoney&sm="+$("#buymin").val()+"&em="+$("#buymax").val();
+        }else if($("#tagkind").val()=="regdate"){
+            window.location="/admin/tag/tagstart.html?tagid={$info.tagid}&tagkind=regdate&sd="+$("#regmin").val()+"&ed="+$("#regmax").val();
+        }
+     }
+</script>
+{/block}

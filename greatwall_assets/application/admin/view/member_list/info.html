@@ -1,0 +1,162 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户编号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="userid" value="{$info.userid|default=''}" jq-verify="required" jq-error="请输入用户编号" placeholder="请输入用户编号" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="username" value="{$info.username|default=''}" jq-verify="required" jq-error="请输入用户名" placeholder="请输入用户名" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户手机号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="mobile" value="{$info.mobile|default=''}" jq-verify="required" jq-error="请输入用户手机号" placeholder="请输入用户手机号" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">办公电话</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="office_mobile" value="{$info.office_mobile|default=''}" jq-verify="required" jq-error="请输入办公电话" placeholder="请输入办公电话" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户分类</label>
+                                    <div class="layui-input-block">
+                                        <select jq-error="请选择" lay-filter="tpl" name="job">
+                                            <option value=""></option>
+                                            <option value="1" {if condition="$info.job eq 1"}selected{/if}>超级管理员</option>
+                                            <option value="2" {if condition="$info.job eq 2"}selected{/if}>管理层</option>
+                                            <option value="3" {if condition="$info.job eq 3"}selected{/if}>部门负责人</option>
+                                            <option value="4" {if condition="$info.job eq 4"}selected{/if}>项目经理</option>
+                                            <option value="5" {if condition="$info.job eq 5"}selected{/if}>员工</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">所属部门</label>
+                                    <div class="layui-input-block">
+                                        <select jq-error="请选择" lay-filter="tpl1" name="belong_to_department">
+                                            <option value=""></option>
+                                            <option value="分公司领导" {if condition="$info.belong_to_department eq '分公司领导'"}selected{/if}>分公司领导</option>
+                                            <option value="综合管理部" {if condition="$info.belong_to_department eq '综合管理部'"}selected{/if}>综合管理部</option>
+                                            <option value="资产经营一部" {if condition="$info.belong_to_department eq '资产经营一部'"}selected{/if}>资产经营一部</option>
+                                            <option value="资产经营一部二组" {if condition="$info.belong_to_department eq '资产经营一部二组'"}selected{/if}>资产经营一部二组</option>
+                                            <option value="资产经营二部" {if condition="$info.belong_to_department eq '资产经营二部'"}selected{/if}>资产经营二部</option>
+                                            <option value="资产经营三部" {if condition="$info.belong_to_department eq '资产经营三部'"}selected{/if}>资产经营三部</option>
+                                            <option value="资产经营四部" {if condition="$info.belong_to_department eq '资产经营四部'"}selected{/if}>资产经营四部</option>
+                                            <option value="资产经营五部" {if condition="$info.belong_to_department eq '资产经营五部'"}selected{/if}>资产经营五部</option>
+                                            <option value="资金财务部" {if condition="$info.belong_to_department eq '资金财务部'"}selected{/if}>资金财务部</option>
+                                            <option value="业务审核部" {if condition="$info.belong_to_department eq '业务审核部'"}selected{/if}>业务审核部</option>
+                                            <option value="业务管理部" {if condition="$info.belong_to_department eq '业务管理部'"}selected{/if}>业务管理部</option>
+                                            <option value="并购重组部" {if condition="$info.belong_to_department eq '并购重组部'"}selected{/if}>并购重组部</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">领导名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="department_head" value="{$info.department_head|default=''}" jq-verify="required" jq-error="请输入领导名称" placeholder="请输入领导名称" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" pane>
+                                    <label class="layui-form-label">状态</label>
+                                    <div class="layui-input-inline">
+                                        <input type="radio" name="is_disabled" {eq name="info.is_disabled" value="0"}checked{/eq} title="未封号" value="0" checked />
+                                        <input type="radio" name="is_disabled" {eq name="info.is_disabled" value="1"}checked{/eq} title="已封号" value="1" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$info.id|default=''}">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            pasteType:2,
+            wellFormatMode:false,
+//            filterMode: false,
+            afterBlur: function () { this.sync(); }
+        });
+    });
+
+
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    layui.use(['myform', 'upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+           // document.getElementById("tpl").value=data.value;
+        });
+
+        form.on('select(tpl1)', function(data){
+        //    document.getElementById("tpl1").value=data.value;
+        });
+
+
+
+        // var upload = layui.upload;
+        // //执行实例
+
+        // upload({
+        //     elem: '#smallpic'
+        //     ,url: '/rncms/admin_upload/upload' //上传接口
+        //     ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+        //     ,success: function(data){
+        //         console.log(data);
+        //         $("#smallurl").val(data.url);
+        //         $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+        //         $("#btnpic").show();
+        //     }
+        // });
+
+        // $("#delsmallpic").click(function(){
+        //     $("#smallurl").val('');
+        //     $("#divpic").html('');
+        //     $("#btnpic").hide();
+        // });
+
+    });
+
+</script>
+{/block}

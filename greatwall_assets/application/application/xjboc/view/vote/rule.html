@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>活动说明</title>
+    <link rel="stylesheet" href="/static/xjboc/vote/css/public.css">
+    <link rel="stylesheet" href="/static/xjboc/vote/css/style.css">
+    <script src="/static/xjboc/vote/js/jquery.js"></script>
+</head>
+<body>
+<div class="content content_a">
+    <div class="wai_wai">
+        <div class="zhu">
+            <div class="zhuti">
+                活动主题:
+            </div>
+            <div class="zhu_text">
+                {$info.title}
+            </div>
+            <div class="zhuti">
+                投票时间:
+            </div>
+            <div class="zhu_text">
+                {$info.start_time|date="Y年m月d日"}-{$info.end_time|date="Y年m月d日"}
+            </div>
+            <div class="zhuti">
+                活动规则:
+            </div>
+            <div class="zhu_text">
+                {$info.rule|raw}
+            </div>
+        </div>
+    </div>
+</div>
+<ul class="foot">
+    <li><a href="{:url('index',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_01.png" alt="">
+        <span>首页</span>
+    </a></li>
+    <li><a href="{:url('rank',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_02.png" alt="">
+        <span>排名</span>
+    </a></li>
+    <li><a href="{:url('rule',array('act_id'=>$act_id,'openid'=>$openid,'token'=>$token))}">
+        <img src="/static/xjboc/vote/img/icon_03.png" alt="">
+        <span>活动说明</span>
+    </a></li>
+</ul>
+<script>
+    !(function(doc, win) {
+        var docEle = doc.documentElement,
+            fn = function() {
+                var width = docEle.clientWidth;
+                var height = docEle.clientHeight;
+                if (640 / 1000 > width / height) {
+                    (docEle.style.fontSize = 16 * (width / 320) + "px");
+                } else {
+                    (docEle.style.fontSize=16 * (height / 500) + "px");
+                }
+            };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+
+</script>
+</body>
+</html>

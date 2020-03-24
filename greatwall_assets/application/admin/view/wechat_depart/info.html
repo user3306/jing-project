@@ -1,0 +1,117 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信端ID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="wxid" jq-verify="required" class="layui-input" value="{$depart.wxid|default=$maxid}" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级部门</label>
+                        <div class="layui-input-block">
+                            <select name="wxparentid" id="wxparentid" lay-verify="required" lay-search="">
+                                <option value="{$pdepart.wxid|default='1'}">{$pdepart.depart|default='中国银行陕西分行'}</option>
+                                {volist name="plist" id="po"}
+                                <option value="{$po.wxid}">{$po.depart}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部门编码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="departid" value="{$depart.departid|default=''}" jq-verify="required" jq-error="请输入部门编码" placeholder="请输入搜索值" class="layui-input "  value="">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部门名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="depart" jq-verify="required" jq-error="请输入搜索值" placeholder="请输入部门名称" class="layui-input "  value="{$depart.depart|default=''}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">完整名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="departname" jq-verify="required" jq-error="请输入搜索值" placeholder="请输入部门完整名称" class="layui-input "  value="{$depart.departname|default=''}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部门电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="phone" jq-verify="required" jq-error="请输入搜索值" placeholder="请输入部门电话" class="layui-input "  value="{$depart.phone|default=''}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" placeholder="请输入地址" class="layui-input "  value="{$depart.address|default=''}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">部门类型</label>
+                        <div class="layui-input-block">
+                            <select name="iswd" jq-error="请选择">
+                                <option value="0">部门</option>
+                                {foreach name='departtype' item='vo'}
+                                <option value="{$vo.val}" {if condition="$vo.val eq $depart.iswd"}selected{/if}>{$vo.type}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标识</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="wdandp" {eq name="depart.wdandp" value="0"}checked{/eq} title="默认" value="0" checked />
+                            <input type="radio" name="wdandp" {eq name="depart.wdandp" value="1"}checked{/eq} title="网点兼管辖行" value="1" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">区域</label>
+                        <div class="layui-input-block">
+                            <select name="areatype" jq-error="请选择" jq-verify="required">
+                                <option value="1" {if condition="1 eq $depart.areatype"}selected{/if}>西安市</option>
+                                <option value="2" {if condition="2 eq $depart.areatype"}selected{/if}>铜川市</option>
+                                <option value="3" {if condition="3 eq $depart.areatype"}selected{/if}>宝鸡市</option>
+                                <option value="4" {if condition="4 eq $depart.areatype"}selected{/if}>咸阳市</option>
+                                <option value="5" {if condition="5 eq $depart.areatype"}selected{/if}>渭南市</option>
+                                <option value="6" {if condition="6 eq $depart.areatype"}selected{/if}>延安市</option>
+                                <option value="7" {if condition="7 eq $depart.areatype"}selected{/if}>汉中市</option>
+                                <option value="8" {if condition="8 eq $depart.areatype"}selected{/if}>榆林市</option>
+                                <option value="9" {if condition="9 eq $depart.areatype"}selected{/if}>安康市</option>
+                                <option value="10" {if condition="10 eq $depart.areatype"}selected{/if}>商洛市</option>
+                                <option value="11" {if condition="11 eq $depart.areatype"}selected{/if}>杨凌</option>
+                                <option value="12" {if condition="12 eq $depart.areatype"}selected{/if}>西安郊区</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="layui-input-block">
+                        <button  jq-submit lay-filter="submit" {eq name="depart.wxid" value="1"}class="layui-btn layui-btn-disabled" disabled{else/}class="layui-btn"{/eq}>立即提交</button>
+                        <button type="button" class="layui-btn layui-btn-normal" onclick="javascript:history.back();">返回</button>
+                    </div>
+                    <input type="hidden" name="parentid" value="" />
+                    <input type="hidden" name="wxorder" value="{$depart.wxorder|default=$maxorder}" />
+                    <input type="hidden" name="level" value="0" />
+                    <input type="hidden" name="action" value="{$action}" />
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+
+<script>
+    layui.use(['myform']);
+</script>
+{/block}

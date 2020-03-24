@@ -1,0 +1,69 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">客户姓名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cli_name" value="{$info.cli_name|default=''}" jq-verify="required" jq-error="请输入客户姓名" placeholder="请输入客户姓名" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" >
+                                    <label class="layui-form-label">客户公司</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cli_company" value="{$info.cli_company|default=''}" jq-verify="required" jq-error="请输入客户公司" placeholder="请输入客户公司" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" >
+                                   <label class="layui-form-label">客户手机号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cli_mobile" value="{$info.cli_mobile|default=''}" jq-verify="required" jq-error="请输入手机号" placeholder="请输入手机号" class="layui-input ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$info.id|default=''}">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            pasteType:2,
+            wellFormatMode:false,
+//            filterMode: false,
+            afterBlur: function () { this.sync(); }
+        });
+    });
+layui.use('myform');
+
+</script>
+{/block}

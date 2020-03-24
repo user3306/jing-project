@@ -1,0 +1,54 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th>手机号</th>
+            <th>主题</th>
+            <th>时间</th>
+            <th>内容</th>
+            <th>状态</th>
+            <th width="240">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.title}</td>
+            <td>{$vo.posttime}</td>
+            <td>{$vo.message}</td>
+            <td><input type="checkbox" name="field_value" lay-skin="switch" value="1" lay-text="正常|禁用" {eq name="vo.status" value="1"}checked{/eq}  lay-filter="ajax" data-params='{"url":"{:url("api/api/upField")}","confirm":"true","data":"table=xzy_message&id_name=id&id_value={$vo.id}&field=status","complete":"up"}'></td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$_page}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

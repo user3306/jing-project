@@ -1,0 +1,49 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>资产名称</th>
+            <th>本金余额</th>
+            <th>利息余额</th>
+            <th>项目经理</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo" key="k"}
+        <tr>
+            <td align="center"><span>{$pageMaps.page*20+$k+1}</span></td>
+            <td>{$vo.asset_name}</td>
+            <td>{$vo.asset_basemoney}</td>
+            <td>{$vo.asset_getmoney}</td>
+            <td>{$vo.asset_manager}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

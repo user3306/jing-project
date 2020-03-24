@@ -1,0 +1,95 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="keyword" value="" placeholder="合伙人姓名">
+                            </div>
+                        </div>
+
+                        <!--<div class="layui-inline">-->
+                            <!--<select name="status">-->
+                                <!--<option value="-1">选择状态</option>-->
+                                <!--<option value="0" >未审核</option>-->
+                                <!--<option value="1" >已审核</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th style="text-align: center">ID</th>
+            <th>初创人姓名</th>
+            <th>初创人手机</th>
+            <th>初创人所属部门</th>
+            <th>合伙人姓名</th>
+            <th>合伙人手机</th>
+            <th>合伙人身份证号</th>
+            <!--<th>身份证正面</th>-->
+            <!--<th>身份证反面</th>-->
+            <th>申请状态</th>
+            <th>申请时间</th>
+            <!--<th>操作</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td align="center"><span>{$vo.p_name}</span></td>
+            <td align="center"><span>{$vo.p_mobile}</span></td>
+            <td align="center"><span>{$vo.department}</span></td>
+            <td align="center"><span>{$vo.name}</span></td>
+            <td align="center"><span>{$vo.mobile}</span></td>
+            <td align="center"><span>{$vo.cardid}</span></td>
+            <!--<td align="center"><span><img src="{$vo.card_img_up}" style="width: 50px;height: 35px"></span></td>-->
+            <!--<td align="center"><span><img src="{$vo.card_img_dn}" style="width: 50px;height: 35px"></span></td>-->
+            <td align="center"><span>{if $vo.status == 0} <span style="color: red">未审核</span>{else}<span style="color: green">已审核</span>{/if}</span></td>
+            <td align="center"><span>{$vo.createtime|date="Y-m-d H:i:s"}</span></td>
+            <!--<td>-->
+                <!--<a href="javascript:;" class="layui-btn layui-btn-mini modal-catch">-->
+                    <!--<i class="iconfont">&#xe653;</i>确认-->
+                <!--</a>-->
+                <!--<a href="javascript:;" class="layui-btn layui-btn-mini modal-catch">-->
+                    <!--<i class="iconfont">&#xe653;</i>驳回-->
+                <!--</a>-->
+            <!--</td>-->
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script src="/static/admin/js/jquery.min.js"></script>
+<script>
+
+
+    layui.use('default');
+</script>
+{/block}

@@ -1,0 +1,92 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th style="text-align: center">商标名称</th>
+            <th style="text-align: center">优惠券名称</th>
+            <th style="text-align: center">优惠券类型</th>
+            <th style="text-align: center">颜色</th>
+            <th style="text-align: center">数量</th>
+            <th style="text-align: center">每人限制</th>
+            <th style="text-align: center" width="360">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td style="text-align: center">{$vo.brand_name}</td>
+            <td style="text-align: center">{$vo.title}</td>
+            <td style="text-align: center">
+                {if $vo.card_type=='GENERAL_COUPON'}优惠券{/if}
+                {if $vo.card_type=='GIFT'}兑换券{/if}
+                {if $vo.card_type=='DISCOUNT'}折扣券{/if}
+                {if $vo.card_type=='CASH'}代金券{/if}
+                {if $vo.card_type=='GROUPON'}团购券{/if}
+            </td>
+            <td style="text-align: center">
+                <span style="background-color:{$vo.color};">&nbsp;&nbsp;&nbsp;&nbsp;{$vo.color}</span>
+            </td>
+            <td style="text-align: center">{$vo.quantity}</td>
+            <td style="text-align: center">{$vo.get_limit}</td>
+            <td style="text-align: center">
+                <!--<a href="{:url('detail',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">-->
+                    <!--<i class="iconfont">&#xe653;</i>详情-->
+                <!--</a>-->
+                <!--<a href="javascript:putcard('{$vo.id}');" class="layui-btn layui-btn-mini modal-catch"-->
+                <!--&gt;-->
+                    <!--<i class="iconfont">&#xe653;</i>投放-->
+                <!--</a>-->
+                <!--<a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">-->
+                    <!--<i class="iconfont">&#xe653;</i>核销-->
+                <!--</a>-->
+
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>修改信息
+                </a>
+                <a href="{:url('quantity',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>修改库存
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$_page|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    function putcard(oid) {
+        var url = '{:url("coupon/putcard?id=oid")}';
+        url = url.replace('oid', oid);
+        layer.open({
+            type: 2,
+            title: '投放卡券',
+            area: ['735px', '600px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: url
+        });
+    }
+    
+    layui.use('default');
+</script>
+{/block}

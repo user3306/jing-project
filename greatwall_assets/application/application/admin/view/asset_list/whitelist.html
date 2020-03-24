@@ -1,0 +1,53 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form layui-form-pane" id="uploadForm" action="{:url('')}" method="post" enctype="multipart/form-data">
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">上传审核列表</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="file" name="file" id="file" placeholder="请选择csv文件">
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="button" id="sub">立即提交</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script src="/static/xjboc/vote/js/jquery.js"></script>
+<script>
+    $('#sub').click(function () {
+        var formData = new FormData($('#uploadForm')[0]);
+        $.ajax({
+            type: 'POST',
+            url: "{:url('assetList/whitelist')}",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if(data.status == 200){
+                    alert(data.msg);
+                }else if(data.status==0){
+                    alert(' 请上传csv文件');
+                }else{
+                    alert('上传失败');
+                }
+            }
+        });
+    });
+
+    layui.use('pageform');
+</script>
+{/block}

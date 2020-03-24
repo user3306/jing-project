@@ -1,0 +1,49 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    {volist name='plugin.config' id='vo'}
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"> {$vo.label} </label>
+                        {if condition="$vo.type eq 'select'"}
+                        <div class="layui-input-block">
+                            <select name="config[{$vo.name}]">
+                                {volist name='vo.option' id='v' key='o'}
+                                <option {if condition="$config_value[$vo.name] eq $o"}selected{/if}  value="{$o}">{$v}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        {elseif condition="$vo.type eq 'textarea'"}
+                        <div class="layui-input-block">
+                            <textarea name="config[{$vo.name}]" class="layui-textarea" placeholder="请输入{$vo.label}">{$config_value[$vo.name]|default=''}</textarea>
+                        </div>
+                        {else}
+                            <div class="layui-input-block">
+                            <input type="password" value="{$config_value[$vo.name]}" name="config[{$vo.name}]"  placeholder="请输入{$vo.label}" class="layui-input "/>
+                            </div>
+                        {/if}
+                    </div>
+                    {/volist}
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="type" value="{:input('type')}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('pageform');
+</script>
+{/block}

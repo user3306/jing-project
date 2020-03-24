@@ -1,0 +1,89 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="username" value="{$pageMaps.username|default=''}" placeholder="请输入用户名">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="mobile" value="{$pageMaps.mobile|default=''}" placeholder="请输入手机号">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>用户手机号</th>
+            <th>办公电话</th>
+            <th>职位</th>
+            <th>部门</th>
+            <th>部门领导人</th>
+            <th>登陆时间</th>
+            <th>是否封号</th>
+            <th>封号时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td>{$vo.username}</td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.office_mobile}</td>
+            <td>{$vo.job_info}</td>
+            <td>{$vo.belong_to_department}</td>
+            <td>{$vo.department_head}</td>
+            <td>{$vo.login_time|date="Y-m-d H:i:s"}</td>
+            <td>{if condition="$vo.is_disabled neq 0"}已封号{else/}未封号{/if}</td>
+            <td>{$vo.disabled_time|date="Y-m-d H:i:s"}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

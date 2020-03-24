@@ -1,0 +1,187 @@
+{extend name="admin@public/base_content" /}
+{block name="content_header">}
+<style>
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    .bianji_box .a1{
+        display: inline-block;
+        margin-top: 30px;
+
+    }
+</style>
+{/block}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <section class="panel">
+                <div id="sidebar">
+                    <div class="previewBox" style="width: 400px">
+                        <div style="margin:auto;">
+                            <iframe src="{:url('game/wheel/winning')}" name="myframe" width="380" height="660" scrolling="No" frameborder="0" id="indexframe" border="0"></iframe>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+        </div>
+
+        <form id="form1" class="layui-form layui-form-pane" action="{:url('')}" method="post">
+            <div class="col-xs-8 col-sm-8 col-md-8" id="main">
+                <section class="panel panel-padding">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">中奖页面logo</label>
+                        <div class="layui-input-block">
+                            <div class="layui-box layui-upload-button">
+                                <input class="resultlogo" type="file">
+                                <input type="hidden" name="gameid" id="gameid" value="{$info.gameid}">
+                                <input type="hidden" name="resultlogo" id="resultlogo" value="">
+                                <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                            </div>
+                            <img src="{if $info.resultlogo}{$info.resultlogo}{else}/gamee/wheel/img/gx.png{/if}" class="imgshow" id="" style="max-width: 138px;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">展示图片</label>
+                        <div class="layui-input-block">
+                            <div class="layui-box layui-upload-button">
+                                <input class="resultimg" type="file">
+                                <input type="hidden" name="img" id="img" value="">
+                                <span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+                            </div>
+                            <img src="{if $info.img}{$info.img}{else}/gamee/wheel/img/U.png{/if}" class="img" style="max-width: 138px;">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">外部链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url" value="{$info.url}" required placeholder="请输入" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提示语</label>
+                        <div class="layui-input-block">
+                            <textarea name="resultinfo" id="resultinfo" class="king_content" cols="100" rows="20">{$info.resultinfo}</textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+                <section class="panel panel-padding">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="sub">立即提交</button>
+                        <a href="JavaScript:history.back(-1)"><button type="reset" class="layui-btn layui-btn-primary">上一步</button></a>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script src="/static/admin/js/jquery.min.js"></script>
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            //minWidth:300,
+            width : "100%", //编辑器的宽度为70%
+            height : "300px", //编辑器的高度为100px
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            afterBlur: function () { this.sync(); },
+        });
+    });
+</script>
+<script>
+    $(document).on('change',".resultlogo",function(){
+        var obj=this;
+        var action = "{:url('admin/wheel/addLogo')}";
+        var file=obj.files[0];
+        var gameid=$('#gameid').val();
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", action, true); // 上传地址
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var jsonobj=eval('('+xhr.responseText+')');
+                    var str = $.parseJSON(jsonobj); // 返回格式，此处为json，可以为别的格式
+                    //console.log(str);
+                    if (str.status==200){
+                        $('.imgshow').attr('src',str.url);
+                        $('#resultlogo').attr('value',str.url);
+                    }else{
+                        alert('上传失败');
+                    }
+                }
+            }
+        };
+        var fd = new FormData();
+        fd.append('gameid',gameid);
+        fd.append('file', file);
+        xhr.send(fd);
+    }) ;
+
+    $(document).on('change',".resultimg",function(){
+        var obj=this;
+        var action = "{:url('admin/wheel/addLogo')}";
+        var file=obj.files[0];
+        var gameid=$('#gameid').val();
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", action, true); // 上传地址
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var jsonobj=eval('('+xhr.responseText+')');
+                    var str = $.parseJSON(jsonobj); // 返回格式，此处为json，可以为别的格式
+                    //console.log(str);
+                    if (str.status==200){
+                        $('.img').attr('src',str.url);
+                        $('#img').attr('value',str.url);
+                    }else{
+                        alert('上传失败');
+                    }
+                }
+            }
+        };
+        var fd = new FormData();
+        fd.append('gameid',gameid);
+        fd.append('file', file);
+        xhr.send(fd);
+    }) ;
+
+
+</script>
+<script>
+    layui.use('myform');
+</script>
+{/block}

@@ -1,0 +1,86 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">客户手机号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_name" value="{$info.0.cli_mobile|default=''}" disabled="disabled" jq-verify="required" jq-error="请输入客户手机号" placeholder="客户客户手机号" class="layui-input ">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">资产名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_name" value="{$info.0.asset_name|default=''}" disabled="disabled" jq-verify="required" jq-error="请输入资产名称" placeholder="请输入资产名称" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">责任项目经理手机号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="mobile" value="{$info.0.mobile|default=''}" disabled="disabled" jq-verify="required" jq-error="请输入责任项目经理手机号" placeholder="请输入责任项目经理手机号" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">评论内容</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="comment_content" value="{$info.0.comment_content|default=''}" disabled="disabled" placeholder="请输入评论内容" class="layui-textarea">{$info.0.comment_content|default=''}</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item ">
+                                    <label class="layui-form-label">评论时间</label>
+                                    <div class="layui-input-block">
+                                        <input name="comment_time" value="{$info.0.comment_time|date="Y-m-d H:i:s"}" id="date" disabled="disabled" lay-verify="date" placeholder="开始时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm'})" type="text" jq-verify="required" jq-error="请输入开始时间">
+                                    </div>
+                                </div>
+
+                                 <div class="layui-form-item">
+                                    <label class="layui-form-label">回复内容</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="reply_content" value="{$info.0.reply_content|default=''}" disabled="disabled" placeholder="请输入评论内容" class="layui-textarea">{$info.0.reply_content|default=''}</textarea>
+                                    </div>
+                                </div>
+                           
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">回复时间</label>
+                                    <div class="layui-input-block">
+                                        <input name="reply_time" value="{$info.0.reply_time|date="Y-m-d H:i:s"}" id="date" disabled="disabled" lay-verify="date" placeholder="开始时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm'})" type="text" jq-verify="required" jq-error="请输入开始时间">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$info.0.id|default=''}">
+							
+                            <button class="layui-btn" ><a href='{:url("index")}'>返回</a></button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script type="text/javascript">
+    function jumpUrl(){
+	var url = "https://www.baidu.com";
+	console.log(url);
+        location.href=url;
+    }
+</script>
+{/block}

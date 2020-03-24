@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>开学季，线上充值赢豪礼</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="css/style.css?v=20170814">
+    <link rel="stylesheet" type="text/css" href="css/magic-input.min.css">
+</head>
+
+<body>
+    <div class="content">
+        <div class="head">
+            <img src="img/zlogo.png" alt="" class="zlogo">
+            <img src="img/slogo.png" alt="" class="slogo">
+            <div style="clear:both;"></div>
+        </div>
+        <div class="write_off">
+            <h4>验证码核销平台</h4>
+            <div class="lie">
+                <label for="">验证码</label>
+                <input type="text" placeholder="请输入验证码" id="op">
+            </div>
+            <div class="xz_lie">
+                <h5>核销前请您确认</h5>
+                <p>1、是否已进行了二维码支付营销（用我行 手机银行自动售货机二维码支付买饮料5折） </p>
+                <div class="choice">
+                    <label>
+                        <input type="radio" name="radio1" class="mgr" checked>是</label>
+                    <label>
+                        <input type="radio" name="radio1" class="mgr">否</label>
+                </div>
+                <p>2、是否进行了“推荐有礼”营销（在e校 园首页生成二维码让同学扫码并充值，5人 以上就有礼品哦！）。</p>
+                <div class="choice">
+                    <label>
+                        <input type="radio" name="radio3" class="mgr">是</label>
+                    <label>
+                        <input type="radio" name="radio3" class="mgr" checked>否</label>
+                </div>
+            </div>
+            <div class="lie" style="display:block;text-align: center;line-height: 2.1rem;" onclick="Checkinfo()">
+                开始验证
+            </div>
+        </div>
+        <div class="pangxie"><img src="img/pangxie.png" alt=""></div>
+    </div>
+    <div class="dialog" id="myModal">
+        <div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+            <div class="weui_mask"></div>
+            <div class="weui_dialog" id="qur">
+                <p id="err">中奖概率有60%哦~
+                    <br> 攒好运气，明天再来！</p>
+            </div>
+            <img src="img/off.png" alt="" style="width:10%;margin-left:45%;position: absolute;z-index: 9999;bottom:2rem;" class="off">
+        </div>
+    </div>
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        $(".off").click(function() {
+            $("#dialog1").hide()
+        });
+    })
+
+
+    function Checkinfo() {
+
+        var op = $("#op").val();
+        if (op == "") {
+            $('#err').html('请输入验证码');
+            $('#dialog1').show();
+            return false;
+        } else {
+
+            $('#err').html('成功');
+            $('#dialog1').show();
+
+        }
+    }
+    </script>
+</body>
+
+</html>

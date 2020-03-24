@@ -1,0 +1,47 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th width="120">编码</th>
+            <th>部门名称</th>
+            <th width="240">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="datalist" id="vo"}
+        <tr>
+            <td>{$vo.wxid}</td>
+            <td>{$vo.departid}</td>
+            <td>{$vo.depart}</td>
+            <td>
+                <a href="{:url('info',array('wxid'=>$vo.wxid))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.wxid}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"wxid={$vo.wxid}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$_page}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

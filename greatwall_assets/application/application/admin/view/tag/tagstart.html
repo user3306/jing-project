@@ -1,0 +1,68 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分组信息</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="tag" value="{$tag}" readonly="readonly" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">分组结果</label>
+                        <div class="layui-input-block" id="result">
+                            请点击开始分组，不要关闭页面。
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="layui-input-block">
+                        <input type="hidden" name="tagid" type="hidden" value="">
+                        <button type="button" class="layui-btn" id="tagbtn" onclick="tagtouser()" >开始分组</button>
+                        <button type="button" class="layui-btn layui-btn-primary" onclick="history.back();">返回</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+     layui.use(['default', 'myform','jquery'], function(){
+        var form = layui.form();
+        $ = layui.jquery;
+        
+        
+    });
+
+    function tagtouser()
+    {
+        $.ajax({
+            url:'{:url('tagtouser')}',
+            type:'POST', //GET
+            data:{"tagid":"{$tagid}"},
+            dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+            success:function(data){
+                //console.log(data.errcode);    
+                if(data.errcode!=0){
+                    $("#result").append("<br />剩余："+data.errcode+"人");
+                    tagtouser();
+                }else{
+                    $("#result").append("<br />分组完成！");
+                }   
+            },
+            complete:function(){
+                console.log('结束');
+            }
+        });
+    }
+</script>
+{/block}

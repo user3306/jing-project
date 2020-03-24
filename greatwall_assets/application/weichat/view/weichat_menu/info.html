@@ -1,0 +1,107 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级栏目</label>
+                        <div class="layui-input-inline">
+                            <select name="parent_id">
+                                <option value="0">一级栏目</option>
+                                {foreach name="menuList" item="vo"}
+                                <option value="{$vo.menu_id}" {if condition="$vo.menu_id eq $info.parent_id"}selected{/if}>{$vo.cname}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{$info.name|default=''}" jq-verify="required" jq-error="请输入菜单名称" placeholder="请输入菜单名称" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单排序</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="sort"  jq-verify="number" value="{$info.sort|default='0'}" jq-error="排序必须为数字" placeholder="分类排序" class="layui-input ">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单类型</label>
+                        <div class="layui-input-inline">
+                            <select name="type">
+                                <option value="view" {eq name="info.type" value="view"}selected{/eq}>链接地址</option>
+                                <option value="click" {eq name="info.type" value="click"}selected{/eq}>点击事件</option>
+                                <option value="scancode_waitmsg" {eq name="info.type" value="scancode_waitmsg"}selected{/eq}>扫码带提示</option>
+                                <option value="scancode_push" {eq name="info.type" value="scancode_push"}selected{/eq}>扫码推事件</option>
+                                <option value="miniprogram" {eq name="info.type" value="miniprogram"}selected{/eq}>小程序链接</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">触发内容</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="key" id="key" value="{$info.key|default=''}" jq-verify="required{eq name="info.type" value="2"}|url{/eq}" jq-error="请输入触发内容" placeholder="请输入触发内容" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">appid</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="appid" id="appid" value="{$info.appid|default=''}" placeholder="小程序类型输入appid" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">pagepath</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="pagepath" id="pagepath" value="{$info.pagepath|default=''}" placeholder="小程序页面路径" class="layui-input ">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-input-block">
+                        <input type="hidden" name="menu_id" value="{$info.menu_id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            afterBlur: function () { this.sync(); },
+        });
+    });
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    layui.use('myform', function(){
+        var $ = layui.jquery,
+                form = layui.form();
+        //各种基于事件的操作，下面会有进一步介绍
+        //自定义
+        form.on('radio(type)', function(data){
+            if (data.value==2){
+                $('#key').attr('jq-verify','required|url');
+            } else {
+                $('#key').attr('jq-verify','required');
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!--S meta 开始-->
+    <title>店面信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=20180101">
+    <style type="text/css">
+        #allmap{width:100%;height:400px;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=43a891649e879c036783e8353c5e3f18"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wxc4ba43c3e411cd79', // 必填，公众号的唯一标识
+            timestamp: {$time}, // 必填，生成签名的时间戳
+            nonceStr: '{$noncestr}', // 必填，生成签名的随机串
+            signature: '{$sign}',// 必填，签名
+            jsApiList: ['openLocation'] // 必填，需要使用的JS接口列表
+        });
+    </script>
+<body>
+
+<div class="weui-panel weui-panel_access">
+
+    <div id="allmap"></div>
+    <div class="weui-panel__bd">
+
+        <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd">
+                <span class="weui-media-box__thumb"><dd style="background:#ff7001;border-radius:0.2rem;border:none;font-family:'微软雅黑';font-size:0.65rem;line-height: 1.4rem;margin-top: 10px;color:#fff;">{$dis}</dd></span>
+            </div>
+            <div class="weui-media-box__bd">
+                <h4 class="weui-media-box__title" style="padding-left: -20px;">{$result.shop} <input type="button" value="前往" id="btn_go" class="weui-btn weui-btn_mini weui-btn_primary"></h4>
+                <p class="weui-media-box__desc"  style="color:#333;line-height:20px;">地址：{$result.address}</p>
+                <p class="weui-media-box__desc" style="color:#333;line-height:20px;" onclick="window.location='tel:{$result.phone}';">电话：{$result.phone}</p>
+
+
+            </div>
+        </a>
+
+        <div class="weui-uploader__bd" style="padding-left:20px;">
+            <ul class="weui-uploader__files" id="uploaderFiles">
+                {notempty name="result.image1"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image1}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+                {notempty name="result.image2"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image2}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+                {notempty name="result.image3"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image3}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+                {notempty name="result.image4"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image4}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+                {notempty name="result.image5"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image5}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+                {notempty name="result.image6"}
+                <li class="weui-uploader__file" style="background-image:url(/static/home/images/default.png?ver=2)">
+                    <img src="{$result.image6}" style="max-width:100%;" />
+                </li>
+                {/notempty}
+            </ul>
+        </div>
+
+
+    </div>
+
+</div>
+
+<!--E 个人中心 结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point({$result.lng},{$result.lat});
+    var marker = new BMap.Marker(point);  // 创建标注
+    map.addOverlay(marker);              // 将标注添加到地图中
+    map.centerAndZoom(point, 15);
+    var opts = {
+        width : 200,     // 信息窗口宽度
+        height: 100,     // 信息窗口高度
+        title : "{$result.shop}" , // 信息窗口标题
+        enableMessage:true,//设置允许信息窗发送短息
+        message:"{$result.phone}"
+    }
+    var infoWindow = new BMap.InfoWindow("{$result.address}", opts);  // 创建信息窗口对象
+    marker.addEventListener("click", function(){
+        map.openInfoWindow(infoWindow,point); //开启信息窗口
+    });
+
+    $('#btn_go').click(function () {
+        wx.openLocation({
+            latitude: {$location.lat}, // 纬度，浮点数，范围为90 ~ -90
+            longitude: {$location.lng}, // 经度，浮点数，范围为180 ~ -180。
+            name: '{$result.shop}', // 位置名
+            address: '{$result.address}', // 地址详情说明
+            scale: 16, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        });
+    });
+
+    var $images = $("#uploaderFiles").find("img");
+
+    var imgPaths = [];
+    $images.each(function(){
+        imgPaths.push(this.src);
+    });
+    $images.on("click",function(){
+        wx.previewImage({
+            current: this.src,
+            urls: imgPaths
+        });
+    });
+</script>
+
+</body>
+</html>

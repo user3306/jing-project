@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>我的预约</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=20180101">
+
+<body>
+
+<div class="weui-panel weui-panel_access">
+  <div class="weui-panel__hd">预约记录</div>
+  <div class="weui-panel__bd">
+    {volist name="result" id="vo"}
+    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+      <div class="weui-media-box__hd">
+        <img class="weui-media-box__thumb" src="/static/home/images/ico_yuyue.png" alt="">
+      </div>
+      <div class="weui-media-box__bd">
+        <h5 class="weui-media-box__title">
+          {$vo.yuyuedate} {$vo.yuyueampm}
+          <span class="weui-media-box__title-after" style="color:#FF1500;font-size:0.66rem;">{$vo.shop}</span>
+        </h5>
+        <p class="weui-media-box__desc">{$vo.ptype}{$vo.pmodel}&nbsp;&nbsp;|&nbsp;&nbsp; {$vo.pfault}</p>
+      </div>
+    </a>
+    {/volist}
+
+  </div>
+</div>
+
+
+<!--E 个人中心 结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+</body>
+</html>

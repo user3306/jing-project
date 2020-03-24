@@ -1,0 +1,39 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片</label>
+                        <div class="layui-input-block">
+                            <input type="file" name="image" class="layui-upload-file">
+                            <input type="hidden" name="image" value="{$info.image|default=''}" jq-verify="required" jq-error="请上传图片" error-id="img-error">
+                            <p id="img-error" class="error"></p>
+                        </div>
+                        {notempty name="info.image"}
+                        <div class="layui-input-block">
+                            <div class="imgbox"><img src="{$info.image|default=''}" alt="..." class="img-thumbnail"></div>
+                        </div>
+                        {/notempty}
+                    </div>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="material_id" type="hidden" value="{$info.material_id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('wxupload');
+</script>
+{/block}

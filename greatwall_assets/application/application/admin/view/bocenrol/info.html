@@ -1,0 +1,190 @@
+{extend name="admin@public/base_content" /}
+
+{block name="body">}
+
+<body>
+
+{include file="admin@public/common" /}
+
+<script src="/static/admin/js/laydate/laydate.js"></script>
+
+<div class="container-fluid larry-wrapper">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+            <section class="panel panel-padding">
+
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+
+                        <!--<p style="color: red">创建后不可修改</p>-->
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">活动标题</label>
+
+                        <div class="layui-input-block">
+
+                            <input type="text" name="title" id="title" value="{$info.title|default=''}" jq-verify="required" jq-error=" 请输入活动标题" placeholder="请输入活动标题" class="layui-input ">
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                        <label class="layui-form-label">分享标题</label>
+
+                        <div class="layui-input-block">
+
+                            <input type="text" name="p_title" id="p_title" value="{$info.p_title|default=''}" jq-verify="" placeholder="请输入分享标题" class="layui-input ">
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">logo</label>
+                        <div class="layui-input-inline">
+                            <input type="file" name="logo" id="smallpic" class="layui-upload-file">
+                            <input type="hidden" name="logo" id="smallurl" value="{$info.logo|default=''}" jq-error="请上传图片" error-id="img-error">
+                            <p id="img-error" class="error"></p>
+                        </div>
+                        <div class="layui-input-inline" id="divpic">
+                        </div>
+                        <div class="layui-input-inline" id="btnpic" style="display: none;">
+                            <button type="button" class="layui-btn layui-btn-primary" id="delsmallpic">删除头图</button>
+                        </div>
+                        {notempty name="info.image"}
+                        <div class="layui-input-block">
+                            <div class="imgbox"><img src="{$info.logo|default=''}" alt="..." class="img-thumbnail"></div>
+                        </div>
+                        {/notempty}
+                    </div>
+
+                    <div class="layui-form-item"  >
+
+                        <label class="layui-form-label">起始时间</label>
+
+                        <div class="layui-input-inline">
+
+                            <input name="start_time" value="{if $info}{$info.start_time|date="Y-m-d H:i:s"}{/if}" id="date" lay-verify="date" placeholder="开始时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm'})" type="text" jq-verify="required" jq-error="请输入开始时间">
+                        </div>
+
+                        <label class="layui-form-label">结束时间</label>
+
+                        <div class="layui-input-inline">
+
+                            <input name="end_time" value="{if $info}{$info.end_time|date="Y-m-d H:i:s"}{/if}" lay-verify="date" placeholder="结束时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm'})" type="text" jq-verify="required" jq-error="请输入结束时间">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="layui-form-item ">
+
+                        <label class="layui-form-label">活动描述</label>
+
+                        <div class="layui-input-block">
+
+                            <textarea name="description" id="description" placeholder="请输入活动描述" class="layui-textarea">{$info.description|default=''}</textarea>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item ">
+
+                        <label class="layui-form-label">状态</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="radio" name="status" {eq name="info.status" value="1"}checked{/eq} title="发布" value="1" checked />
+
+                            <input type="radio" name="status" {eq name="info.status" value="0"}checked{/eq} title="保存" value="0" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item ">
+
+                        <label class="layui-form-label">白名单</label>
+
+                        <div class="layui-input-inline">
+
+                            <input type="radio" name="white" {eq name="info.white" value="2"}checked{/eq} title="开启" value="2" checked />
+
+                            <input type="radio" name="white" {eq name="info.white" value="1"}checked{/eq} title="关闭" value="1" />
+
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" name="id" value="{$info.id|default=''}">
+
+                    <div class="layui-input-block">
+
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true" id="sub">立即提交</button>
+
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+{/block}
+
+{block name="script"}
+
+<script src="/static/admin/js/jquery.min.js"></script>
+
+<script>
+    layui.use(['myform','default','pageform','upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+            document.getElementById("tpl").value=data.value;
+        });
+
+        var upload = layui.upload;
+
+        upload({
+            elem: '#smallpic'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data);
+                $("#smallurl").val(data.url);
+                $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic").show();
+            }
+        });
+
+        $("#delsmallpic").click(function(){
+            $("#smallurl").val('');
+            $("#divpic").html('');
+            $("#btnpic").hide();
+        });
+
+    });
+
+</script>
+{/block}

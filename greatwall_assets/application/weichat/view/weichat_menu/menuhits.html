@@ -1,0 +1,78 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="/static/admin/js/laydate/laydate.js"></script>
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form-item" style="margin-bottom:0px;">
+                        <label class="layui-form-label" style="width: auto">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="starttime" id="starttime" value=""  class="layui-input" jq-verify="required"  style="width:150px;">
+                        </div>
+                        <label class="layui-form-label" style="width: auto">结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="endtime" id="endtime" value=""  class="layui-input " style="width:150px;">
+                        </div>
+
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="20%">菜单名称</th>
+            <th width="50%">菜单链接</th>
+            <th width="10%">点击次数</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="list" id="vo" empty="暂时没有数据" }
+        <tr>
+            <td>{$vo.name}</td>
+            <td style="word-break:break-all;">{$vo.menu_key}</td>
+            <td>{$vo.total}</td>
+
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+
+
+
+<script>
+    layui.use(['default','pageform']);
+    laydate.render({
+        elem: '#starttime'
+        ,type:'date'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#endtime'
+        ,type:'date'
+        //指定元素
+    });
+</script>
+{/block}

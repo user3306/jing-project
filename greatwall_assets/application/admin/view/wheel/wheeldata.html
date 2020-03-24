@@ -1,0 +1,65 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>活动名称</th>
+            <th>活动时间</th>
+            <th>活动状态</th>
+            <th>获奖用户</th>
+            <th>奖项等级</th>
+            <th>奖项时间</th>
+            <th>中奖码</th>
+            <th>是否兑奖</th>
+            <th>兑奖时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td align="center"><span>{$vo.id}</span></td>
+            <td>{$vo.title}</td>
+            <td>{$vo.starttime|date="Y-m-d H:m:s"} 至 {$vo.endtime|date="Y-m-d H:m:s"}</td>
+            <td>{$vo.game_status}</td>
+            <td>{$vo.nickname}</td>
+            <td>{$vo.prize_title}</td>
+            <td>{$vo.createtime|date="Y-m-d H:i:s"}</td>
+            <td>{$vo.code}</td>
+            <td>{$vo.status}</td>
+            <td>{$vo.changecode_time}</td>
+            <td>
+                <a href="{:url('sure',array('id'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>确认
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}&gameid={$gameid}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

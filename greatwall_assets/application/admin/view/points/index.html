@@ -1,0 +1,57 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th>活动名称</th>
+            <th>代金券类型</th>
+            <th>产品编码</th>
+            <th>产品金额</th>
+            <th>代金券金额</th>
+            <th>数量</th>
+            <th width="150">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.activename}</td>
+            <td>{$vo.ticketstype}</td>
+            <td>{$vo.productcode}</td>
+            <td>{$vo.productmoney}</td>
+            <td>{$vo.money}</td>
+            <td>{$vo.num}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$_page|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

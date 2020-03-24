@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>公司简介</title>
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/public.css">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/style.css?v=111">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/swiper.min.css">
+    <script src="__HOME__/officeaccount/js/jquery.min.js"></script>
+    <script src="__HOME__/officeaccount/js/swiper.min.js"></script>
+    <!--<script src="__HOME__/officeaccount/js/tab.js"></script>-->
+</head>
+
+<body>
+
+<div class="content">
+    <div class="topbg">
+        <img src="__HOME__/officeaccount/img/logo.png" alt="" class="logo" style="margin:0.5rem 0 0 17%;">
+        <div class="toptit"><a href="#"><span></span></a><span class="tit-one" style="margin-left:0px">联系我们</span></div>
+        <div class="swiper-container clear">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide clear">
+                    <img class="left" src="__HOME__/officeaccount/img/banner-03.jpg" alt="">
+                </div>
+                <div class="swiper-slide clear">
+                    <img class="left" src="__HOME__/officeaccount/img/banner-04.jpg" alt="">
+                </div>
+                <div class="swiper-slide clear">
+                    <img class="left" src="__HOME__/officeaccount/img/banner-01.jpg" alt="">
+                </div>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+        <div class="pics-bot"></div>
+        <!-- Start Tabs !-->
+        <div class="zongg clear">
+            <ul class="zong_left left">
+                {volist name="companyclass" id="vo"}
+                <li><button onclick="getarticle({$vo.id})">{$vo.typename}</button></li>
+                {/volist}
+            </ul>
+            <div class="zong_right right">
+                {$content|raw}
+            </div>
+        </div>
+        <!-- Tab Container !-->
+    </div>
+</div>
+<script>
+    !(function(doc, win) {
+        var docEle = doc.documentElement,
+            fn = function() {
+                var width = docEle.clientWidth;
+                var height = docEle.clientHeight;
+                if (640 / 1000 > width / height) {
+                    (docEle.style.fontSize = 16 * (width / 320) + "px");
+                } else {
+                    (docEle.style.fontSize=16 * (height / 500) + "px");
+                }
+            };
+        fn();
+        win.addEventListener("resize", fn, false);
+        doc.addEventListener("DOMContentLoaded", fn, false);
+    }(document, window));
+    var mySwiper = new Swiper(".swiper-container",{
+        autoplay:1500,
+        loop:true,
+        // 如果需要分页器，即下面的小圆点
+        pagination: '.swiper-pagination',
+        autoplayDisableOnInteraction:false
+    })
+
+    window.onload = function(){
+        var lia=$('.zong_left li');
+        var lib=$('.zong_right .zong_a');
+        //速度
+        var speed=30;
+        $(".zong_left li:first-child").addClass("aa active");
+        for(var i=0;i<lia.length;i++){
+            lia[i].index=i;
+            lia[i].onclick=function(){
+                for(var j=0;j<lia.length;j++){
+                    lia[j].className="aa";
+                    console.log(lia[j]);
+                }
+                this.className ="aa active";
+
+            }
+        }
+    }
+    function getarticle(id) {
+        $.ajax({
+            url: "{:url('officeaccount/Finance/companyprofile')}",
+            type : 'post',
+            dataType : 'json',
+            data:{typeid:id},
+            success: function(result){
+                $('.zong_a ul').html(result);
+            }
+        });
+    }
+getarticle({$companyclass[0]['id']});
+</script>
+</body>
+</html>

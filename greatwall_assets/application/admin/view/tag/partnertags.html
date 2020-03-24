@@ -1,0 +1,182 @@
+{extend name="admin@public/base_content" /}
+
+{block name="body">}
+
+<body>
+
+{include file="admin@public/common" /}
+
+<div class="container-fluid larry-wrapper">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+            <section class="panel panel-padding">
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label" style="width: auto">系统分组</label>
+
+                    <div class="layui-input-block">
+
+                        <input type="button" value="合伙人" class="layui-btn layui-btn-primary"> <span style="color: red">*系统分组在这里打标不能记录，可以重复打标</span>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label" style="width: auto">标签列表 </label>
+
+                    <div  class="layui-input-inline">
+
+                        <select name="tagid" id="tagid" class="layui-input" style="display: block;">
+                            {volist name="tags" id="vo"}
+                            <option value="{$vo.tagid}" >{$vo.tagname}</option>
+                            {/volist}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="layui-form-item ">
+
+                    <label class="layui-form-label">&nbsp;</label>
+
+                    <div class="layui-input-block">
+                        <a href="javascript:void(0);" onclick="tagp(0)" class="layui-btn">立即提交</a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+            <section class="panel panel-padding">
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label" style="width: auto">系统分组</label>
+
+                    <div class="layui-input-block">
+
+                        <input type="button" value="初创人" class="layui-btn layui-btn-primary"> <span style="color: red">*系统分组在这里打标不能记录，可以重复打标</span>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+
+                    <label class="layui-form-label" style="width: auto">标签列表 </label>
+
+                    <div  class="layui-input-inline">
+
+                        <select name="id" id="id" class="layui-input" style="display: block;">
+                            {volist name="tags" id="vo"}
+                            <option value="{$vo.tagid}" >{$vo.tagname}</option>
+                            {/volist}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="layui-form-item ">
+
+                    <label class="layui-form-label">&nbsp;</label>
+
+                    <div class="layui-input-block">
+                        <a href="javascript:void(0);" onclick="tagh(0)" class="layui-btn">立即提交</a>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+
+{/block}
+
+{block name="script"}
+
+<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+
+<script>
+
+    function tagp(limit) {
+        $.ajax({
+            type: "post",
+            url: "{:url('tag/partnertags')}",
+            data: {
+                'limit':limit,
+                "tagid":$('#tagid').val(),
+                "group":"partner"
+            },
+            dataType: "json",
+            success: function(data){
+                if(data.status==200){
+                    limit=limit+50;
+                    tagh(limit);
+                }else if(data.status==1){
+                    alert('批量处理完成');
+                    return;
+                }else{
+                    alert('网络错误');
+                    return;
+                }
+            }
+        });
+    }
+
+    function tagh(limit) {
+        $.ajax({
+            type: "post",
+            url: "{:url('tag/partnertags')}",
+            data: {
+                'limit':limit,
+                "tagid":$('#id').val(),
+                "group":"staff"
+            },
+            dataType: "json",
+            success: function(data){
+                if(data.status==200){
+                    limit=limit+50;
+                    tagh(limit);
+                }else if(data.status==1){
+                    alert('批量处理完成');
+                    return;
+                }else{
+                    alert('网络错误');return;
+                }
+            }
+        });
+    }
+
+
+
+
+</script>
+
+
+
+{/block}

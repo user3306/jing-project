@@ -1,0 +1,70 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <!--<div class="layui-progress layui-progress-big" lay-filter="demo" lay-showPercent="true" style="width: 340px">-->
+                    <!--<div class="layui-progress-bar layui-bg-green" lay-percent="0%" id="demo"></div>-->
+                <!--</div>-->
+                <label class="layui-form-label">进度</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="pro" value="0.0% 下载完成之前请勿关闭本页面" disabled="disabled" style="width: 300px">
+                </div>
+
+                <div class="layui-input-block"></div>
+                <div class="layui-input-block">
+                    <button class="layui-btn" onclick="downwximage(0,20)">立即提交</button>
+                </div>
+
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+<script>
+//    layui1.0.9 的进度条明显在坑爹 不用了
+    layui.use(['jquery','element'], function(){
+        var element = layui.element();
+        var $ = jQuery = layui.$;
+
+    });
+
+    function downwximage(offset,count) {
+
+        $.ajax({
+            type:"post",
+            url:"{:url('downWxImage')}",
+            data:{
+                offset:offset,
+                count:count
+            },
+            dataType:"json",
+            success:function (data) {
+                if(data.status == 200){
+                    offset=offset+20;
+                    $('#pro').attr('value',data.msg.pro+'下载中,请勿关闭页面');
+                    downwximage(offset,count);
+                }else if(data.status == 1){
+                    $('#demo').attr('lay-percent','100% 下载完成');
+                    alert('已经全部获取完毕');
+                }else {
+                    alert('操作中断，请重新开始');
+                }
+            }
+
+        })
+    }
+
+
+
+
+</script>
+
+
+{/block}

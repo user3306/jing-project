@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>维修报价</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta name="applicable-device"content="mobile"> <!--页面同时适合在移动设备上进行浏览-->
+	<meta http-equiv="Cache-Control" content="no-transform" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta http-equiv="Cache-Control" content="no-siteapp" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	
+	<!-- 苹果专用 -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	
+	<!--  jQuery WeUI 样式 -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+	<link rel="stylesheet" href="/static/home/css/xinziyou.css">
+	
+	<style type="text/css">
+	
+	table {
+		overflow:hidden;
+		border:1px solid #d3d3d3;
+		background:#fefefe;
+		width:100%;
+		margin:5% auto 0;
+		-moz-border-radius:5px; /* FF1+ */
+		-webkit-border-radius:5px; /* Saf3-4 */
+		border-radius:5px;
+		-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+		font-size:0.60rem;
+	}
+	
+	th, td {padding:10px 10px 10px; text-align:center; }
+	
+	th {padding-top:10px; text-shadow: 1px 1px 1px #fff; background:#eeeeee;}
+	
+	td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
+	
+	tr.odd-row td {background:#f6f6f6;}
+	
+	td.first, th.first {text-align:left}
+	
+	td.last {border-right:none;}
+	
+
+
+	
+
+
+</style>
+
+</head>
+<body>
+
+
+<!--S banner-->
+<div class="ban"><img src="/static/home/images/banner.png?ver=2" style="max-width:100%;" /></div>
+<!--E banner-->
+<div class="container">
+
+	<div class="weui-grids">
+      <a href="{:url('price')}?ptypeid=10" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_iphone.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          苹果
+        </p>
+      </a>
+      <a href="{:url('price')}?ptypeid=9" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_huawei.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          华为
+        </p>
+      </a>
+      <a href="{:url('price')}?ptypeid=7" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_samsung.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          三星
+        </p>
+      </a>
+      <a href="{:url('price')}?ptypeid=5" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_xiaomi.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          小米
+        </p>
+      </a>
+      <a href="{:url('price')}?ptypeid=8" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_oppo.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          OPPO		  
+        </p>
+      </a>
+      <a href="{:url('price')}?ptypeid=6" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+          <img src="/static/home/images/ico_vivo.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+          VIVO
+        </p>
+      </a>
+
+     
+    </div>
+	{volist name="result" id="vo"}
+	<table cellspacing="0">
+        <tr><th colspan="2">{$vo.pmodel}</th></tr>
+        {volist name="vo.data" id="price"}
+        <tr><td style="width:60%;">{$price.pfault}</td><td style="width:40%;">￥{$price.price}元</td></tr>
+        {/volist}
+    </table>
+        {/volist}
+
+	
+</div>
+<br /><br />
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-2.1.4.js"></script>
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-weui.js"></script>
+
+<script type="text/javascript">
+ $(function() {
+		/* For zebra striping */
+        $("table tr:nth-child(odd)").addClass("odd-row");
+		/* For cell text alignment */
+		$("table td:first-child, table th:first-child").addClass("first");
+		/* For removing the last border */
+		$("table td:last-child, table th:last-child").addClass("last");
+});
+</script>
+</body>
+</html>

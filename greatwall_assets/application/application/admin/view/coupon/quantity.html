@@ -1,0 +1,39 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">增加数量</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="increase_stock_value" placeholder="增加数量，支持不填或填0" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">减少数量</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="reduce_stock_value" placeholder="减少数量，可以不填或填0" class="layui-input ">
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="{$id}">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('myform');
+</script>
+{/block}

@@ -1,0 +1,46 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th>缓存说明</th>
+            <th width="240">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>1</td>
+            <td>DB1——用户数据缓存（Key:openid），非高级管理员请勿更新！</td>
+            <td>
+                <a href="{:url('updateudata')}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>更新缓存
+                </a>
+
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DB2——用户手机/openid缓存（Key:mobile），非高级管理员请勿更新！</td>
+            <td>
+                <a href="{:url('updateumobile')}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>更新缓存
+                </a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

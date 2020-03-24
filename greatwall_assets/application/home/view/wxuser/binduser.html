@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>用户绑定</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css">
+
+<body>
+
+<!--E 网页开始-->
+<div class="container">
+  <!--E 注册开始-->
+   <div class="clear10"></div>
+  <div class="imglogo"><img src="/static/home/images/logo.png" class="img-responsive" alt="Responsive image"></div>
+  <div class="weui-cells__title"><h4>新用户注册</h4></div>
+  
+  <div class="weui-cells weui-cells_form">
+
+
+  
+  <div class="weui-cell weui-cell_vcode">
+    <div class="weui-cell__hd">
+      <label class="weui-label">手机号</label>
+    </div>
+    <div class="weui-cell__bd">
+      <input class="weui-input" type="number" id="mobile" name="mobile" placeholder="手机号">
+    </div>
+    <div class="weui-cell__ft">
+      <button class="weui-vcode-btn" id="btn_code">获取验证码</button>
+    </div>
+  </div>
+  
+  <div class="weui-cell weui-cell_vcode">
+    <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+    <div class="weui-cell__bd">
+      <input class="weui-input" type="number" id="chknum" name="chknum" placeholder="验证码">
+    </div>
+    <div class="weui-cell__ft" style="display:hidden;height: 45px;">
+    </div>
+  </div>
+
+    <div class="weui-cell weui-cells_form">
+      <div class="weui-cell__hd">
+        <label class="weui-label">姓 名</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="realname" name="realname" placeholder="请输入姓名">
+      </div>
+    </div>
+
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">性 别</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="sex" id="sex">
+          <option value="先生">先生</option>
+          <option value="女士">女士</option>
+        </select>
+      </div>
+
+    </div>
+
+
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label for="" class="weui-label">手机品牌</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="ptype" id="ptype">
+          {foreach name="ptype" item="vo"}
+          <option value="{$vo.id}">{$vo.ptype}</option>
+          {/foreach}
+        </select>
+      </div>
+    </div>
+
+	  
+</div> 
+
+
+  <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="javascript:chkform();">下一步</a>
+  
+ <label for="weuiAgree" class="weui-agree">
+      <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+      <span class="weui-agree__text">
+        阅读并同意<a href="/home/wx_news/show/content_id/150">《相关条款》</a>
+      </span>
+    </label>
+	
+<!--E 注册结束-->
+
+
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<!--E 网页结束-->
+<script>
+    $(function(){
+        $("#btn_code").click(function(){
+            if ($("#mobile").val()=='')
+            {
+                $.toptip('手机号码不能为空', 2000, 'warning');
+                return (false);
+            }
+
+            $.ajax({
+                url:'{:url("sendsms")}',
+                type:'POST', //GET
+                data:{"mobile":$("#mobile").val()},
+                dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success:function(data){
+                    $.toptip('验证码已发出，请注意查收。', 2000, 'success');
+                    $("#btn_code").attr('disabled',"true");
+                }
+            });
+
+
+        });
+    });
+
+function chkform(){
+	var mobile = $("#mobile").val();
+	
+	if (!$("#weuiAgree").is(":checked"))
+	  {
+		$.toptip('请先阅读相关条款', 2000, 'warning');
+		return (false);
+	  } 
+
+		 var flag = false;
+		 var message = "";
+		 //var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-9]{1}))|(18[0-9]{1}))+\d{8}$/;
+		 if(mobile == ''){
+			 message = "手机号码不能为空！";
+		 }else if(mobile.length !=11){
+			 message = "请输入有效的手机号码！";
+		 //}else if(!myreg.test(mobile)){
+		//	 message = "请输入有效的手机号码！";
+		 }else{
+				 flag = true;
+		 }
+		 
+		 if(flag==false){
+				$.toptip(message, 2000, 'warning');
+				$("#mobile").focus();
+				return (false);
+             }
+	
+	
+	  
+	  if ($("#chknum").val() == '')
+	  {
+		$.toptip('请输入验证码', 2000, 'warning');
+		$("#chknum").focus();
+		return (false);
+	  }
+
+    if ($("#realname").val() == '')
+    {
+        $.toptip('请输入您的姓名', 2000, 'warning');
+        $("#realname").focus();
+        return (false);
+    }
+
+    //数据入库
+	  $.ajax({
+                url:'{:url()}',
+                type:'POST', //GET
+                data:{"mobile":$("#mobile").val(),"realname":$("#realname").val(),"sex":$("#sex").val(),"phonetype":$("#ptype").val(),"chknum":$("#chknum").val(),"openid":"{$openid}"},
+                dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                success:function(data){
+                    //console.log(data);
+                    if(data.status==200) {
+                        $.toast(data.msg);
+                        setTimeout(function () {
+                            window.location.href = data.url;
+                        }, 2000);
+                    }else{
+                        $.toast(data.msg, "forbidden");
+                    }
+
+                },
+                complete:function(){
+                    console.log('结束');
+                }
+        });
+}
+</script>
+
+</body>
+</html>

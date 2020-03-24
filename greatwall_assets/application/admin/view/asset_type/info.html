@@ -1,0 +1,158 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">顶级分类</label>
+                                    <div class="layui-input-block">
+                                        <select name="pid" id="pid"  lay-filter="productselect">
+                                            <option value="">请选择顶级分类</option>
+                                            {foreach typelist as $key=>$value}
+                                            <option value="{$value.id}" {if condition="$info.pid eq $value.id"}selected{/if}>{$value.parentname}</option>
+                                                {foreach $value['chilrenname'] as $k=>$val}
+                                                <option value="{$val.id}" {if condition="$info.pid eq $val.id"}selected{/if}> &nbsp;&nbsp;&nbsp;&nbsp; --{$val.assettype}</option>
+                                                {/foreach}
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">分类名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="assettype" value="{$info.assettype|default=''}" jq-verify="required" jq-error="请输入分类名称" placeholder="请输入分类名称" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">分类等级</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="lever" value="{$info.lever|default=''}" jq-verify="required" jq-error="请输入分类等级" placeholder="请输入分类等级" class="layui-input ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$info.id|default=''}">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script>
+    //document.domain = 'domain.com';
+    KindEditor.ready(function(K) {
+        window.editor = K.create('.king_content', {
+            allowFileManager : true,
+            langType : 'zh-CN',
+            autoHeightMode : true,
+            pasteType:2,
+            wellFormatMode:false,
+//            filterMode: false,
+            afterBlur: function () { this.sync(); }
+        });
+    });
+
+
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer
+        ,form = layui.form;
+        form.on('select(myselect)', function(data){
+            var areaname=(data.value).replaceAll(",","");
+            $.ajax({
+                type: 'POST',
+                url: '{:url("getArea")}',
+                data: {areaname:areaname},
+                dataType:  'json',
+                success: function(data){
+                    $("#City").html("");
+                    $.each(data, function(key, val) {
+                        var option1 = $("<option>").val(val.areaname).text(val.areaname);
+                        $("#City").append(option1);
+                        form.render('select');
+                    }); 
+                    $("#City").get(0).selectedIndex=0;
+                }
+            }); 
+        });
+
+        form.on('select(productselect)', function(data){
+            var areaname=(data.value).replaceAll(",","");
+            $.ajax({
+                type: 'POST',
+                url: '{:url("getArea")}',
+                data: {areaname:areaname},
+                dataType:  'json',
+                success: function(data){
+                    $("#asset_leavediquxian").html("");
+                    $.each(data, function(key, val) {
+                        var option1 = $("<option>").val(val.areaname).text(val.areaname);
+                        $("#asset_leavediquxian").append(option1);
+                        form.render('select');
+                    }); 
+                    $("#asset_leavediquxian").get(0).selectedIndex=0;
+                }
+            }); 
+        });
+    }); 
+    layui.use(['myform', 'upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+           // document.getElementById("tpl").value=data.value;
+        });
+
+        form.on('select(tpl1)', function(data){
+        //    document.getElementById("tpl1").value=data.value;
+        });
+
+
+
+        // var upload = layui.upload;
+        // //执行实例
+
+        // upload({
+        //     elem: '#smallpic'
+        //     ,url: '/rncms/admin_upload/upload' //上传接口
+        //     ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+        //     ,success: function(data){
+        //         console.log(data);
+        //         $("#smallurl").val(data.url);
+        //         $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+        //         $("#btnpic").show();
+        //     }
+        // });
+
+        // $("#delsmallpic").click(function(){
+        //     $("#smallurl").val('');
+        //     $("#divpic").html('');
+        //     $("#btnpic").hide();
+        // });
+
+    });
+
+</script>
+{/block}

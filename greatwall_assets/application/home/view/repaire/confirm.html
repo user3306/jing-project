@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>维修预约</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta name="applicable-device"content="mobile"> <!--页面同时适合在移动设备上进行浏览-->
+	<meta http-equiv="Cache-Control" content="no-transform" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta http-equiv="Cache-Control" content="no-siteapp" /> <!--告诉搜索引擎不要把网页转码-->
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	
+	<!-- 苹果专用 -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	
+	<!--  jQuery WeUI 样式 -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+	<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=12">
+</head>
+<body>
+
+
+<!--S 价格展示-->
+<div class="weui-media-box__bd panelprice">
+  <p class="weui-media-box__desc ygjg">预估维修价</p>
+  <h4 class="weui-media-box__title yyprice02"><i>¥</i>{$price}</h4>
+</div>
+<!--E 价格展示-->
+
+<div class="container">
+	<!--S 选择颜色-->
+	<div class="weui-cells__title">请选择颜色</div>	 
+	<div class="guzhang">
+	<ul id="colors">
+		<li data-val="黑色"><a href="#">黑色</a></li>
+		<li data-val="白色"><a href="#">白色</a></li>
+		<li data-val="蓝色"><a href="#">蓝色</a></li>
+		<li data-val="全色系"><a href="#">全色系</a></li>
+		<div class="clear"></div>
+	</ul>
+	</div>
+	<!--E 选择颜色-->
+
+	<!--S 选择维修方式-->
+	<div class="clear10"></div>
+
+
+	<div class="weui-cells__title">预约信息</div>
+
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info-circle" id="shop_i"></i>店面</label>
+		</div>
+		<div class="weui-cell__bd">
+			<select class="weui-select" name="shop" id="shop">
+				<option value="">请选择</option>
+				{volist name="shop" id="vo"}
+				<option value="{$vo.id}">{$vo.shop}</option>
+				{/volist}
+			</select>
+		</div>
+	</div>
+	
+	
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info-circle" id="yydate_i"></i>日期</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" type="date" value="" id="yydate">
+		</div>
+	</div>
+	
+
+	<div class="weui-cell weui-cell_select weui-cell_select-after">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info" id="yyampm_i"></i>时间</label>
+		</div>
+		<div class="weui-cell__bd">
+			<select class="weui-select" name="select2" id="yyampm">
+				<option value="上午">上午</option>
+				<option value="下午">下午</option>
+			</select>
+		</div>
+	</div>
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label for="" class="weui-label"><i class="weui-icon-info-circle" id="mobile_i"></i>手机</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" type="tel" value="" id="mobile" placeholder="请输入手机号">
+		</div>
+	</div>
+
+	<div class="clear10"></div>
+	 <div class="weui-btn-area">
+		<input type="hidden" name="colors" id="colors" value="" />
+		 <input type="hidden" name="ptypeid" id="ptypeid" value="{$ptypeid}" />
+		 <input type="hidden" name="ptypeid" id="ptype" value="{$ptype}" />
+		 <input type="hidden" name="pmodelid" id="pmodelid" value="{$pmodelid}" />
+		 <input type="hidden" name="pmodelid" id="pmodel" value="{$pmodel}" />
+		 <input type="hidden" name="pfaultids" id="pfaultids" value="{$pfaultids}" />
+		 <input type="hidden" name="price" id="price" value="{$price}" />
+
+      <a class="weui-btn weui-btn_primary jgok" href="javascript:" id="btn_submit">确定</a>
+    </div>
+
+<!--S 阅读并同意-->
+
+	<label for="weuiAgree" class="weui-agree">
+	  <span class="weui-agree__text">
+		我们将为您提供最安全，快速的维修服务。
+	  </span>
+	</label>
+</div>
+
+<!--E 阅读并同意-->
+
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-2.1.4.js"></script>
+<!-- body 最后 jQuery WeUI JS-->
+<script src="/static/home/js/jquery-weui.js"></script>
+
+<script>
+	$(function(){
+		$(":input").blur(function(){
+			var id=$(this).attr("id");
+			if($("#"+id+'_i').length > 0) {
+				
+				if($("#"+id).val()!="")
+				{
+					$("#"+id+'_i').removeClass("weui-icon-info-circle").addClass("weui-icon-info");
+				}
+				else
+				{
+					$("#"+id+'_i').removeClass("weui-icon-info").addClass("weui-icon-info-circle");
+				}
+				
+			} 
+		});
+		
+		$("#colors li").click(function(){      //绑定事件
+            //alert("事件绑定成功！");   
+			$(this).toggleClass('gz02');
+		});
+		
+		$("#btn_submit").click(function(){
+		    var colors="";
+			$('#colors li').each(function() {
+			  	//console.log($(this).attr("data-id"));
+                if($(this).hasClass('gz02')) {
+                    colors += $(this).attr("data-val") + ",";
+                }
+			 });
+
+			//这里要判断
+            if(colors == ''){
+                $.toptip('请选择颜色', 2000, 'warning');
+                return (false);
+            }
+            if($("#shop").val() == ''){
+                $.toptip('请选择店面', 2000, 'warning');
+                return (false);
+            }
+            if($("#yydate").val() == ''){
+                $.toptip('请选择预约日期', 2000, 'warning');
+                return (false);
+            }
+            if($("#mobile").val() == ''||$("#mobile").val().length !=11){
+                $.toptip('请输入您的手机号码', 2000, 'warning');
+                return (false);
+            }
+			$("#btn_submit").attr('disabled',"true");
+			//数据入库
+			$.ajax({
+				url:'{:url()}',
+				type:'POST', //GET
+				data:{"mobile":$("#mobile").val(),"yuyuedate":$("#yydate").val(),"yuyueampm":$("#yyampm").val(),"ptypeid":$("#ptypeid").val(),"ptype":$("#ptype").val(),"pmodelid":$("#pmodelid").val(),"pmodel":$("#pmodel").val(),"pfaultid":$("#pfaultids").val(),"shopid":$("#shop").val(),"shop":$("#shop").find("option:selected").text(),"price":$("#price").val(),"colors":colors},
+				dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+				success:function(data){
+					//console.log(data);
+					if(data.status==200) {
+						$.toast(data.msg);
+						setTimeout(function () {
+							window.location.href = data.url;
+						}, 2000);
+					}else{
+						$.toast(data.msg, "forbidden");
+					}
+
+				}
+			});
+		})
+		
+	})
+</script>
+</body>
+</html>

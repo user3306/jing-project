@@ -1,0 +1,54 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th style="text-align: center;width:5%">ID</th>
+            <th style="text-align: center;width:5%;">标签ID</th>
+            <th style="text-align: center;width:30%;">分组信息</th>
+            <th style="text-align: center;width:30%;">粉丝数量</th>
+            <th style="text-align: center;width:10%;">状态</th>
+            <th style="text-align: center;width:20%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="list" id="vo"}
+        <tr>
+            <td style="text-align: center;">{$vo.id}</td>
+            <td style="text-align: center;">{$vo.tagid}</td>
+            <td style="text-align: center;">{$vo.tagname}</td>
+            <td style="text-align: center;">{$vo.count}</td>
+            <td style="text-align: center;">{if $vo.status==1}<span style="color: green">已同步</span>{else}<span style="color: red">未同步</span>{/if}</td>
+            <td style="text-align: center;">
+                <a href="{:url('info',array('id'=>$vo['tagid']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}&tagid={$vo.tagid}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+                <!--<a href="{:url('tagkind',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">-->
+                    <!--<i class="iconfont">&#xe653;</i>去分组-->
+                <!--</a>-->
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

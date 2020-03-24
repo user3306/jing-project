@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>长城资产微官网</title>
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/public.css">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/style.css?v=1233">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/swiper.min.css">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/video.css" />
+    <script src="__HOME__/officeaccount/js/jquery.min.js"></script>
+    <script src="__HOME__/officeaccount/js/swiper.min.js"></script>
+    <script type="text/javascript" src="__HOME__/officeaccount/js/video.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+<div class="topbg">
+	<img src="__HOME__/officeaccount/img/logo.png" alt="" class="logo" style="margin:0.5rem 0 0 17%;">
+	<div class="toptit"><a href="#"><span></span></a><span class="tit-one" style="margin-left:0px">宣传视频</span></div>
+    <div class="swiper-container clear">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-04.jpg" alt="">
+            </div>
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-01.jpg" alt="">
+            </div>
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-02.jpg" alt="">
+            </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="pics-bot"></div>
+    <div class="pro_list">
+        <div class="video_tit">宣传视频</div>
+        <div class="pro_des">
+            <video ishivideo="true" isrotate="false" autoHide="true">
+                <source src="https://static.snrunning.cn/changchengzhichan20190527/changcheng.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</div>
+</div>
+    <script>
+        !(function(doc, win) {
+            var docEle = doc.documentElement,
+                fn = function() {
+                    var width = docEle.clientWidth;
+                    var height = docEle.clientHeight;
+                    if (640 / 1000 > width / height) {
+                        (docEle.style.fontSize = 16 * (width / 320) + "px");
+                    } else {
+                        (docEle.style.fontSize=16 * (height / 500) + "px");
+                    }
+                };
+            fn();
+            win.addEventListener("resize", fn, false);
+            doc.addEventListener("DOMContentLoaded", fn, false);
+        }(document, window));
+        var mySwiper = new Swiper(".swiper-container",{
+            autoplay:1500,
+            loop:true,
+             // 如果需要分页器，即下面的小圆点
+            pagination: '.swiper-pagination',
+            autoplayDisableOnInteraction:false
+        })
+
+    </script>
+</body>
+</html>

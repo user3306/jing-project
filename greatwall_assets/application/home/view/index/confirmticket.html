@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>优惠券使用确认</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+
+
+<body>
+
+<!--E 网页开始-->
+<div class="container">
+  <!--E 注册开始-->
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area"><i class="weui-icon-info  weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title"><i class="weui-success"></i>请确认</h2>
+            <p class="weui-msg__desc">{$msg}</p>
+        </div>
+		<div class="weui-msg__opr-area">
+			<p class="weui-btn-area">
+			  <a href="javascript:;" onclick="confirm()" class="weui-btn weui-btn_primary">确认使用</a>
+			</p>
+      </div>
+    </div>
+
+	  
+</div> 
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script src="/static/home/js/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script>
+function confirm()
+{
+	$.ajax({
+		url : "/home/index/confirmticketdo.html?code={$code}&cryptstr={$cryptstr}&mobile={$mobile}&billid={$billid}",
+		type:'post',
+		data:{"confirm":1},
+		dataType:'html',
+		success:function(data){	
+			 //$.toptip('操作成功。', 2000, 'success');
+			 $.toast("操作成功");
+		}
+	});
+}
+</script>
+
+
+
+</body>
+</html>

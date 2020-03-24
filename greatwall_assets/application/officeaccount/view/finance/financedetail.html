@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>长城资产微官网</title>
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/public.css">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/style.css?v=1233">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/swiper.min.css">
+    <script src="__HOME__/officeaccount/js/jquery.min.js"></script>
+    <script src="__HOME__/officeaccount/js/swiper.min.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+<div class="topbg">
+    <div class="toptit"><a href="javascript:window.history.go(-1)"><img alt="" src="__HOME__/officeaccount/img/arrow.png"><span>返回</span></a><span class="tit-one">长城资讯</span></div>
+    <img src="__HOME__/officeaccount/img/logo.png" alt="" class="logo">
+    <div class="article-show">
+        <div class="article_tit">{$content.title}</div>
+        <div class="article-content">
+            {$content.content}
+        </div>
+    </div>
+</div>
+</div>
+    <script>
+        !(function(doc, win) {
+            var docEle = doc.documentElement,
+                fn = function() {
+                    var width = docEle.clientWidth;
+                    var height = docEle.clientHeight;
+                    if (640 / 1000 > width / height) {
+                        (docEle.style.fontSize = 16 * (width / 320) + "px");
+                    } else {
+                        (docEle.style.fontSize=16 * (height / 500) + "px");
+                    }
+                };
+            fn();
+            win.addEventListener("resize", fn, false);
+            doc.addEventListener("DOMContentLoaded", fn, false);
+        }(document, window));
+        var mySwiper = new Swiper(".swiper-container",{
+            autoplay:1500,
+            loop:true,
+             // 如果需要分页器，即下面的小圆点
+            pagination: '.swiper-pagination',
+            autoplayDisableOnInteraction:false
+        })
+
+    </script>
+</body>
+</html>

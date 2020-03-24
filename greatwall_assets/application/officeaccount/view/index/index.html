@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 浏览器中页面将以原始大小显示，并不允许缩放 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 网站开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>长城资产微官网</title>
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/public.css">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/style.css?v=1233">
+    <link rel="stylesheet" href="__HOME__/officeaccount/css/swiper.min.css">
+    <link type="text/css" media="all" rel="stylesheet" href="__HOME__/officeaccount/css/dropload.css">
+    <script src="__HOME__/officeaccount/js/jquery.min.js"></script>
+    <script src="__HOME__/officeaccount/js/swiper.min.js"></script>
+    <script src="__HOME__/officeaccount/js/dropload.js"></script>
+    <script src="__HOME__/officeaccount/js/khData.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+<div class="topbg">
+    <div class="toptit"><a href=""><img alt="" src="__HOME__/officeaccount/img/arrow.png"><span>返回</span></a><span class="tit-one">长城资讯</span></div>
+    <img src="__HOME__/officeaccount/img/logo.png" alt="" class="logo">
+    <div class="swiper-container clear">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-01.jpg" alt="">
+            </div>
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-02.jpg" alt="">
+            </div>
+            <div class="swiper-slide clear">
+                <img class="left" src="__HOME__/officeaccount/img/banner-03.jpg" alt="">
+            </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="pics-bot"></div>
+<!-- Start Tabs !-->
+    <header class="tabHead">
+  <ul>
+    {foreach $arr as $key=>$value}
+        <li {if condition="$key==0"}class="active"{/if}>{$value}</li>
+    {/foreach}
+  <b class="border"></b>
+  </ul>
+</header>
+<article class="khfxWarp">
+    <section class="khfxPane" style="display:block">
+    </section>
+    <section class="khfxPane">
+    </section>
+    <section class="khfxPane">
+    </section>
+</article>
+<!-- Tab Container !-->
+</div>
+</div>
+    <script>
+        !(function(doc, win) {
+            var docEle = doc.documentElement,
+                fn = function() {
+                    var width = docEle.clientWidth;
+                    var height = docEle.clientHeight;
+                    if (640 / 1000 > width / height) {
+                        (docEle.style.fontSize = 16 * (width / 320) + "px");
+                    } else {
+                        (docEle.style.fontSize=16 * (height / 500) + "px");
+                    }
+                };
+            fn();
+            win.addEventListener("resize", fn, false);
+            doc.addEventListener("DOMContentLoaded", fn, false);
+        }(document, window));
+        var mySwiper = new Swiper(".swiper-container",{
+            autoplay:1500,
+            loop:true,
+             // 如果需要分页器，即下面的小圆点
+            pagination: '.swiper-pagination',
+            autoplayDisableOnInteraction:false
+        })
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var dv = $('.tabHead'), st;
+            dv.attr('otop', dv.offset().top);
+            $(window).scroll(function () {
+                st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+                if (st > parseInt(dv.attr('otop'))) {if (dv.css('position') != 'fixed') dv.css({ 'position': 'fixed', 'top': '0','z-index': '50'});}
+                else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+            });
+        });
+
+
+    </script>
+
+   
+</body>
+</html>

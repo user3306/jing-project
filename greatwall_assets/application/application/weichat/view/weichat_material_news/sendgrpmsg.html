@@ -1,0 +1,245 @@
+{extend name="admin@public/base_content" /}
+{block name="content_header">}
+<style>
+    #sidebar {
+        float: left;
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        background: #F3F3F3;
+    }
+    .img1{
+        position: relative;
+    }
+    #title2div0{
+        width: 96%;
+        margin: 0 2%;
+        background: #333;
+        color: #ffffff;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        bottom: 0px;
+    }
+    .cover{
+        position: relative;
+    }
+    .previewBox{
+        background: #ffffff;
+        border: 1px solid #DDDDDD;
+    }
+    .abs{
+        width: 100%;
+        height: 177px;
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        background: #DDDDDD;
+        opacity: 0;
+    }
+    .abs:hover{
+        opacity: 0.8;
+    }
+    .add_box{
+        background: #ffffff;
+        width:100% ;
+        border: 1px solid #DDDDDD;
+        height: 140px;
+        position: relative;
+    }
+    .add_box .add_title{
+        float: left;
+        margin-top: 5px;
+        margin-left: 10px;
+        color: #333333;
+    }
+    .add_title{
+        width: 190px;
+    }
+    .add_box>img{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    #add{
+        display: inline-block;
+        width: 80%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        margin: 20px 10%;
+        border: 1px dotted #666666;
+    }
+    .bianji_box{
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: #DDDDDD;
+        text-align: center;
+        opacity: 0;
+    }
+    .bianji_box .a1{
+        display: inline-block;
+        margin-top: 30px;
+
+    }
+    .bianji_box:hover{
+        opacity: 0.8;
+    }
+</style>
+{/block}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4">
+            <section class="panel">
+                <div id="sidebar">
+                    <div class="previewBox">
+                        <!-- <p style="margin:10px 14px 0 14px;"><span class="msg-date">2013-08-14</span></p>-->
+                    {empty name="info"}
+                        <div class="cover editing" id='sdiv0'>
+                            <div class="img1">
+                                <h4 class="msg-t" id="title2div0">
+                                    {$info.title|default='标题'}<span class="i-title"></span>
+                                </h4>
+                                <img src="{$info.image|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                            </div>
+
+                            <ul class="abs tc sub-msg-opr">
+                                <a class="th" href="javascript:void(0)" onclick="editDiv('div0')">
+                                    <div style="width: 96%; margin: 40px 2% 0; height: 120px; font-size: 16px;text-align: center;">
+                                        编辑</div>
+                                </a>
+                            </ul>
+                        </div>
+                    {else}
+                        {foreach name="info.child" item="vo"}
+                        {eq name="key" value="0"}
+                        <div class="cover editing" id='sdiv0'>
+                            <div class="img1">
+                                <h4 class="msg-t" id="title2div0">
+                                    {$vo.title|default='标题'}<span class="i-title"></span>
+                                </h4>
+                                <img src="{$vo.image|default='__ADMIN__/wximg/2.png'}" id="imgdiv0"  width="320px" height="180px" style="width: 96%; margin: 0 2%;"/>
+                            </div>
+
+                           
+                        </div>
+                        {else}
+                        <div class="add_box" id="sdiv{$key}">
+                            <span class="add_title" id="title2div{$key+1}">{$vo.title|default='标题'}</span>
+                            <img src="{$vo.image|default='__ADMIN__/wximg/1.png'}" alt="" width="80px" height="80px">
+                            
+                        {/eq}
+                        {/foreach}
+                    {/empty}
+
+
+                    </div>
+
+                </div>
+
+                
+            </section>
+        </div>
+
+
+
+        <div class="col-xs-8 col-sm-8 col-md-8" id="main">
+            
+            <form class="layui-form" action="" id="div0">
+                <section class="panel panel-padding">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">群组</label>
+                        <div class="layui-input-inline">
+                            <select name="tags" id="tags" class="layui-input" style="display: block;">
+                                {foreach name="tagslist" item="vo"}
+                                <option value="{$vo.id}">{$vo.name}({$vo.count})</option>
+                                {/foreach}
+                            </select>                            
+                        </div>
+                            
+                        
+                    </div>
+
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">&nbsp;</label>
+                        <div class="layui-input-block">
+                            <a href="javascript:void(0);" onclick="sendmsg()"  class="layui-btn">群发信息</a>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信号 </label>
+                        <div  class="layui-input-inline">
+                            <select name="weixinid" id="weixinid" class="layui-input" style="display: block;">
+                                <option value="oUZaUjsJIwo--yboKsvWZkqbtG7g" >老丁</option>
+                                <option value="oUZaUjinKapfHAsAJatbTi88kHuI" >董显</option>
+
+                            </select>
+                        </div>
+                    </div>                    
+
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">&nbsp;</label>
+                        <div class="layui-input-block">
+                            <a href="javascript:void(0);" onclick="priview()"  class="layui-btn">预览</a>
+                        </div>
+                    </div>
+
+                </section>
+                <input type="hidden" name="material_id" id="material_id" value="{$info.material_id}">
+                <input type="hidden" name="materialId" id="materialId" value="{$info.media_id}">
+            </form>
+            
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12" style="text-align:center;">
+            <section class="panel panel-padding">
+                <div class="layui-input-block">
+                    <button class="layui-btn" id="submit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<!--kingeditor编辑器开始-->
+<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+<!--kingeditor编辑器结束-->
+<script>
+    function priview()
+    {
+        $.ajax({
+                type: "post",
+                url: "/weichat/weichat_material_news/priviewmsg.html",
+                data: {"weixinid": $("#weixinid").val(), "materialId": $("#materialId").val()},
+                dataType: "html",
+                success: function(data){
+                    alert("预览成功，请在微信端查看！");
+                }
+            });
+    }
+
+    function sendmsg()
+    {
+        $.ajax({
+                type: "post",
+                url: "/weichat/weichat_material_news/sendmsg.html",
+                data: {"tagid": $("#tags").val(), "materialId": $("#materialId").val()},
+                dataType: "html",
+                success: function(data){
+                    alert("群发成功！");
+                }
+            });
+    }
+
+</script>
+{/block}

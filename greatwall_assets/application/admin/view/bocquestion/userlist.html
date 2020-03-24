@@ -1,0 +1,157 @@
+{extend name="admin@public/base_content" /}
+
+{block name="content_header">}
+
+{block name="body">}
+
+<body>
+
+{include file="admin@public/common" /}
+<script src="/static/admin/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                    <div class="layui-form-item" style="margin-bottom:0px;">
+                        <label class="layui-form-label" style="width: auto">{$title}</label>
+
+                        <div class="layui-inline">
+                            <a href="{:url('exportoption',array('act_id'=>$act_id))}" class="layui-btn">选择题导出</a>
+                            <a href="{:url('exporttext',array('act_id'=>$act_id))}" class="layui-btn">文字题导出</a>
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th style="text-align: center">页面访问数量</th>
+            <th style="text-align: center">页面访问人数</th>
+            <th style="text-align: center">参与调查人数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="text-align: center">{$count['all']}</td>
+            <td style="text-align: center">{$count['visit']}</td>
+            <td style="text-align: center">{$count['register']}</td>
+        </tr>
+        </tbody>
+    </table>
+    {volist name="list1" id="vo"}
+    <table class="layui-table lay-even">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th colspan="3">{$vo.question} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: red">{if $vo.type==1}单选题{/if} {if $vo.type==2}多选题{/if}</span></th>
+        </tr>
+        </thead>
+        <thead>
+        <tr>
+            <th width="80%" style="text-align: center">选项</th>
+            <th width="10%">小计</th>
+            <th width="10%">比例</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>A：{$vo.option_a}</td>
+            <td>{$vo.option_a_num}</td>
+            <td>{$vo.option_a_num / $count['register'] * 100}%</td>
+        </tr>
+        <tr>
+            <td>B：{$vo.option_b}</td>
+            <td>{$vo.option_b_num}</td>
+            <td>{$vo.option_b_num / $count['register'] * 100}%</td>
+        </tr>
+        <tr>
+            <td>C：{$vo.option_c}</td>
+            <td>{$vo.option_c_num}</td>
+            <td>{$vo.option_c_num / $count['register'] * 100}%</td>
+        </tr>
+        <tr>
+            <td>D：{$vo.option_d}</td>
+            <td>{$vo.option_d_num}</td>
+            <td>{$vo.option_d_num / $count['register'] * 100}%</td>
+        </tr>
+        </tbody>
+    </table>
+    {/volist}
+    <table class="layui-table lay-even">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th colspan="6">很骄傲和圣诞节哈斯尽快的哈&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: red">文字题</span></th>
+        </tr>
+        </thead>
+        <thead>
+        <tr>
+            <th align="center" width="3%">id</th>
+            <th align="center" width="37%">问题</th>
+            <th align="center" width="5%">姓名</th>
+            <th align="center" width="5%">手机号码</th>
+            <th align="center" width="40%">回答</th>
+            <th align="center" width="10%">提交时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="list2" id="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.question}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.answer}</td>
+            <td>{$vo.createtime|date="Y-m-d H:i:s"}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+
+
+</div>
+<div class="text-right" style="text-align: center">
+
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+
+        {/*$list|raw*/}
+
+    </div>
+
+</div>
+
+</body>
+
+{/block}
+
+{block name="script"}
+
+<script>
+
+    layui.use(['default','jquery']);
+    laydate.render({
+        elem: '#starttime'
+        ,type:'date'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#endtime'
+        ,type:'date'
+        //指定元素
+    });
+
+</script>
+
+{/block}

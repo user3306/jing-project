@@ -1,0 +1,97 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div style="float: left;margin-left: 20px;">微信名/手机号：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="keyword" style="width:280px;height:25px;">
+                </div>
+
+                <div style="float: left;margin-left: 40px;">
+                    <a href="javascript:void(0);" onclick="datesearch()"  class="layui-btn layui-btn-small" style="float:right">
+                        查询
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>头像</th>
+            <th>用户名</th>
+            <th>手机</th>
+            <th>当前积分</th>
+            <th>累计签到天数</th>
+            <th>连续签到天数</th>
+            <th>评论积分</th>
+            <th>投稿积分</th>
+            <th>最近签到时间</th>
+            <th width="240">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td><img src="{$vo.headimgurl}" width="30px" height="30px"></td>
+            <td>
+                <?php echo base64_decode($vo['nickname']); ?>
+            </td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.integral}</td>
+            <td>{$vo.total_time}</td>
+            <td>{$vo.running_time}</td>
+            <td>{$vo.comment_integral}</td>
+            <td>{$vo.contribute_integral}</td>
+            <td>{$vo.addtime|date='Y-m-d H:i'}</td>
+
+            <td>
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                {if $vo.mobile}
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"unbind"}'
+                   data-params='{"url": "{:url("unbind")}","confirm":"true","data":"id={$vo.id}","complete":"unbind"}'>
+                    <i class="iconfont">&#xe626;</i>解绑
+                </a>
+                {/if}
+                <!--
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+
+    function datesearch()
+    {
+        window.location='?keyword='+document.getElementById('keyword').value;
+    }
+</script>
+{/block}

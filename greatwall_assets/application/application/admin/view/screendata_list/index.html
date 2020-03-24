@@ -1,0 +1,79 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="/static/admin/js/laydate/laydate.js"></script>
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input name="starttime" value="{$pageMaps.starttime|default=''}" id="date" lay-verify="date" placeholder="开始时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" type="text" jq-verify="required" jq-error="请输入开始时间">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input name="endtime" value="{$pageMaps.endtime|default=''}" id="date" lay-verify="date" placeholder="结束时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" type="text" jq-verify="required" jq-error="请输入结束时间">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>地域</th>
+            <th>押品</th>
+            <th>债权规模</th>
+            <th>行业</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo" key="k"}
+		{if condition="$vo.areatype != NULL || $vo.producttype != NULL || $vo.scroptype != NULL || $vo.tradetype != NULL"}
+        <tr>
+            <td align="center"><span>{$pageMaps.page*20+$k+1}</span></td>
+            <td>{$vo.areatype}</td>
+            <td>{$vo.producttype}</td>
+            <td>{$vo.scroptype}</td>
+            <td>{$vo.tradetype}</td>
+            <td>{$vo.screendate|date="Y-m-d H:i:s"}</td>
+        </tr>
+		{/if}
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script src="/static/admin/js/jquery.min.js"></script>
+
+<script>
+    layui.use(['myform','default','pageform','upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+    });
+
+</script>
+{/block}

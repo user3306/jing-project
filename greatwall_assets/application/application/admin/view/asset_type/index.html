@@ -1,0 +1,76 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="assettype" value="{$pageMaps.assettype|default=''}" placeholder="请输入分类名称">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>资产分类</th>
+            <th>父级名称</th>
+            <th>是否显示</th>
+            <th>排序</th>
+            <th>添加时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo" key="k"}
+        <tr>
+            <td align="center"><span>{$pageMaps.page*20+$k+1}</span></td>
+            <td>{$vo.assettype}</td>
+            <td>{$vo.parentname}</td>
+            <td>{if condition="$vo.is_status neq 0"}显示{else/}不显示{/if}</td>
+			<td>{$vo.sort}</td>
+            <td>{$vo.addtime|date="Y-m-d H:i:s"}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo.id))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a><br/>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}' style="margin-top: 5px">
+                    <i class="iconfont">&#xe626;</i>删除
+                </a><br/>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

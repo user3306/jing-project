@@ -1,0 +1,67 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="100">公众号ID</th>
+            <th>公众号名称</th>
+            <th>Token</th>
+            <th>状态</th>
+            <th width="240">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.weichat_id}</td>
+            <td>{$vo.weichat_name}</td>
+            <td>{$vo.token}</td>
+            <td>
+                <input type="radio" lay-filter="is_bind" name="is_bind" {eq name="vo.is_bind" value="1"}checked{/eq} title="使用" value="{$vo.weichat_id}"/>
+            <td>
+                <a href="{:url('info',array('weichat_id'=>$vo['weichat_id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.weichat_id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.weichat_id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default', function(){
+        var $ = layui.jquery,
+                form = layui.form();
+        //各种基于事件的操作，下面会有进一步介绍
+        //自定义
+        form.on('radio(is_bind)', function(data){
+            url="{:url('/api/Api/changeWx')}";
+            $.post(url,{
+                weichat_id:data.value,
+            },function(data){
+                if (data.status==200){
+                    layer.msg(data.msg, {
+                        icon: 1
+                    });
+                }else{
+                    layer.msg(data.msg, {
+                        icon: 5
+                    });
+                }
+            });
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>个人中心</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=20180102">
+
+<body>
+
+
+<!--S 头像 开始-->
+<div class="membg">
+	<div class="mempic"><img src="{$headimgurl}"></div>
+	<div class="memname" style="color: #111111;">{$nickname}</div>
+</div>
+
+  <!--S 我的消费记录 开始-->
+  <div class="weui-panel">
+        <div class="weui-panel__hd">个人中心</div>
+        <div class="weui-panel__bd">
+          <div class="weui-media-box weui-media-box_small-appmsg">
+            <div class="weui-cells">
+              
+              <a class="weui-cell weui-cell_access" href="{:url('buyrecord')}" >
+                <div class="weui-cell__hd"><img src="/static/home/images/list.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                <div class="weui-cell__bd weui-cell_primary" >
+                  <p>我的积分</p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+            
+            <a class="weui-cell weui-cell_access" href="{:url('membercard')}">
+                <div class="weui-cell__hd"><img src="/static/home/images/ico_buyrecord.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                <div class="weui-cell__bd weui-cell_primary">
+                  <p>我的会员卡</p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+              <a class="weui-cell weui-cell_access" href="{:url('usercard')}">
+                <div class="weui-cell__hd"><img src="/static/home/images/ico_card.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                <div class="weui-cell__bd weui-cell_primary">
+                  <p>我的优惠券</p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+              <a class="weui-cell weui-cell_access" href="{:url('home/repaire/myrecord')}">
+                <div class="weui-cell__hd"><img src="/static/home/images/ico_yuyue.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                <div class="weui-cell__bd weui-cell_primary">
+                  <p>预约记录</p>
+                </div>
+                <span class="weui-cell__ft"></span>
+              </a>
+            </div>
+			
+          </div>
+		  
+        </div>
+
+      </div>
+	<!--E 我的消费记录 结束-->
+
+<!--E 个人中心 结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+</body>
+</html>

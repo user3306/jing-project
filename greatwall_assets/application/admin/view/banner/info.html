@@ -1,0 +1,122 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">标题</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" value="{$info.title|default=''}" jq-verify="required" jq-error="请输入标题" placeholder="请输入文章标题" class="layui-input ">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">图片</label>
+                                <div class="layui-input-inline">
+                                    <input type="file" name="image" id="smallpic" class="layui-upload-file">
+                                    <input type="hidden" name="image" id="smallurl" value="{$info.image|default=''}" jq-error="请上传图片" error-id="img-error">
+                                    <p id="img-error" class="error"></p>
+                                </div>
+                                <div class="layui-input-inline" id="divpic">
+                                </div>
+                                <div class="layui-input-inline" id="btnpic" style="display: none;">
+                                    <button type="button" class="layui-btn layui-btn-primary" id="delsmallpic">删除图片</button>
+                                </div>
+                                {notempty name="info.image"}
+                                <div class="layui-input-block">
+                                    <div class="imgbox"><img src="{$info.image|default=''}" alt="..." class="img-thumbnail"></div>
+                                </div>
+                                {/notempty}
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">外链</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="url" value="{$info.url|default=''}" jq-verify="" jq-error="请输入跳转链接" placeholder="请输入跳转链接" class="layui-input ">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item ">
+                                <label class="layui-form-label">描述</label>
+                                <div class="layui-input-block">
+                                    <textarea name="description" placeholder="请输入描述" class="layui-textarea">{$info.description|default=''}</textarea>
+                                </div>
+                            </div>
+
+
+                            <div id="expand"></div>
+
+                            <div class="layui-form-item" pane>
+                                <label class="layui-form-label">状态</label>
+                                <div class="layui-input-inline">
+                                    <input type="radio" name="status" {eq name="info.status" value="1"}checked{/eq} title="显示" value="1" checked />
+                                    <input type="radio" name="status" {eq name="info.status" value="2"}checked{/eq} title="关闭" value="2" />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">排序</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="listorder"  jq-verify="number" value="{$info.sequence|default='0'}" jq-error="排序必须为数字" placeholder="分类排序" class="layui-input ">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$info.id|default=''}">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+
+<script>
+    layui.use(['myform', 'upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+        //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(tpl)', function(data){
+            document.getElementById("tpl").value=data.value;
+        });
+
+
+
+        var upload = layui.upload;
+        //执行实例
+
+        upload({
+            elem: '#smallpic'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data);
+                $("#smallurl").val(data.url);
+                $("#divpic").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic").show();
+            }
+        });
+
+        $("#delsmallpic").click(function(){
+            $("#smallurl").val('');
+            $("#divpic").html('');
+            $("#btnpic").hide();
+        });
+
+    });
+
+</script>
+{/block}

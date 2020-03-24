@@ -1,0 +1,51 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th style="text-align: center;width:5%">ID</th>
+            <th style="text-align: center;width:25%;">网点名称</th>
+            <th style="text-align: center;width:20%;">纬度</th>
+            <th style="text-align: center;width:20%;">经度</th>
+            <th style="text-align: center;width:30%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="list" id="vo"}
+        <tr>
+            <td style="text-align: center;">{$vo.id}</td>
+            <td style="text-align: center;">{$vo.name}</td>
+            <td style="text-align: center;">{$vo.lat}</td>
+            <td style="text-align: center;">{$vo.lng}</td>
+
+
+            <td style="text-align: center;">
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+</script>
+{/block}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>积分明细</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=2">
+
+<body>
+
+<div class="weui-msg">
+  <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"></i></div>
+  <div class="weui-msg__text-area">
+    <h2 class="weui-msg__title">{$userpoint}积分</h2>
+  </div>
+</div>
+
+<div class="weui-panel weui-panel_access">
+  <div class="weui-panel__hd">积分详细</div>
+  <div class="weui-panel__bd">
+    {volist name="result" id="vo"}
+    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+      <div class="weui-media-box__bd">
+        <h5 class="weui-media-box__title" style="font-size:0.66rem;">
+          +{$vo.points}积分
+          <span class="weui-media-box__title-after" style="color:#ccc;font-size:0.5rem;">{$vo.posttime|date='Y-m-d'}</span>
+        </h5>
+      </div>
+    </a>
+    {/volist}
+
+  </div>
+</div>
+
+
+<p>&nbsp;</p>
+
+
+
+<!--E 个人中心 结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名</label>
+                        <div class="layui-input-block">
+
+                            <input type="text" name="realname" value="{$info.realname}（{$info.card_id}）" class="layui-input" >
+                            <input type="hidden" name="openid" value="{$info.openid}" >
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">卡券</label>
+                        {foreach name="ticketsList" item="vo"}
+                        <div class="layui-input-inline">
+                            <input type="radio" value="{$vo.card_id}"  name="card_id" title="{$vo.title}"  lay-filter="card_id">
+                        </div>
+                        {/foreach}
+                    </div>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" type="hidden" value="{$info.id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">发放卡券</button>
+                        <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.back()">返回</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('myform');
+</script>
+{/block}

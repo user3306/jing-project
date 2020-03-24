@@ -1,0 +1,632 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-tab" lay-filter="check">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this" lay-id="1">基本信息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">资产名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_name" value="{$info.asset_name|default=''}" jq-verify="required" jq-error="请输入资产名称，如：ABC公司债权资产" placeholder="请输入资产名称，如：ABC公司债权资产" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" pane>
+                                    <label class="layui-form-label">是否精品</label>
+                                    <div class="layui-input-inline">
+                                        <input type="radio" name="competitive" {if condition="$info.competitive eq 0"}checked{/if} title="非精品" value="0" checked/>
+                                        <input type="radio" name="competitive" {if condition="$info.competitive eq 1"}checked{/if} title="精品" value="1" />
+                                    </div>
+                                </div>
+                                {if condition="$info.asset_name eq ''"}
+                                <div class="layui-form-item" pane>
+                                    <label class="layui-form-label">是否正常资产</label>
+                                    <div class="layui-input-inline" id="defaultnomal">
+                                        <input type="radio" name="defaultasset" {eq name="info.defaultasset" value="0"}checked{/eq} title="正常资产" value="0" checked />
+                                        <input type="radio" name="defaultasset" {eq name="info.defaultasset" value="1"}checked{/eq} title="非正常资产" value="1" />
+                                    </div>
+                                </div>
+                                {else}
+                                <input type="hidden" name="defaultasset"  value="{$info.defaultasset}" />
+                                {/if}
+                                <div id="nomalasset" {if condition="$info.defaultasset eq 0"} style="display: block;" {else} style="display: none;" {/if}>
+                                <div class="layui-form-item" >
+                                    <div class="layui-input-inline">
+                                    <label class="layui-form-label">所在地市：</label>
+                                    <div class="layui-input-block" style="width: 100px">
+                                        <select name="asset_dishi" id="province"  lay-filter="myselect">
+                                            <option value="">请选择市</option>
+                                        {if condition="$assettype neq ''"}
+                                            {foreach assettype as $key=>$value}
+                                            {if condition="$value.lever eq 1"}
+                                            <option value="{$value.id}" {if condition="$info.asset_dishi eq $value.id"}selected{/if}>{$value.parentname}</option>
+                                            {/if}
+                                            {/foreach}
+                                         {/if}
+                                        </select>
+                                    </div>
+                                    </div> &nbsp;&nbsp;&nbsp;
+									<div class="layui-input-inline" style="margin-left:5px">
+                                    <label class="layui-form-label">所在区县：</label>
+                                    <div class="layui-input-block" style="width: 100px">
+                                        <select name="asset_quxian" id="City">
+                                            <option value="">请选择区县</option>
+                                            {foreach areatype as $key=>$value}
+                                            <option value="{$value.id}" {if condition="$info.asset_quxian eq $value.id"}selected{/if}>{$value.assettype}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                    </div> &nbsp;&nbsp;&nbsp;
+									<div class="layui-input-inline" style="margin-left:5px">
+                                    <label class="layui-form-label">行业</label>
+                                    <div class="layui-input-block" style="width: 300px">
+                                        <select name="asset_trade" id="asset_trade"  lay-filter="asset_trade">
+                                            <option value="">请选择行业</option>
+                                        {if condition="$assettype neq ''"}
+                                            {foreach assettype as $key=>$value}
+                                            {if condition="$value.lever eq 4"}
+                                            <option value="{$value.id}" {if condition="$info.asset_trade eq $value.id"}selected{/if}>{$value.parentname}</option>
+                                            {/if}
+                                            {/foreach}
+                                        {/if}
+                                        </select>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">资产亮点</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="intr" value="{$info.intr|default=''}" placeholder="请输入资产亮点" class="layui-input ">{$info.intr|default=''}</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">本金</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_basemoney" value="{$info.asset_basemoney|default=''}" placeholder="请输入本金金额，默认单位万元，保留两位小数，如1234.56" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">利息</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_getmoney" value="{$info.asset_getmoney|default=''}" placeholder="请输入利息金额，默认单位万元，保留两位小数，如1234.56" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">担保方式</label>
+                                    <div class="layui-input-block">
+                                        <select jq-error="请选择担保方式" lay-filter="tpl1" name=" asset_danbaomethod">
+                                            <option value=""></option>
+                                            <option value="保证" {if condition="$info.asset_danbaomethod eq '保证'"}selected{/if}>保证</option>
+                                            <option value="质押" {if condition="$info.asset_danbaomethod eq '质押'"}selected{/if}>质押</option>
+                                            <option value="抵押" {if condition="$info.asset_danbaomethod eq '抵押'"}selected{/if}>抵押</option>
+                                            <option value="抵押+保证" {if condition="$info.asset_danbaomethod eq '抵押+保证'"}selected{/if}>抵押+保证</option>
+                                            <option value="质押+保证" {if condition="$info.asset_danbaomethod eq '质押+保证'"}selected{/if}>质押+保证</option>
+                                            <option value="抵押+质押+保证" {if condition="$info.asset_danbaomethod eq '抵押+质押+保证'"}selected{/if}>抵押+质押+保证</option>
+                                            <option value="信用" {if condition="$info.asset_danbaomethod eq '信用'"}selected{/if}>信用</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">保证人</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="asset_danbaoperson" value="{$info.asset_danbaoperson|default=''}" placeholder="请输入保证人名称，含自然人、法人等，如：张三、李四、ABC公司" class="layui-input ">
+                                    </div>
+                                </div>
+                                <div id="act" {if condition="!empty($info.id) &&  empty($info.act)" /}style="display:none;"{else /} style="display:block;" {/if}>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">添加押品</label>
+                                        <button class="layui-btn" id='add_act' type="button">新增</button>
+                                    </div>
+									
+									
+									
+									
+
+                                    {foreach name='info.act' item='vo' key='k'}
+           <div style="border-top:3px solid rgba(25,160,148,1); padding-top: 5px;" id="divinfo{$k}">
+                                        <a href="#" class="layui-btn layui-btn-small layui-btn-danger" style="float:right; min-width: 100px; margin-bottom: 10px;" onclick="deldiv({$k})">删除</a>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">押品分类</label>
+                                            <div class="layui-input-block">
+                                                <select name="act[{$k}][producttype]" id="producttype"  lay-filter="productselect">
+                                                    <option value="">请选择押品分类</option>
+                                                    {foreach assettype as $key=>$value}
+                                                    {if condition="$value.lever eq 2"}
+                                                    <option value="{$value.id}" {if condition="$vo.asset_bigclass eq $value.id"}selected{/if}>{$value.parentname}</option>
+                                                        {foreach $value['chilrenname'] as $ks=>$val}
+                                                            <option value="{$val.id}" {if condition="$vo.asset_childclass eq $val.id"}selected{/if}> &nbsp;&nbsp;&nbsp;&nbsp; -- {$val.assettype}</option>
+                                                        {/foreach}
+                                                        {/if}
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item" >
+                                            <div class="layui-input-inline">
+                                            <label class="layui-form-label">存放城市：</label>
+                                            <div class="layui-input-block" style="width: 100px">
+                                                <select name="act[{$k}][asset_leavedishi]" id="asset_leavedishi{$k}" lay-filter="asset_leavedishi{$k}">
+                                                    <option value="">请选择市</option>
+                                                {if condition="$assettype neq ''"}
+                                                    {foreach assettype as $key=>$value}
+                                                    {if condition="$value.lever eq 1"}
+                                                    <option value="{$value.id}" {if condition="$vo.asset_leavedishi eq $value.id"}selected{/if}>{$value.parentname}</option>
+                                                    {/if}
+                                                    {/foreach}
+                                                {/if}
+                                                </select>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item" >
+                                            <div class="layui-input-inline">
+                                            <label class="layui-form-label">存放区县：</label>
+                                            <div class="layui-input-block" style="width: 100px">
+                                                <select name="act[{$k}][asset_leavediquxian]" id="asset_leavediquxian{$k}">
+                                                    <option value="">请选择区县</option>
+                                                    {foreach saveareatype as $key=>$value}
+                                                    <option value="{$value.id}" {if condition="$vo.asset_leavediquxian eq $value.id"}selected{/if}>{$value.assettype}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">头图</label>
+                                            <div class="layui-input-inline">
+                                                <input type="file" name="pic" id="smallpic{$k}" data="smallpic{$k}" class="layui-upload-file file_img">
+                                                <input type="hidden" name="act[{$k}][pic]" id="pic{$k}" value="{$vo.pic|default=''}" error-id="img-error">
+                                                <p id="img-error" class="error"></p>
+                                            </div>
+                                            <div class="layui-input-inline" id="divpic{$k}">
+                                                {notempty name="vo.pic"}
+                                                <img src="{$vo.pic|default=''}" alt="..." class="img-thumbnail">
+                                                {/notempty}
+                                            </div>
+                                           
+                                            <div class="layui-input-inline" id="btnpic{$k}" style="display: none;">
+                                                <button type="button" class="layui-btn layui-btn-primary" onclick='delpic({$k})'>删除头图</button>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="layui-form-item ">
+                                            <label class="layui-form-label">抵押品介绍</label>
+                                            <div class="layui-input-block">
+                                                <textarea name="act[{$k}][desc]" class="king_content" cols="100" rows="20">{$vo.desc|default=''}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">押品数量</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_diyanumber]" value="{$vo.asset_diyanumber|default=''}" placeholder="请输入抵押品数量，如：5678.00平方米，或XYZ公司99%股权" class="layui-input ">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">抵质押人</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_diyanperson]" value="{$vo.asset_diyanperson|default=''}" placeholder="请输入抵质押人" class="layui-input ">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">项目经理</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_manager]" value="{$vo.asset_manager|default=''}" placeholder="请输入责任项目经理姓名" class="layui-input ">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">联系方式</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_managerline]" value="{$vo.asset_managerline|default=''}"placeholder="请输入联系方式，如029-62220286" class="layui-input ">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">备注</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_packagename]" value="{$vo.asset_packagename|default=''}" placeholder="请输入备注（资产包名称）" class="layui-input ">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">员工号</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="act[{$k}][asset_manageruserid]" value="{$vo.asset_manageruserid|default=''}" placeholder="请输入员工代码，如：jians" class="layui-input ">
+                                            </div>
+                                        </div>
+                                    <input type="hidden" name="act[{$k}][id]" value="{$vo.id|default=''}">
+                                    </div>
+                                    {/foreach}
+									
+                                </div>
+                            </div>
+                            <div id="defaultact" {if condition="$info.defaultasset eq 1"} style="display: block;" {else} style="display: none;" {/if}>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">项目经理</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="asset_managers" value="{$info.asset_managers|default=''}" placeholder="请输入责任项目经理姓名" class="layui-input ">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">联系方式</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="asset_managerlines" value="{$info.asset_managerlines|default=''}" placeholder="请输入联系方式，如029-62220286" class="layui-input ">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item ">
+                                        <label class="layui-form-label">抵押品介绍</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="descs" class="king_contents" cols="100" rows="20">{$info.descs|default=''}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">头图</label>
+                                        <div class="layui-input-inline">
+                                            <input type="file" name="pics" id="smallpics" class="layui-upload-file file_img">
+                                            <input type="hidden" name="pics" id="pics" value="{$info.pics|default=''}" jq-error="请上传头图" error-id="img-error">
+                                            <p id="img-error" class="error"></p>
+                                        </div>
+                                        <div class="layui-input-inline" id="divpics">
+                                            {notempty name="info.pics"}
+                                            <img src="{$info.pics|default=''}" alt="..." class="img-thumbnail">
+                                            {/notempty}
+                                        </div>
+                                       
+                                        <div class="layui-input-inline" id="btnpics" style="display: none;">
+                                            <button type="button" class="layui-btn layui-btn-primary" id="delpics">删除头图</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">员工号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="asset_manageruserids" value="{$info.asset_manageruserids|default=''}" placeholder="请输入员工代码，如：jians" class="layui-input ">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="ids" value="{$info.ids|default=''}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script src="/static/admin/js/jquery.min.js"></script>
+<script>
+    
+        KindEditor.ready(function(K) {
+            window.editor = K.create('.king_content', {
+                allowFileManager : true,
+                langType : 'zh-CN',
+                autoHeightMode : true,
+                pasteType:2,
+                wellFormatMode:false,
+    //            filterMode: false,
+                afterBlur: function () { this.sync(); }
+            });
+        });
+
+        var asset = {$info.defaultasset};
+        if(asset == 1){
+            KindEditor.ready(function(K) {
+                window.editor = K.create('.king_contents', {
+                    allowFileManager : true,
+                    langType : 'zh-CN',
+                    autoHeightMode : true,
+                    pasteType:2,
+                    wellFormatMode:false,
+            //            filterMode: false,
+                    afterBlur: function () { this.sync(); }
+                });
+            });
+        }
+
+
+</script>
+<!--kingeditor编辑器结束-->
+<script>
+    layui.use(['layer', 'myform'], function(){
+        
+        var form = layui.form();
+        var $= layui.jquery;
+        form.on('select(myselect)', function(data){
+            var areaid=data.value;
+            $.ajax({
+                type: 'POST',
+                url: '{:url("getArea")}',
+                data: {areaid:areaid},
+                dataType:  'json',
+                success: function(data){
+                    $("#City").html("");
+                    $.each(data.data, function(key, val) {
+                        var option1 = $("<option>").val(val.id).text(val.assettype);
+                        $("#City").append(option1);
+                        
+                        form.render('select');
+                    }); 
+                  //  $("#City").get(0).selectedIndex=0;
+                }
+            }); 
+        });
+
+        form.on("select", function(data){
+            var x = data.elem.getAttribute("id")
+            var num = x.substring(16,x.length)
+            var areaid=data.elem.value;
+            $.ajax({
+                type: 'POST',
+                url: '{:url("getArea")}',
+                data: {areaid:areaid},
+                dataType:  'json',
+                success: function(data){
+                    $("#asset_leavediquxian"+num).html("");
+                    $.each(data.data, function(key, val) {
+                        var option1 = $("<option>").val(val.id).text(val.assettype);
+                        $("#asset_leavediquxian"+num).append(option1);
+                        form.render('select');   
+                    }); 
+                   // $("#asset_leavedishi").get(0).selectedIndex=0;
+                }
+            }); 
+            
+        });
+        var upload = layui.upload;
+         //执行实例
+        upload({
+            elem: '#smallpics'
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                console.log(data)
+                $("#pics").val(data.url);
+                $("#divpics").html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpics").show();
+            }
+        });
+        $("#delpics").click(function(){
+            $("#pics").val('');
+            $("#divpics").html('');
+            $("#btnpics").hide();
+        });
+    });
+    $("#defaultnomal").on('click',".layui-form-radio",function(e){
+        var defaultnomalval = $(this).prev().val();
+        if (defaultnomalval == 0) {
+            $("#defaultact").hide();
+            $("#nomalasset").show();
+        }else{
+            $("#nomalasset").hide();
+            $("#defaultact").show();
+
+            KindEditor.ready(function(K) {
+                window.editor = K.create('.king_contents', {
+                    allowFileManager : true,
+                    langType : 'zh-CN',
+                    autoHeightMode : true,
+                    pasteType:2,
+                    wellFormatMode:false,
+        //            filterMode: false,
+                    afterBlur: function () { this.sync(); }
+                });
+            });
+        }  
+    })
+
+     $(".file_img").on('click',function(e){
+         var obj = $(this).attr('id');
+         var num = obj.substring(8,obj.length);
+        layui.use(['myform', 'upload','layer'], function(){
+            var $= layui.jquery;
+           
+            var upload = layui.upload;
+            //执行实例
+            upload({
+                elem: '#smallpic'+num
+                ,url: '/rncms/admin_upload/upload' //上传接口
+                ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+                ,success: function(data){
+                    console.log(data)
+                    $("#pic"+num).val(data.url);
+                    $("#divpic"+num).html('<img src="'+data.url+'" style="max-height: 40px;">');
+                    $("#btnpic"+num).show();
+                }
+            });
+        
+            }) 
+         }) 
+
+
+</script>
+
+<script>
+     //重新渲染表单
+function renderForm(num){
+    layui.use(['myform', 'upload','layer'], function(){
+        var form = layui.form();//高版本建议把括号去掉，有的低版本，需要加()
+        var $= layui.jquery;
+       
+        KindEditor.ready(function(K) {
+            window.editor = K.create('.king_content', {
+                allowFileManager : true,
+                langType : 'zh-CN',
+                autoHeightMode : true,
+                pasteType:2,
+                wellFormatMode:false,
+    //            filterMode: false,
+                afterBlur: function () { this.sync(); }
+            });
+        });
+        var upload = layui.upload;
+
+        //执行实例
+        upload({
+            elem: '#smallpic'+num
+            ,url: '/rncms/admin_upload/upload' //上传接口
+            ,ext: 'jpg|png|gif' //那么，就只会支持这三种格式的上传。注意是用|分割。
+            ,success: function(data){
+                $("#pic"+num).val(data.url);
+                $("#divpic"+num).html('<img src="'+data.url+'" style="max-height: 40px;">');
+                $("#btnpic"+num).show();
+            }
+        });
+        form.render();
+    });
+}
+function delpic(num){
+    $("#pic"+num).val('');
+    $("#divpic"+num).html('');
+    $("#btnpic"+num).hide();
+}
+
+    var num="{$start_act|default='0'}";
+    var assettype = {$atype|raw};
+    layui.use(['myform', 'upload'], function(){
+     
+        var form = layui.form();
+        var $= layui.jquery;
+        $("#add_act").click(function() {
+            var op = "";
+            if (typeof(assettype) != 'undefined') {
+                $.each(assettype,function(index,vo){
+                    if (vo.lever == 2) {
+                        op +="<option value='"+vo.id+"' >"+vo.parentname+"</option>"
+                        if (vo.chilrenname != null) {
+                            $.each(vo.chilrenname,function(idx,v){
+                                op +="<option value='"+v.id+"'> &nbsp;&nbsp;&nbsp;&nbsp;--"+v.assettype+"</option>"
+                            })
+                        }
+                    }
+                })
+            }  
+      
+            var optio = "";
+            if (typeof(assettype) != 'undefined') {
+                $.each(assettype,function(index,vo){
+                    if (vo.lever == 1) {
+                        optio += "<option value='"+vo.id+"'>"+vo.parentname+"</option>"
+                    }
+                })
+            }  
+            var html = "<div style='border-top:3px solid rgba(25,160,148,1); padding-top: 5px;' id='divinfo"+num+"'>"
+                        +"<a href='#' class='layui-btn layui-btn-small layui-btn-danger' style='float:right; min-width: 100px; margin-bottom: 10px;' onclick='deldiv("+num+")'>删除</a>"
+                        +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>押品分类</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<select name='act["+num+"][producttype]' id='producttype"+num+"' lay-filter='productselect"+num+"'>"
+                                +"<option value=''>请选择押品分类</option>" 
+                                +op 
+                            +"</select>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item' >"
+                        +"<div class='layui-input-inline'>"
+                            +"<label class='layui-form-label'>存放城市</label>"
+                            +"<div class='layui-input-block' style='width: 100px'>"
+                                +"<select name='act["+num+"][asset_leavedishi]' id='asset_leavedishi"+num+"' lay-filter='asset_leavedishi"+num+"'>"
+                                    +"<option value=''>请选择市</option>"
+                                    +optio
+                                +"</select>"
+                            +"</div>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<div class='layui-input-inline'>"
+                            +"<label class='layui-form-label'>存放区县</label>"
+                            +"<div class='layui-input-block' style='width: 100px'>"
+                                +"<select name='act["+num+"][asset_leavediquxian]' id='asset_leavediquxian"+num+"'>"
+                                    +"<option value=''>请选择区县</option>"      
+                                +"</select>"
+                            +"</div>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>头图</label>"
+                        +"<div class='layui-input-inline'>"
+                            +"<input type='file' name='pic"+num+"' id='smallpic"+num+"' class='layui-upload-file'>"
+                            +"<input type='hidden' name='act["+num+"][pic]' id='pic"+num+"' value='' jq-error='请上传头图' error-id='img-error'>"
+                                +"<p id='img-error' class='error'></p>"
+                        +"</div>"
+                        +"<div class='layui-input-inline' id='divpic"+num+"'>"
+                        +"</div>"  
+                        +"<div class='layui-input-inline' id='btnpic"+num+"' style='display: none;'>"
+                            +"<button type='button' class='layui-btn layui-btn-primary' onclick='delpic("+num+")'>删除头图</button>"
+                        +"</div>"      
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>抵押品介绍</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<textarea name='act["+num+"][desc]' class='king_content' cols='100' rows='20'></textarea>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>押品数量</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_diyanumber]' value='' placeholder='请输入抵押品数量，如：5678.00平方米，或XYZ公司99%股权' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>抵质押人</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_diyanperson]' value='' placeholder='请输入抵质押人' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>项目经理</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_manager]' value='' placeholder='请输入责任项目经理姓名' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>联系方式</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_managerline]' value='' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>备注</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_packagename]' value='' placeholder='请输入备注（资产包名称）' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<div class='layui-form-item'>"
+                        +"<label class='layui-form-label'>员工号</label>"
+                        +"<div class='layui-input-block'>"
+                            +"<input type='text' name='act["+num+"][asset_manageruserid]' value='' class='layui-input'>"
+                        +"</div>"
+                    +"</div>"
+                    +"<input type='hidden' name='act["+num+"][id]' value='0'></div>";
+            $("#act").append(html);
+            renderForm(num);
+            num++;
+        });
+    
+    });
+   
+    function del_act(obj) {
+        var $= layui.jquery;
+        $(obj).parent().remove();
+        num--;
+    }
+
+    function deldiv(num){
+        var $= layui.jquery;
+        $("#divinfo"+num).remove();
+    }
+</script>
+{/block}

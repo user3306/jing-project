@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<!--S meta 开始-->
+	<title>我的优惠券</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+<link rel="stylesheet" href="/static/home/css/xinziyou.css?ver=8">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: "{$sign['appId']}",
+        timestamp: {$sign['timestamp']},
+        nonceStr: "{$sign['nonceStr']}",
+        signature: "{$sign['signature']}",
+        jsApiList: [
+            'openCard'
+        ]
+    });
+
+
+  </script>
+
+<body>
+
+<!--S 我的优惠券-->
+
+<div class="youhuicode">
+  
+    {volist name="result" id="vo"}
+
+    {if $vo.can_consume=='1'}
+    {if $vo.user_card_status=='NORMAL'}
+    <div style="margin-top: 10px;margin-bottom: 10px;text-align: center; position:relative;" onclick="info('{$vo.card_id}','{$vo.code}')"><img src="/static/home/images/{$vo.bg}r.png?ver=7" style="max-width: 100%"/>
+      <div style="position:absolute;margin:auto;top:30%;left:45%;text-align: left;">
+        <div style="font-size: 1.1rem;color:#eee;">{$vo.card_name}</div>
+        <div style="font-size: 0.75rem;color:#eee;">有效期至：{$vo.end_time}</div>
+      </div>
+    </div>      
+    {else /}
+      <div style="margin-top: 10px;margin-bottom: 10px;text-align: center; position:relative;"><img src="/static/home/images/{$vo.bg}e.png?ver=7" style="max-width: 100%"/>
+        <div style="position:absolute;margin:auto;top:30%;left:45%;text-align: left;">
+          <div style="font-size: 1.1rem;color:#eee;">{$vo.card_name}</div>
+          <div style="font-size: 0.75rem;color:#eee;">&nbsp;</div>
+        </div>
+      </div>   
+    {/if}
+    {else /}
+    <div style="margin-top: 10px;margin-bottom: 10px;text-align: center; position:relative;" onclick="info('{$vo.card_id}','{$vo.code}')"><img src="/static/home/images/{$vo.bg}u.png?ver=7" style="max-width: 100%"/>
+        <div style="position:absolute;margin:auto;top:30%;left:45%;text-align: left;">
+          <div style="font-size: 1.1rem;color:#eee;">{$vo.card_name}</div>
+          <div style="font-size: 0.75rem;color:#eee;">&nbsp;</div>
+        </div>
+      </div>   
+    {/if}
+    <!--
+    <li style="background:url(/static/home/images/{$vo.bg}r.png?ver=5) no-repeat left; background-size:100% 100%;" onclick="info('{$vo.card_id}','{$vo.code}')">
+      <div class="leftcode">
+        <a href="#"></a>
+      </div>
+      <div class="rightcode" style="background:url(/static/home/images/00r.png) no-repeat right;">
+	  <div style="text-align:right;margin:0 auto;padding-top:60px;">
+        <div class="weui-cells__tips t01" style="color:#ff0000;">{$vo.card_name}</div>
+        <div class="weui-cells__tips t03">有效期至：{$vo.end_time}</div>
+      </div></div>
+    </li>
+  -->
+    {/volist}
+  
+</div>
+<!--E 我的优惠券-->
+
+<!-- body 最后 jQuery WeUI JS-->
+
+<!--E 个人中心 结束-->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script>
+function info(cardid,code)
+{
+	//$.alert("请前往微信卡包中进行使用。", "提示");
+	wx.openCard({
+		cardList: [
+			{
+				cardId:cardid,
+				code: code
+			}
+		]
+	});
+		
+}
+</script>
+</body>
+</html>

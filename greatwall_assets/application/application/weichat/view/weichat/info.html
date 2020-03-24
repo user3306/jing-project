@@ -1,0 +1,86 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form id="form1" class="layui-form layui-form-pane" action="{:url('')}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公众号类型</label>
+                        <div class="layui-input-inline">
+                            <select class="tpl-form-input" jq-verify="required" jq-error="请选择公众号类型" lay-filter="type" name="type">
+                                <option value="0" {eq name="info.type" value="0"}selected{/eq}>普通订阅号</option>
+                                <option value="1" {eq name="info.type" value="1"}selected{/eq}>微信认证订阅号</option>
+                                <option value="2" {eq name="info.type" value="2"}selected{/eq}>普通服务号</option>
+                                <option value="3" {eq name="info.type" value="3"}selected{/eq}>微信认证服务号</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公众号名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="weichat_name" value="{$info.weichat_name|default=''}" jq-verify="required" jq-error=" 请输入公众号名称" placeholder="请输入公众号名称" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原始id</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="public_id" value="{$info.public_id|default=''}" jq-verify="required" jq-error="请输入原始id" placeholder="请输入原始id" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="wechat_number" value="{$info.wechat_number|default=''}" required jq-verify="required" jq-error="请输入微信号" placeholder="请输入微信号" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Token</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="token" value="{$info.token|default=''}" required jq-verify="required" jq-error="请输入Token" placeholder="请输入Token" class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">AppID </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="appid" value="{$info.appid|default=''}" required jq-verify="required" jq-error="（应用ID） " placeholder="（应用ID） " class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">AppSecret</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="secret" value="{$info.secret|default=''}" required jq-verify="required" jq-error="（应用密钥） " placeholder="（应用密钥） " class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">EncodingAESKey </label>
+                        <div class="layui-input-block">
+                            <input type="text" name="encodingaeskey" value="{$info.encodingaeskey|default=''}" required jq-verify="required" jq-error="（安全模式下必填） " placeholder="（安全模式下必填） " class="layui-input ">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane>
+                        <label class="layui-form-label">是否绑定</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="is_bind" {eq name="info.is_bind" value="1"}checked{/eq} title="是" value="1" checked />
+                            <input type="radio" name="is_bind" {eq name="info.is_bind" value="2"}checked{/eq} title="否" value="2" />
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="weichat_id" type="hidden" value="{$info.weichat_id|default=''}">
+                        <button class="layui-btn" jq-submit lay-filter="submit" jq-tab="true">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('myform');
+</script>
+{/block}

@@ -1,0 +1,94 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<!--头部搜索开始-->
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <section class="panel panel-padding">
+                <form class="layui-form" action="{:url('')}">
+                    <div class="layui-form">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input name="starttime" value="{$pageMaps.starttime|default=''}" id="date"  placeholder="开始时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input name="endtime" value="{$pageMaps.endtime|default=''}" id="date" placeholder="结束时间" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" type="text" >
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" name="userid" value="{$pageMaps.userid|default=''}" placeholder="员工工号">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button lay-submit class="layui-btn" lay-filter="search">查找</button>
+                        </div>
+						 <div class="layui-inline">
+                            <a href="{:url('exportuserlist')}" class="layui-btn">导出</a>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<!--头部搜索结束-->
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th>Openid</th>
+            <th>昵称</th>
+            <th>性别</th>
+            <th>头像</th>
+            <th>所在地区</th>
+            <th>所在省份</th>
+            <th>关注时间</th>
+			<th>是否授权</th>
+            <th>推荐人</th>
+			<th>客户姓名</th>
+			<th>所在公司</th>
+			<th>客户手机号</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo" key="k"}
+        <tr>
+           <!--  <td align="center"><span>{($pageMaps.page-1)*20+$k+1}</span></td> -->
+            <td>{$vo.openId}</td>
+            <td>{$vo.nickName}</td>
+			<td>{$vo.gender}</td>
+            <td><img src="{$vo.avatarUrl}" style="width:50px;height:50px"></td>
+            <td>{$vo.country}</td>
+            <td>{$vo.province}</td>
+            <td>{$vo.addtime|date="Y-m-d H:i:s"}</td>
+			<td>{$vo.cli_mobile}</td>
+            <td>{$vo.username}</td>
+			<td>{$vo.cli_name}</td>
+            <td>{$vo.cli_company}</td>
+            <td>{$vo.write_mobile}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right" style="text-align: center">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$list|raw}
+    </div>
+</div>
+
+</body>
+{/block}
+{block name="script"}
+<script>
+     layui.use(['myform','default','pageform','upload'], function(){
+        var form = layui.form();
+        var $= layui.jquery;
+    });
+</script>
+{/block}

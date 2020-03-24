@@ -1,0 +1,136 @@
+{extend name="admin@public/base_content" /}
+{block name="body">}
+<body>
+{include file="admin@public/common" /}
+<script src="__ADMIN__/js/laydate/laydate.js"></script>
+<div class="container-fluid larry-wrapper">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--列表-->
+            <section class="panel panel-padding" style="height:40px;margin-bottom:4px">
+                <div style="float: left;margin-left: 20px;">起始日期：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="sdate" style="width:100px;height:25px;"   value="{$pageMaps.sdate|default=''}">
+                </div>
+                <div style="float: left;margin-left: 20px;">结束日期：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="edate" style="width:100px;height:25px;"  value="{$pageMaps.edate|default=''}">
+                </div>
+                <div style="float: left;margin-left: 20px;">串码：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="imei" style="width:100px;height:25px;" value="{$pageMaps.imei|default=''}">
+                </div>
+                <div style="float: left;margin-left: 20px;">ERP销售单号：</div>
+                <div style="float: left;">
+                    <input type="text" class="layui-input" id="erpcode" style="width:100px;height:25px;" value="{$pageMaps.erpcode|default=''}">
+                </div>
+
+                <div style="float: left;margin-left: 20px;">维修门店：</div>
+                <div style="float: left;">
+                    <select class="tpl-form-input"  name="shopid" id="shopid">
+                        <option value="">请选择</option>
+                        {foreach name="shopList" item="vo"}
+                        <option value="{$vo.id}" {if condition="$vo.id eq $pageMaps.shopid"}selected{/if}>{$vo.shop}</option>
+                        {/foreach}
+                    </select>
+                </div>
+
+                <div style="float: left;margin-left: 20px;">维修工程师：</div>
+                <div style="float: left;">
+                    <select id="rpersonid" name="rpersonid">
+                        <option value="">请选择</option>
+                        {foreach name="rpersonList" item="vo"}
+                        <option value="{$vo.id}" {if condition="$vo.id eq $pageMaps.rpersonid"}selected{/if}>{$vo.uname}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div style="float: left;margin-left: 20px;">
+                    <a href="javascript:void(0);" onclick="datesearch()"  class="layui-btn layui-btn-small" style="float:right">
+                        查询
+                    </a>
+                </div>
+                <div style="float: left;margin-left: 20px;">
+                <a href="javascript:void(0);" onclick="dateout()"  class="layui-btn layui-btn-small" style="float:right">
+                    导出
+                </a>
+            </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="layui-form">
+    <table class="layui-table lay-even">
+        <thead>
+        <tr>
+            <th width="80">ID</th>
+            <th>日期</th>
+            <th>客户姓名</th>
+            <th>联系方式</th>
+            <th>手机型号</th>
+            <th>销售单号</th>
+            <th>手机串码</th>
+            <th>故障现象</th>
+            <th>维修门店</th>
+            <th>维修工程师</th>
+            <th width="150">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach name="list" item="vo"}
+        <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.posttime|date='Y-m-d H:i'}</td>
+            <td>{$vo.uname}</td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.pmodel}</td>
+            <td>{$vo.erpcode}</td>
+            <td>{$vo.imei}</td>
+            <td>{$vo.pfault}</td>
+            <td>{$vo.shop}</td>
+            <td>{$vo.rperson}</td>
+            <td>
+                <a href="{:url('info',array('id'=>$vo['id']))}" class="layui-btn layui-btn-mini modal-catch">
+                    <i class="iconfont">&#xe653;</i>编辑
+                </a>
+                <a class="layui-btn layui-btn-mini layui-btn-danger ajax"
+                   data-list='{"key":"id={$vo.id}","msg":true,"render":"true","action":"del"}'
+                   data-params='{"url": "{:url("del")}","confirm":"true","data":"id={$vo.id}","complete":"del"}'>
+                    <i class="iconfont">&#xe626;</i>删除
+                </a>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+<div class="text-right">
+    <div class="layui-box layui-laypage layui-laypage-molv" id="layui-laypage-1">
+        {$_page|raw}
+    </div>
+</div>
+</body>
+{/block}
+{block name="script"}
+<script>
+    layui.use('default');
+    laydate.render({
+        elem: '#sdate'
+        //指定元素
+    });
+    laydate.render({
+        elem: '#edate'
+        //指定元素
+    });
+
+    function datesearch()
+    {
+        window.location='?shopid='+document.getElementById('shopid').value+'&imei='+document.getElementById('imei').value+'&sdate='+document.getElementById('sdate').value+'&edate='+document.getElementById('edate').value+'&rpersonid='+document.getElementById('rpersonid').value+'&erpcode='+document.getElementById('erpcode').value;
+    }
+
+    function dateout()
+    {
+        window.location='/admin/payrepair/dataout.html?shopid='+document.getElementById('shopid').value+'&imei='+document.getElementById('imei').value+'&sdate='+document.getElementById('sdate').value+'&edate='+document.getElementById('edate').value+'&rpersonid='+document.getElementById('rpersonid').value+'&erpcode='+document.getElementById('erpcode').value;
+    }
+</script>
+{/block}
